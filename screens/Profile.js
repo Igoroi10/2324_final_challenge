@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image} from 'react-native';
+import {View, Image, StyleSheet} from 'react-native';
 import styled from 'styled-components';
 
 
@@ -11,42 +11,38 @@ const Profile = ({ user, goBack }) => {
         source={{ uri: user.imageUri }}
         style={{ width: 100, height: 100, borderRadius: 50 }}
       />
-      <Text>Name: {user.name}</Text>
-      <Text>Email: {user.email}</Text>
+      <ProfileText>Name: {user.name}</ProfileText>
+      <ProfileText>Email: {user.email}</ProfileText>
   
-      <Text>Role: {user.role}</Text>
+      <ProfileText>Role: {user.role}</ProfileText>
 
-      <Text>Inventory:</Text>
+      <ProfileText>Inventory:</ProfileText>
       <View>
         {user.inventory.map((item, index) => (
-          <Text key={index}>{item}</Text>
+          <ProfileText key={index}>{item}</ProfileText>
         ))}
       </View>
 
-      <Text>Change Stats:</Text>
-      <View>
+      <ProfileText>Change Stats:</ProfileText>
+      <View style={styles.inlineContainer}>
         {Object.keys(user.changeStats).map((key, index) => (
-          <Text key={index}>
-            {user.changeStats[key]}
-          </Text>
+          <ProfileText key={index}>{user.changeStats[key]}</ProfileText>
         ))}
       </View>
 
-      <Text>Change Max Stats:</Text>
-      <View>
+<ProfileText>Change Max Stats:</ProfileText>
+      <View style={styles.inlineContainer}>
         {Object.keys(user.changeMaxStats).map((key, index) => (
-          <Text key={index}>
-            {user.changeMaxStats[key]}
-          </Text>
+          <ProfileText key={index}>{user.changeMaxStats[key]}</ProfileText>
         ))}
       </View>
 
-      <Text>Diseases:</Text>
+      <ProfileText>Diseases:</ProfileText>
       <View>
         {Object.keys(user.diseases).map((key, index) => (
-          <Text key={index}>
+          <ProfileText key={index}>
             {user.diseases[key]}
-          </Text>
+          </ProfileText>
         ))}
       </View>
 
@@ -56,6 +52,19 @@ const Profile = ({ user, goBack }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  inlineContainer: {
+    flexDirection: 'row', // Coloca los elementos en la misma línea
+    alignItems: 'center',
+
+  },
+});
 
 const SignOutButton = styled.TouchableOpacity`
     background-color: rgba(232, 0, 0 , 0.6);
@@ -70,6 +79,13 @@ const ButtonText = styled.Text`
     color: rgba(255,255,255,1);
     font-size: 20px;
     text-align: center;
+`
+
+const ProfileText = styled.Text`
+    color: 'black';
+    font-size: 20px;
+    text-align: center;
+    margin: 5px;
 `
 
 
