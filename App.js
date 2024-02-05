@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Button, Text, StyleSheet } from 'react-native';
 import Profile from './screens/Profile';
+import styled from 'styled-components';
 
 const AppScreen = () => {
   const [showProfile, setShowProfile] = useState(false);
@@ -28,7 +29,7 @@ const AppScreen = () => {
     <View>
       <Text>FINAL CHALLENGE</Text>
       {!showProfile ? (
-        <Button title="Ir a Perfil" onPress={goToProfile} />
+        <StyledButton onPress={goToProfile}><ButtonText>LOGIN</ButtonText></StyledButton>
       ) : (
         <Profile user={user} goBack={goBack} />
       )}
@@ -49,5 +50,22 @@ const styles = StyleSheet.create({
   },
 });
 
+const StyledButton = styled.TouchableOpacity`
+    background-color: rgba(171, 147, 192, 0.7);
+    display: flex;
+    justify-content: center;
+    height: 60px;
+    width: 40%;
+    margin-top: 35%;
+    border-radius: 60px;
+    border: #7B26C4;
+    align-self: center;
+`
+
+const ButtonText = styled.Text`
+    color:rgba(92, 0, 172, 0.8);
+    font-size: 20px;
+    text-align: center;
+`
 
 export default AppScreen;

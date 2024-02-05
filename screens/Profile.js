@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity , Button} from 'react-native';
+import { View, Text, Image} from 'react-native';
+import styled from 'styled-components';
+
 
 
 const Profile = ({ user, goBack }) => {
@@ -48,9 +50,27 @@ const Profile = ({ user, goBack }) => {
         ))}
       </View>
 
-      <Button title="EXIT" onPress={goBack} />
+      <SignOutButton onPress={goBack}>
+              <ButtonText>Sign Out</ButtonText>
+            </SignOutButton>
     </View>
   );
 };
+
+const SignOutButton = styled.TouchableOpacity`
+    background-color: rgba(232, 0, 0 , 0.6);
+    justify-content: center;
+    width: 50%;
+    height: 7%;
+   
+    border-radius: 60px;
+    align-self: center;
+`
+const ButtonText = styled.Text`
+    color: rgba(255,255,255,1);
+    font-size: 20px;
+    text-align: center;
+`
+
 
 export default Profile;
