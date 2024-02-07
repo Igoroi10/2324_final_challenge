@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import Profile from '../../screens/Profile';
+import ProfileAcolyte from '../../screens/ProfileAcolyte';
+import ProfileAdmin from '../../screens/ProfileAdmin';
 import styled from 'styled-components/native';
 import { getUserData } from '../helpers/asyncStorageUser';
 
@@ -13,7 +14,7 @@ const LoginModal = () => {
     name: 'PATXI',
     email: 'aeg@gmail.com',
     imageUri: 'https://lh3.googleusercontent.com/a/ACg8ocICfs24HN3aXJKBCUbfjW9RL4yZTnIkw7icAS0wMiPf7w=s96-c',
-    role: 'Acolite',
+    role: 'acolyte',
     inventory: ["uno", "dos"],
     changeStats: [1, 2, 3, 4],
     changeMaxStats: [5, 6, 7, 8],
@@ -61,10 +62,10 @@ const LoginModal = () => {
   return (
     <View>
       <Text>FINAL CHALLENGE</Text>
-      {!showProfile ? (
-        <StyledButton onPress={goToProfile}><ButtonText>LOGIN</ButtonText></StyledButton>
+      {showProfile ? ( 
+        user.role === 'acolyte' ? <ProfileAcolyte user={user} goBack={goBack} /> : <ProfileAdmin user={user} goBack={goBack} />
       ) : (
-        <Profile user={user} goBack={goBack} />
+        <StyledButton onPress={goToProfile}><ButtonText>LOGIN</ButtonText></StyledButton>
       )}
     </View>
   );
