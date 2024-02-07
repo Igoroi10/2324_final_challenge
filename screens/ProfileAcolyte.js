@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 
-const Profile = ({ user, goBack }) => {
+const ProfileAcolyte = ({ user, goBack }) => {
   return (
     <View >
       <Container>
@@ -82,21 +82,18 @@ const SignOutButton = styled.TouchableOpacity`
   align-self: center;
   margin-top: -9%;
   margin-left: 10%;
-`;
-
+`
 const ButtonText = styled.Text`
   color: rgba(255, 255, 255, 1);
   font-size: 20px;
   text-align: center;
-`;
-
+`
 const ProfileText = styled.Text`
   color: black;
   font-size: 20px;
   text-align: center;
   margin: 5px;
-`;
-
+`
 const Container = styled.View`
   width: 80%; 
   flex-direction: column;
@@ -118,8 +115,7 @@ const ButtonContainer = styled.View`
   flex-direction: row;
   justify-content: space-around;
   margin-top: 58%;
-`;
-
+`
 const CustomButton = styled.TouchableOpacity`
   background-color: rgba(0, 0, 255, 0.6);
   justify-content: center;
@@ -127,6 +123,5 @@ const CustomButton = styled.TouchableOpacity`
   height: 40%;
   border-radius: 60px;
   margin: 10px;
-`;
-
-export default Profile;
+`
+export default ProfileAcolyte;

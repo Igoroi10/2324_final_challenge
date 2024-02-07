@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import ProfileAcolyte from '../../screens/ProfileAcolyte';
-import ProfileAdmin from '../../screens/ProfileAdmin';
+import ProfileMortimer from '../../screens/ProfileMortimer';
 import ProfileRider from '../../screens/ProfileKnight';
 import ProfileVillano from '../../screens/ProfileVillano';
 import styled from 'styled-components/native';
@@ -16,7 +16,7 @@ const LoginModal = () => {
     name: 'PATXI',
     email: 'aeg@gmail.com',
     imageUri: 'https://lh3.googleusercontent.com/a/ACg8ocICfs24HN3aXJKBCUbfjW9RL4yZTnIkw7icAS0wMiPf7w=s96-c',
-    role: 'acolyte',
+    role: 'knight',
     inventory: ["uno", "dos"],
     changeStats: [1, 2, 3, 4],
     changeMaxStats: [5, 6, 7, 8],
@@ -68,7 +68,7 @@ const LoginModal = () => {
       user.role === 'acolyte' ? (
         <ProfileAcolyte user={user} goBack={goBack} />
       ) : user.role === 'mortimer' ? (
-        <ProfileAdmin user={user} goBack={goBack} />
+        <ProfileMortimer user={user} goBack={goBack} />
       ) : user.role === 'villano' ? (
         <ProfileVillano user={user} goBack={goBack} />
       ) : user.role === 'knight' ? (

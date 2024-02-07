@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 
-const Profile = ({ user, goBack }) => {
+const ProfileVillano = ({ user, goBack }) => {
   return (
     <View >
       <Container>
@@ -14,21 +14,7 @@ const Profile = ({ user, goBack }) => {
         <ProfileText>Name: {user.name}</ProfileText>
         {/* <ProfileText>Email: {user.email}</ProfileText> */}
         <ProfileText>Role: {user.role}</ProfileText>
-
-
       </Container>
-
-      <ButtonContainer>
-        <CustomButton onPress={goBack}>
-          <ButtonText>Attack 1</ButtonText>
-        </CustomButton>
-        <CustomButton onPress={goBack}>
-          <ButtonText>Attack 2</ButtonText>
-        </CustomButton>
-        <CustomButton onPress={goBack}>
-          <ButtonText>Reset</ButtonText>
-        </CustomButton>
-      </ButtonContainer>
 
         <SignOutButton onPress={goBack}>
           <ButtonText>Sign Out</ButtonText>
@@ -50,26 +36,23 @@ const SignOutButton = styled.TouchableOpacity`
   background-color: rgba(232, 0, 0, 0.6);
   justify-content: center;
   width: 40%;
-  height: 8%;
+  height: 10%;
   border-radius: 60px;
   align-self: center;
-  margin-top: -5%;
+  margin-top: 80%;
   margin-left: 10%;
-`;
-
+`
 const ButtonText = styled.Text`
   color: rgba(255, 255, 255, 1);
   font-size: 20px;
   text-align: center;
-`;
-
+`
 const ProfileText = styled.Text`
   color: black;
   font-size: 20px;
   text-align: center;
   margin: 5px;
-`;
-
+`
 const Container = styled.View`
   width: 80%; 
   flex-direction: column;
@@ -87,19 +70,4 @@ const Container = styled.View`
   justify-content: center;
   padding: 10px;
   `
-const ButtonContainer = styled.View`
-  flex-direction: row;
-  justify-content: space-around;
-  margin-top: 58%;
-`;
-
-const CustomButton = styled.TouchableOpacity`
-  background-color: rgba(0, 0, 255, 0.6);
-  justify-content: center;
-  width: 30%;
-  height: 40%;
-  border-radius: 60px;
-  margin: 10px;
-`;
-
-export default Profile;
+export default ProfileVillano;
