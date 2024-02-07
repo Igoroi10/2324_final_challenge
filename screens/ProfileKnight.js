@@ -6,7 +6,7 @@ const Profile = ({ user, goBack }) => {
   return (
     <View >
       <Container>
-      <ProfileText>MORTIMER</ProfileText>
+      <ProfileText>KNIGHT</ProfileText>
         <Image
           source={{ uri: user.imageUri }}
           style={{ width: 100, height: 100, borderRadius: 50 }}

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import ProfileAcolyte from '../../screens/ProfileAcolyte';
 import ProfileAdmin from '../../screens/ProfileAdmin';
+import ProfileRider from '../../screens/ProfileKnight';
+import ProfileVillano from '../../screens/ProfileVillano';
 import styled from 'styled-components/native';
 import { getUserData } from '../helpers/asyncStorageUser';
 
@@ -61,13 +63,25 @@ const LoginModal = () => {
 
   return (
     <View>
-      <Text>FINAL CHALLENGE</Text>
-      {showProfile ? ( 
-        user.role === 'acolyte' ? <ProfileAcolyte user={user} goBack={goBack} /> : <ProfileAdmin user={user} goBack={goBack} />
+    
+    {showProfile ? (
+      user.role === 'acolyte' ? (
+        <ProfileAcolyte user={user} goBack={goBack} />
+      ) : user.role === 'mortimer' ? (
+        <ProfileAdmin user={user} goBack={goBack} />
+      ) : user.role === 'villano' ? (
+        <ProfileVillano user={user} goBack={goBack} />
+      ) : user.role === 'knight' ? (
+        <ProfileRider user={user} goBack={goBack} />
       ) : (
-        <StyledButton onPress={goToProfile}><ButtonText>LOGIN</ButtonText></StyledButton>
-      )}
-    </View>
+        <Text>No se ha encontrado un perfil para este rol.</Text>
+      )
+    ) : (
+      <StyledButton onPress={goToProfile}>
+        <ButtonText>LOGIN</ButtonText>
+      </StyledButton>
+    )}
+  </View>
   );
 };
 
