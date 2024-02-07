@@ -3,7 +3,6 @@ import {View, Image, StyleSheet} from 'react-native';
 import styled from 'styled-components';
 
 
-
 const Profile = ({ user, goBack }) => {
   return (
     <View>

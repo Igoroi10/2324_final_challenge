@@ -1,12 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import Profile from '../../screens/Profile';
 import styled from 'styled-components/native';
-import { getUserData } from './src/helpers/asyncStorageUser';
-import LoginModal from './src/components/LoginModal';
+import { getUserData } from '../helpers/asyncStorageUser';
 
-const AppScreen = () => {
+const LoginModal = () => {
   
+  const [showProfile, setShowProfile] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
+
+  const user = {
+    name: 'PATXI',
+    email: 'aeg@gmail.com',
+    imageUri: 'https://lh3.googleusercontent.com/a/ACg8ocICfs24HN3aXJKBCUbfjW9RL4yZTnIkw7icAS0wMiPf7w=s96-c',
+    role: 'Acolite',
+    inventory: ["uno", "dos"],
+    changeStats: [1, 2, 3, 4],
+    changeMaxStats: [5, 6, 7, 8],
+    diseases: [0]
+  };
 
   useEffect(()=>{
 
@@ -21,20 +33,22 @@ const AppScreen = () => {
     
   },[]);
 
-  const user = {
-    name: 'PATXI',
-    email: 'aeg@gmail.com',
-    imageUri: 'https://lh3.googleusercontent.com/a/ACg8ocICfs24HN3aXJKBCUbfjW9RL4yZTnIkw7icAS0wMiPf7w=s96-c',
-    role: 'Acolite',
-    inventory: ["uno", "dos"],
-    changeStats: [1, 2, 3, 4],
-    changeMaxStats: [5, 6, 7, 8],
-    diseases: [0]
+  const goToProfile = () => {
+    setShowProfile(!showProfile);
+  };
+
+  const goBack = () => {
+    setShowProfile(false);
   };
 
   return (
     <View>
-      <LoginModal/>
+      <Text>FINAL CHALLENGE</Text>
+      {!showProfile ? (
+        <StyledButton onPress={goToProfile}><ButtonText>LOGIN</ButtonText></StyledButton>
+      ) : (
+        <Profile user={user} goBack={goBack} />
+      )}
     </View>
   );
 };
@@ -70,4 +84,4 @@ const ButtonText = styled.Text`
     text-align: center;
 `
 
-export default AppScreen;
+export default LoginModal;
