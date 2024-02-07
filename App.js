@@ -1,10 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Profile from './screens/Profile';
 import styled from 'styled-components/native';
+import { getUserData } from './src/helpers/asyncStorageUser';
 
 const AppScreen = () => {
+  
   const [showProfile, setShowProfile] = useState(false);
+  const [isLogged, setIsLogged] = useState(false);
+
+  useEffect(()=>{
+
+    const checkIfLogged = async ()=>{
+      const user = await getUserData();
+      
+      if(user){
+        setIsLogged(true);
+      }
+    }
+    checkIfLogged();
+    
+  },[]);
 
   const user = {
     name: 'PATXI',
