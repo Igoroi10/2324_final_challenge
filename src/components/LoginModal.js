@@ -22,6 +22,8 @@ const LoginModal = () => {
 
   useEffect(()=>{
 
+    //getAllUsersFromDataBase();
+
     const checkIfLogged = async ()=>{
       const user = await getUserData();
       
@@ -40,6 +42,21 @@ const LoginModal = () => {
   const goBack = () => {
     setShowProfile(false);
   };
+
+  const getAllUsersFromDataBase = async (urlUsers) => {
+    try {
+        const urlUsers = 'https://mmaproject-app.fly.dev/api/users';
+        // Realizar la solicitud al servidor con el token en el encabezado de autorización
+        //const responseUsers = await axiosInstance.get(urlUsers);
+        const responseUsers = await axios.get(urlUsers);
+        console.log('USUARIOS RECIBIDOS', responseUsers);
+        // Seleccionamos todos los usuarios y los seteamos 
+        setUsersGlobalState(responseUsers.data.data.filter(user => user.role === "ACÓLITO"))
+
+    } catch (error) {
+      console.log(error);
+  };
+}
 
   return (
     <View>
