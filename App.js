@@ -21,17 +21,6 @@ const AppScreen = () => {
     
   },[]);
 
-  const user = {
-    name: 'PATXI',
-    email: 'aeg@gmail.com',
-    imageUri: 'https://lh3.googleusercontent.com/a/ACg8ocICfs24HN3aXJKBCUbfjW9RL4yZTnIkw7icAS0wMiPf7w=s96-c',
-    role: 'Acolite',
-    inventory: ["uno", "dos"],
-    changeStats: [1, 2, 3, 4],
-    changeMaxStats: [5, 6, 7, 8],
-    diseases: [0]
-  };
-
   return (
     <View>
       <LoginModal/>

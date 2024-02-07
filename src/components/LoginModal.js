@@ -17,7 +17,7 @@ const LoginModal = () => {
     inventory: ["uno", "dos"],
     changeStats: [1, 2, 3, 4],
     changeMaxStats: [5, 6, 7, 8],
-    diseases: [0]
+    diseases: [0,1],
   };
 
   useEffect(()=>{
@@ -77,11 +77,9 @@ const StyledButton = styled.TouchableOpacity`
     border: #7B26C4;
     align-self: center;
 `
-
 const ButtonText = styled.Text`
     color:rgba(92, 0, 172, 0.8);
     font-size: 20px;
     text-align: center;
 `
-
 export default LoginModal;
