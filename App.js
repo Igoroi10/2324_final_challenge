@@ -3,11 +3,22 @@ import { View, Text, StyleSheet } from 'react-native';
 import Profile from './screens/Profile';
 import styled from 'styled-components/native';
 import { getUserData } from './src/helpers/asyncStorageUser';
+import { Context } from './src/helpers/Context';
+import { globalStateSchema } from './src/helpers/Constants';
 
 const AppScreen = () => {
   
   const [showProfile, setShowProfile] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
+
+  const [globalState, setGlobalState] = useState(globalStateSchema);
+
+  const globalStateHandler = (data) =>{
+    setGlobalState( globalState => ({
+      ...globalState,
+      ...data
+    }));
+}
 
   useEffect(()=>{
 
@@ -43,12 +54,16 @@ const AppScreen = () => {
 
   return (
     <View>
-      <Text>FINAL CHALLENGE</Text>
-      {!showProfile ? (
-        <StyledButton onPress={goToProfile}><ButtonText>LOGIN</ButtonText></StyledButton>
-      ) : (
-        <Profile user={user} goBack={goBack} />
-      )}
+
+      <Context.Provider value={{globalState, globalStateHandler}}>  
+
+        <Text>FINAL CHALLENGE</Text>
+        {!showProfile ? (
+          <StyledButton onPress={goToProfile}><ButtonText>LOGIN</ButtonText></StyledButton>
+        ) : (
+          <Profile user={user} goBack={goBack} />
+        )}
+      </Context.Provider>
     </View>
   );
 };
