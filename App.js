@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Profile from './screens/Profile';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 
 const AppScreen = () => {
   const [showProfile, setShowProfile] = useState(false);

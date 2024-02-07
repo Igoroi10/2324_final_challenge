@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@emotion/unitless": "^0.8.1",
+    "postcss": "^8.4.34",
     "react": "18.2.0",
     "react-native": "0.73.3",
     "styled-components": "^6.1.8"
