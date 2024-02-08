@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 import { getUserData } from './src/helpers/asyncStorageUser';
 import LoginModal from './src/components/LoginModal';
+import GoogleModal from './components/GoogleModal'
 
 const AppScreen = () => {
   
@@ -34,6 +35,7 @@ const AppScreen = () => {
 
   return (
     <View>
+      <GoogleModal />
       <LoginModal/>
     </View>
   );
