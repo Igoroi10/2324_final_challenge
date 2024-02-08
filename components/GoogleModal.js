@@ -38,7 +38,7 @@ const GoogleModal = () =>{
 
         console.log("********************token****************************")
         console.log(idTokenResult.token);
-        const URL = "http://192.168.1.164:5000/api/users/token"
+        const URL = "http://192.168.1.164:5001/api/users/token"
         try{
           const decodedUser = await axios.post(URL, { idToken: idTokenResult.token });
           console.log(decodedUser.data)
