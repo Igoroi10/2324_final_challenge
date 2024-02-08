@@ -38,10 +38,18 @@ const GoogleModal = () =>{
 
         console.log("********************token****************************")
         console.log(idTokenResult.token);
-        const URL = "http://192.168.1.164:5001/api/users/token"
+        const URL = "http://192.168.1.163:5001/api/users/token"
         try{
           const decodedUser = await axios.post(URL, { idToken: idTokenResult.token });
           console.log(decodedUser.data)
+          console.log(decodedUser)
+          const userMail = decodedUser;
+          console.log("*****************data from server********************")
+          console.log(userMail)
+        // Sign-in the user with the credential
+          return auth().signInWithCredential(googleCredential);
+
+
         }
         catch(error){
           console.log("*****************************error")
@@ -49,11 +57,6 @@ const GoogleModal = () =>{
         }
         // const decodedUser = await axios.get(URL);
         
-        // console.log(decodedUser)
-        // const userMail = decodedUser;
-        // console.log("*****************data from server********************")
-        // console.log(userMail)
-        // Sign-in the user with the credential
         return false;
         //auth().signInWithCredential(googleCredential);
     }
