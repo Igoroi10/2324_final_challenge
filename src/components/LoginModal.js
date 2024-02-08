@@ -7,12 +7,21 @@ import ProfileVillano from '../../screens/ProfileVillano';
 import styled from 'styled-components/native';
 import { getUserData } from '../helpers/asyncStorageUser';
 import axios from 'axios';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
+GoogleSignin.configure({
+  webClientId: '278625394290-1u0iag96nrpv7aptlr1h5a7cbkhovlhd.apps.googleusercontent.com',
+});
+
+import auth from '@react-native-firebase/auth';
+
 
 const LoginModal = () => {
   
   const [showProfile, setShowProfile] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
   const [globalState, setGlobalState] = useState();
+  const [loading, setLoading] = useState(false)
 
   const user = {
     name: 'PATXI',
@@ -64,6 +73,52 @@ const LoginModal = () => {
   };
 }
 
+async function onGoogleButtonPress() {
+  setLoading(true)
+
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+
+    
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    const signInWithCredential = await auth().signInWithCredential(googleCredential,);
+    console.log("**********************SIGN IN W CREDENTIAL******************")
+    console.log(signInWithCredential)
+
+    const idTokenResult = await auth().currentUser.getIdTokenResult();
+
+    console.log("********************token****************************")
+    console.log(idTokenResult.token);
+    const URL = "http://192.168.1.164:5000/api/users/token"
+    try{
+      const decodedUser = await axios.post(URL, { idToken: idTokenResult.token });
+      console.log(decodedUser.data)
+    }
+    catch(error){
+      console.log("*****************************error")
+      console.log(error)
+    }
+    // const decodedUser = await axios.get(URL);
+    
+    // console.log(decodedUser)
+    // const userMail = decodedUser;
+    // console.log("*****************data from server********************")
+    // console.log(userMail)
+    // Sign-in the user with the credential
+    return false;
+    //auth().signInWithCredential(googleCredential);
+}
+
+const goProfile = () => {
+  onGoogleButtonPress();
+  setShowProfile(true);
+};
+
   return (
     <View>
     
@@ -80,13 +135,27 @@ const LoginModal = () => {
         <Text>No se ha encontrado un perfil para este rol.</Text>
       )
     ) : (
-      <StyledButton onPress={goToProfile}>
-        <ButtonText>LOGIN</ButtonText>
-      </StyledButton>
+      
+      <>
+          <StyledButton onPress={goProfile}>
+            <ButtonText>LOGIN</ButtonText>
+          </StyledButton>
+          {isLogged && (
+            <ActivityIndicator style={spinnerStyle} size="large" color="#0000ff" />
+          )}
+        </>
+
+      
     )}
   </View>
   );
 };
+
+const spinnerStyle = StyleSheet.create({
+  flex: 1,
+  justifyContent: 'center',
+
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -116,5 +185,7 @@ const ButtonText = styled.Text`
     color:rgba(92, 0, 172, 0.8);
     font-size: 20px;
     text-align: center;
+
+    
 `
 export default LoginModal;
