@@ -9,7 +9,7 @@ const AppScreen = () => {
   
   const [isLogged, setIsLogged] = useState(false);
 
-  const [globalState, setGlobalState] = useState(globalStateSchema);
+  const [globalState, setGlobalState] = useState();
 
   const globalStateHandler = (data) =>{
     setGlobalState( globalState => ({

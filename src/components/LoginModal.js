@@ -6,17 +6,19 @@ import ProfileRider from '../../screens/ProfileKnight';
 import ProfileVillano from '../../screens/ProfileVillano';
 import styled from 'styled-components/native';
 import { getUserData } from '../helpers/asyncStorageUser';
+import axios from 'axios';
 
 const LoginModal = () => {
   
   const [showProfile, setShowProfile] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
+  const [globalState, setGlobalState] = useState();
 
   const user = {
     name: 'PATXI',
     email: 'aeg@gmail.com',
     imageUri: 'https://lh3.googleusercontent.com/a/ACg8ocICfs24HN3aXJKBCUbfjW9RL4yZTnIkw7icAS0wMiPf7w=s96-c',
-    role: 'knight',
+    role: 'acolyte',
     inventory: ["uno", "dos"],
     changeStats: [1, 2, 3, 4],
     changeMaxStats: [5, 6, 7, 8],
@@ -25,7 +27,7 @@ const LoginModal = () => {
 
   useEffect(()=>{
 
-    //getAllUsersFromDataBase();
+    getAllUsersFromDataBase();
 
     const checkIfLogged = async ()=>{
       const user = await getUserData();
@@ -48,13 +50,14 @@ const LoginModal = () => {
 
   const getAllUsersFromDataBase = async (urlUsers) => {
     try {
-        const urlUsers = 'https://mmaproject-app.fly.dev/api/users';
+        const urlUsers = 'http://localhost:5001/api/users';
         // Realizar la solicitud al servidor con el token en el encabezado de autorización
         //const responseUsers = await axiosInstance.get(urlUsers);
         const responseUsers = await axios.get(urlUsers);
         console.log('USUARIOS RECIBIDOS', responseUsers);
         // Seleccionamos todos los usuarios y los seteamos 
-        setUsersGlobalState(responseUsers.data.data.filter(user => user.role === "ACÓLITO"))
+        setGlobalState(responseUsers);
+        console.log('GLOBAL STATE', globalState);
 
     } catch (error) {
       console.log(error);
