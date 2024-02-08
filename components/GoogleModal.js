@@ -1,6 +1,10 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import React from 'react';
+import React, { useState, useContext} from 'react'
 import { Button } from 'react-native';
+import { Text, ActivityIndicator, StyleSheet } from 'react-native';
+import styled from "styled-components/native";
+import axios from 'axios'
+
 
 
 GoogleSignin.configure({
@@ -11,8 +15,11 @@ import auth from '@react-native-firebase/auth';
 
 
 const GoogleModal = () =>{
+  const [loading, setLoading] = useState(false)
 
     async function onGoogleButtonPress() {
+      setLoading(true)
+
         // Check if your device supports Google Play
         await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
 
@@ -29,23 +36,63 @@ const GoogleModal = () =>{
 
         const idTokenResult = await auth().currentUser.getIdTokenResult();
 
-        const decodedUser = await axios.post('http://192.168.1.164/api/users/', {
-
-          token: idTokenResult.token
-        })
+        console.log("********************token****************************")
+        console.log(idTokenResult.token);
+        const URL = "http://192.168.1.164:5000/api/users/token"
+        try{
+          const decodedUser = await axios.post(URL, { idToken: idTokenResult.token });
+          console.log(decodedUser.data)
+        }
+        catch(error){
+          console.log("*****************************error")
+          console.log(error)
+        }
+        // const decodedUser = await axios.get(URL);
+        
+        // console.log(decodedUser)
+        // const userMail = decodedUser;
+        // console.log("*****************data from server********************")
+        // console.log(userMail)
         // Sign-in the user with the credential
-        return auth().signInWithCredential(googleCredential);
+        return false;
+        //auth().signInWithCredential(googleCredential);
     }
 
     return (
-        <Button
-          title="Google Sign-In"
-          onPress={() => onGoogleButtonPress().then(() => console.log('Signed in with Google!'))}
-        />
+      <ModalTemplate visible = {loading?false:true }>
+          <GoogleButton title="Google Sign-In"  onPress={onGoogleButtonPress} disabled={loading} />
+          {loading?<ActivityIndicator size="10" style={[spinnerStyle]}/> : <Text>Sign - In</Text>}
+        </ModalTemplate>
+
       );
 
 
 
 }
 
+const spinnerStyle = StyleSheet.create({
+  flex: 1,
+  justifyContent: 'center',
+
+});
+
+const ModalTemplate = styled.Modal`
+position: absolute;
+width: 100%;
+height: 100%;
+`
+
+const  GoogleButton= styled.Button`
+width: 42px;
+height: 42px;
+border-radius: 10px;
+margin-left: 16px;
+background: #EEEEEE;
+margin-top: 40%; 
+align-items: center;
+justify-content: center;
+`
+
+
+export default GoogleModal
 
