@@ -4,6 +4,7 @@ import { getUserData } from './src/helpers/asyncStorageUser';
 import { Context } from './src/helpers/Context';
 import { globalStateSchema } from './src/helpers/Constants';
 import LoginModal from './src/components/LoginModal';
+import socket from './helpers/socket';
 
 const AppScreen = () => {
   
@@ -28,6 +29,9 @@ const AppScreen = () => {
       }
     }
     checkIfLogged();
+
+    socket.connect();
+    console.log("socket conectao")
     
   },[]);
 

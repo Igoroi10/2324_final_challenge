@@ -27,7 +27,7 @@ const LoginModal = () => {
 
   useEffect(()=>{
 
-    getAllUsersFromDataBase();
+    // getAllUsersFromDataBase();
 
     const checkIfLogged = async ()=>{
       const user = await getUserData();
