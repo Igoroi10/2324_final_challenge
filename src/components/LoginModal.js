@@ -76,17 +76,26 @@ const LoginModal = () => {
 async function onGoogleButtonPress() {
   setLoading(true)
 
+
     // Check if your device supports Google Play
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
 
+    console.log("paso1")
     
     // Get the users ID token
     const { idToken } = await GoogleSignin.signIn();
 
+    console.log("paso2")
+
     // Create a Google credential with the token
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-    const signInWithCredential = await auth().signInWithCredential(googleCredential,);
+    console.log("paso3")
+    console.log(googleCredential)
+
+    const signInWithCredential = await auth().signInWithCredential(googleCredential);
+
+    console.log("paso4")
     console.log("**********************SIGN IN W CREDENTIAL******************")
     console.log(signInWithCredential)
 
