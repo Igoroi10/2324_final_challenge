@@ -22,42 +22,30 @@ const LoginModal = () => {
   const [isLogged, setIsLogged] = useState(false);
   const [globalState, setGlobalState] = useState();
   const [loading, setLoading] = useState(false)
+  const [user, setUser] = useState(null); // Inicialmente, el usuario es null hasta que inicie sesión correctamente
 
-  const user = {
-    name: 'PATXI',
-    email: 'aeg@gmail.com',
-    imageUri: 'https://lh3.googleusercontent.com/a/ACg8ocICfs24HN3aXJKBCUbfjW9RL4yZTnIkw7icAS0wMiPf7w=s96-c',
-    role: 'acolyte',
-    inventory: ["uno", "dos"],
-    changeStats: [1, 2, 3, 4],
-    changeMaxStats: [5, 6, 7, 8],
-    diseases: [0,1],
-  };
 
   useEffect(()=>{
 
     getAllUsersFromDataBase();
 
-    const checkIfLogged = async ()=>{
-      const user = await getUserData();
-      
-      if(user){
-        setIsLogged(true);
-      }
-    }
-    checkIfLogged();
+    console.log(user);
     
   },[]);
 
-  const goToProfile = () => {
-    setShowProfile(!showProfile);
+  const goProfile = () => {
+    console.log('hola')
+    if (isLogged) {
+      onGoogleButtonPress();
+      setShowProfile(true);
+    }
   };
 
   const goBack = () => {
     setShowProfile(false);
   };
 
-  const getAllUsersFromDataBase = async (urlUsers) => {
+  const getAllUsersFromDataBase = async () => {
     try {
         const urlUsers = 'http://localhost:5001/api/users';
         // Realizar la solicitud al servidor con el token en el encabezado de autorización
@@ -103,10 +91,13 @@ async function onGoogleButtonPress() {
 
     console.log("********************token****************************")
     console.log(idTokenResult.token);
-    const URL = "http://192.168.1.166:5001/api/users/token"
+    //const URL = "http://192.168.1.166:5001/api/users/token"
+    const URL = "http://localhost:5001/api/users/";
     try{
       const decodedUser = await axios.post(URL, { idToken: idTokenResult.token });
       console.log(decodedUser.data)
+      setUser(decodedUser.data); // Asegúrate de tener el estado `user` definido en tu componente
+      setIsLogged(true); //
     }
     catch(error){
       console.log("*****************************error")
@@ -119,14 +110,10 @@ async function onGoogleButtonPress() {
     // console.log("*****************data from server********************")
     // console.log(userMail)
     // Sign-in the user with the credential
-    return false;
+    setLoading(false);
     //auth().signInWithCredential(googleCredential);
 }
 
-const goProfile = () => {
-  onGoogleButtonPress();
-  setShowProfile(true);
-};
 
   return (
     <View>

@@ -34,7 +34,6 @@ const AppScreen = () => {
 
   return (
     <View>
-      
       <LoginModal/>
     </View>
   );
