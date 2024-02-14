@@ -9,7 +9,7 @@ import LoginModal from './src/components/LoginModal';
 const AppScreen = () => {
   
   const [isLogged, setIsLogged] = useState(false);
-
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [globalState, setGlobalState] = useState();
 
   const globalStateHandler = (data) =>{
@@ -32,9 +32,21 @@ const AppScreen = () => {
     
   },[]);
 
+   // Maneja el login
+   const handleLogin = async () => {
+    
+    setIsAuthenticated(true);
+    
+  };
   return (
+   
     <View>
-      <LoginModal/>
+      <Context.Provider value={{globalState, globalStateHandler}}>  
+        {!isAuthenticated && <LoginModal onLogin={handleLogin}  />}
+        {isAuthenticated && (
+          <LoginModal/>
+        )}
+      </Context.Provider>
     </View>
   );
 };

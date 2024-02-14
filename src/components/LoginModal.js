@@ -15,15 +15,22 @@ GoogleSignin.configure({
 
 import auth from '@react-native-firebase/auth';
 
-
-const LoginModal = () => {
-  
+const LoginModal = ({onLogin}) => {
   const [showProfile, setShowProfile] = useState(false);
-  const [isLogged, setIsLogged] = useState(false);
   const [globalState, setGlobalState] = useState();
-  const [loading, setLoading] = useState(false)
-  const [user, setUser] = useState(); // Inicialmente, el usuario es null hasta que inicie sesión correctamente
+  const [isLoading, setLoading] = useState(false);
+  //const [user, setUser] = useState(); // 
 
+  const user = {
+    name: 'PATXI',
+    email: 'aeg@gmail.com',
+    imageUri: 'https://lh3.googleusercontent.com/a/ACg8ocICfs24HN3aXJKBCUbfjW9RL4yZTnIkw7icAS0wMiPf7w=s96-c',
+    rol: 'acolyte',
+    inventory: ["uno", "dos"],
+    changeStats: [1, 2, 3, 4],
+    changeMaxStats: [5, 6, 7, 8],
+    diseases: [0,1],
+  };
 
   useEffect(()=>{
 
@@ -31,20 +38,19 @@ const LoginModal = () => {
     
   },[]);
 
-  const goProfile = async () => {
-     
-      onGoogleButtonPress();
-      setShowProfile(true);
-  };
-
   const goBack = () => {
     setShowProfile(false);
   };
 
+  const handleSuccessfulLogin = () => {
+    onLogin();
+    setShowProfile(true);
+  };
+
   const getAllUsersFromDataBase = async () => {
     try {
-        // const urlUsers = 'http://localhost:5001/api/users';
-        const urlUsers = "http://192.168.1.166:5001/api/users/"
+        const urlUsers = 'http://localhost:5001/api/users/';
+        // const urlUsers = "http://192.168.1.166:5001/api/users/"
         // Realizar la solicitud al servidor con el token en el encabezado de autorización
         //const responseUsers = await axiosInstance.get(urlUsers);
         const responseUsers = await axios.get(urlUsers);
@@ -65,8 +71,8 @@ async function onGoogleButtonPress() {
     // Check if your device supports Google Play
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
 
-    console.log("paso1")
-    
+    console.log('paso1');
+
     // Get the users ID token
     const { idToken } = await GoogleSignin.signIn();
 
@@ -88,13 +94,16 @@ async function onGoogleButtonPress() {
 
     console.log("********************token****************************")
     console.log(idTokenResult.token);
-    const URL = "http://192.168.1.166:5001/api/users/token"
-    // const URL = "http://localhost:5001/api/users/";
+    //const URL = "http://192.168.1.1:5001/api/users/token"
+    const URL = "http://localhost:5001/api/users/";
     try{
       const decodedUser = await axios.post(URL, { idToken: idTokenResult.token });
       console.log('USUARIO REGISTRADO', decodedUser.data)
-      setUser(decodedUser.data); 
+      //setUser(decodedUser.data); 
       console.log('USUARIO', user);
+      //setIsLogged(true);
+      handleSuccessfulLogin();
+      setLoading(false);
     }
     catch(error){
       console.log("*****************************error")
@@ -107,7 +116,7 @@ async function onGoogleButtonPress() {
     // console.log("*****************data from server********************")
     // console.log(userMail)
     // Sign-in the user with the credential
-    setLoading(false);
+    
     //auth().signInWithCredential(googleCredential);
 }
 
@@ -130,25 +139,14 @@ async function onGoogleButtonPress() {
     ) : (
       
       <>
-          <StyledButton onPress={goProfile}>
-            <ButtonText>LOGIN</ButtonText>
-          </StyledButton>
-          {/* {isLogged && (
-            <ActivityIndicator style={spinnerStyle} size="large" color="#0000ff" />
-          )} */}
+      <StyledButton onPress={onGoogleButtonPress} disabled={isLoading}>
+          {isLoading ? <ActivityIndicator color="white" /> : <ButtonText>Google Sign-In</ButtonText>}
+        </StyledButton>
         </>
-
-      
     )}
   </View>
   );
 };
-
-const spinnerStyle = StyleSheet.create({
-  flex: 1,
-  justifyContent: 'center',
-
-});
 
 const styles = StyleSheet.create({
   container: {
@@ -173,12 +171,11 @@ const StyledButton = styled.TouchableOpacity`
     border-radius: 60px;
     border: #7B26C4;
     align-self: center;
-`
+`;
 const ButtonText = styled.Text`
     color:rgba(92, 0, 172, 0.8);
     font-size: 20px;
     text-align: center;
 
-    
-`
+`;
 export default LoginModal;
