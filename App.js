@@ -10,7 +10,7 @@ const AppScreen = () => {
   
   const [isLogged, setIsLogged] = useState(false);
 
-  const [globalState, setGlobalState] = useState();
+  const [globalState, setGlobalState] = useState(globalStateSchema);
 
   const globalStateHandler = (data) =>{
     setGlobalState( globalState => ({
@@ -34,8 +34,12 @@ const AppScreen = () => {
 
   return (
     <View>
-      
-      <LoginModal/>
+
+      <Context.Provider value={{globalState, globalStateHandler}}> 
+
+        <LoginModal/>
+      </Context.Provider>
+
     </View>
   );
 };
