@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import ProfileAcolyte from '../../screens/ProfileAcolyte';
 import ProfileMortimer from '../../screens/ProfileMortimer';
 import ProfileRider from '../../screens/ProfileKnight';
@@ -22,23 +22,19 @@ const LoginModal = () => {
   const [isLogged, setIsLogged] = useState(false);
   const [globalState, setGlobalState] = useState();
   const [loading, setLoading] = useState(false)
-  const [user, setUser] = useState(null); // Inicialmente, el usuario es null hasta que inicie sesión correctamente
+  const [user, setUser] = useState(); // Inicialmente, el usuario es null hasta que inicie sesión correctamente
 
 
   useEffect(()=>{
 
     getAllUsersFromDataBase();
-
-    console.log(user);
     
   },[]);
 
-  const goProfile = () => {
-    console.log('hola')
-    if (isLogged) {
+  const goProfile = async () => {
+     
       onGoogleButtonPress();
       setShowProfile(true);
-    }
   };
 
   const goBack = () => {
@@ -47,13 +43,14 @@ const LoginModal = () => {
 
   const getAllUsersFromDataBase = async () => {
     try {
-        const urlUsers = 'http://localhost:5001/api/users';
+        // const urlUsers = 'http://localhost:5001/api/users';
+        const urlUsers = "http://192.168.1.166:5001/api/users/"
         // Realizar la solicitud al servidor con el token en el encabezado de autorización
         //const responseUsers = await axiosInstance.get(urlUsers);
         const responseUsers = await axios.get(urlUsers);
-        console.log('USUARIOS RECIBIDOS', responseUsers);
+        console.log('USUARIOS RECIBIDOS', responseUsers.data);
         // Seleccionamos todos los usuarios y los seteamos 
-        setGlobalState(responseUsers);
+        setGlobalState(responseUsers.data);
         console.log('GLOBAL STATE', globalState);
 
     } catch (error) {
@@ -91,13 +88,13 @@ async function onGoogleButtonPress() {
 
     console.log("********************token****************************")
     console.log(idTokenResult.token);
-    //const URL = "http://192.168.1.166:5001/api/users/token"
-    const URL = "http://localhost:5001/api/users/";
+    const URL = "http://192.168.1.166:5001/api/users/token"
+    // const URL = "http://localhost:5001/api/users/";
     try{
       const decodedUser = await axios.post(URL, { idToken: idTokenResult.token });
-      console.log(decodedUser.data)
-      setUser(decodedUser.data); // Asegúrate de tener el estado `user` definido en tu componente
-      setIsLogged(true); //
+      console.log('USUARIO REGISTRADO', decodedUser.data)
+      setUser(decodedUser.data); 
+      console.log('USUARIO', user);
     }
     catch(error){
       console.log("*****************************error")
@@ -118,14 +115,14 @@ async function onGoogleButtonPress() {
   return (
     <View>
     
-    {showProfile ? (
-      user.role === 'acolyte' ? (
+    { showProfile ? (
+      user.rol === 'acolyte' ? (
         <ProfileAcolyte user={user} goBack={goBack} />
-      ) : user.role === 'mortimer' ? (
+      ) : user.rol === 'mortimer' ? (
         <ProfileMortimer user={user} goBack={goBack} />
-      ) : user.role === 'villano' ? (
+      ) : user.rol === 'villano' ? (
         <ProfileVillano user={user} goBack={goBack} />
-      ) : user.role === 'knight' ? (
+      ) : user.rol === 'knight' ? (
         <ProfileRider user={user} goBack={goBack} />
       ) : (
         <Text>No se ha encontrado un perfil para este rol.</Text>
@@ -136,9 +133,9 @@ async function onGoogleButtonPress() {
           <StyledButton onPress={goProfile}>
             <ButtonText>LOGIN</ButtonText>
           </StyledButton>
-          {isLogged && (
+          {/* {isLogged && (
             <ActivityIndicator style={spinnerStyle} size="large" color="#0000ff" />
-          )}
+          )} */}
         </>
 
       
