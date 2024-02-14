@@ -4,7 +4,7 @@ import { getUserData } from './src/helpers/asyncStorageUser';
 import { Context } from './src/helpers/Context';
 import { globalStateSchema } from './src/helpers/Constants';
 import LoginModal from './src/components/LoginModal';
-import GoogleModal from './src/components/GoogleModal'
+
 
 const AppScreen = () => {
   
@@ -34,7 +34,7 @@ const AppScreen = () => {
 
   return (
     <View>
-      <GoogleModal />
+      
       <LoginModal/>
     </View>
   );
