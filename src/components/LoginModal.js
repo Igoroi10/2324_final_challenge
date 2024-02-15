@@ -10,9 +10,6 @@ import axios from 'axios';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Context } from "../helpers/Context";
 
-//Constantes rutas
-import { routeAsier, apiUsers, token, routeOscar } from '../helpers/rutas';
-
 GoogleSignin.configure({
   webClientId: '278625394290-1u0iag96nrpv7aptlr1h5a7cbkhovlhd.apps.googleusercontent.com',
 });
@@ -24,14 +21,21 @@ const LoginModal = ({}) => {
   const [globalState, setGlobalState] = useState();
   const [isLoading, setLoading] = useState(false);
   const [userGlobalState, setUserGlobalState] = useState(); 
-  //const { userGlobalState,  setUserGlobalState }   = useContext(Context);
-  //const { globalState,  setGlobalState }   = useContext(Context);
+  
 
-  useEffect(() => {
+  useEffect(()=>{
 
-    getAllUsersFromDataBase();
+    getAllUsersFromDataBase()
     
   },[]);
+
+  useEffect(() => {
+    if (userGlobalState) {
+      handleSuccessfulLogin();
+      setLoading(false);
+    }
+  }, [userGlobalState]);
+  
 
   const goBack = () => {
     setShowProfile(false);
@@ -43,29 +47,29 @@ const LoginModal = ({}) => {
 
   const getAllUsersFromDataBase = async () => {
     try {
-        const urlUsers = 'http://192.168.1.172:5001/api/users/';
+        const urlUsers = 'http://192.168.1.163:5001/api/users/';
         // const urlUsers = "http://192.168.1.166:5001/api/users/"
         // Realizar la solicitud al servidor con el token en el encabezado de autorización
         //const responseUsers = await axiosInstance.get(urlUsers);
         const responseUsers = await axios.get(urlUsers);
         console.log('USUARIOS RECIBIDOS', responseUsers.data);
         // Seleccionamos todos los usuarios y los seteamos 
-        setGlobalState(responseUsers.data);
+        setGlobalState(responseUsers.data.data);
         console.log('GLOBAL STATE', globalState);
 
     } catch (error) {
       console.log(error);
-    };
-  }
+  };
+}
 
-  async function onGoogleButtonPress() {
-    setLoading(true)
+async function onGoogleButtonPress() {
+  setLoading(true)
 
 try{
     // Check if your device supports Google Play
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
 
-    console.log("paso1")
+    console.log('paso1');
 
     // Get the users ID token
     const { idToken } = await GoogleSignin.signIn();
@@ -88,24 +92,26 @@ try{
 
     console.log("********************token****************************")
     console.log(idTokenResult.token);
-    //getAllUsersFromDataBase();
+    getAllUsersFromDataBase();
     //const URL = "http://192.168.1.1:5001/api/users/token"
-    const URL = 'http://192.168.1.172:5001/api/users/token';
-    try{
+    const URL = 'http://192.168.1.163:5001/api/users/token';
+    
       const decodedUser = await axios.post(URL, { idToken: idTokenResult.token });
-      console.log('USUARIO REGISTRADO', decodedUser.data)
-      //setUser(decodedUser.data); 
-      console.log('USUARIO', user);
-      //setIsLogged(true);
-      handleSuccessfulLogin();
+      console.log('USUARIO REGISTRADO', decodedUser.data.user);
+      setUserGlobalState(decodedUser.data.user); 
+      console.log('USUARIO GLOBAL', userGlobalState);
+    
+    }
+    catch (error) {
+      // Manejar errores aquí
+      console.error(error);
+
+    } finally {
       setLoading(false);
     }
-    catch(error){
-      console.log("*****************************error")
-      console.log(error)
-    }
+  }
     // const decodedUser = await axios.get(URL);
-
+    
     // console.log(decodedUser)
     // const userMail = decodedUser;
     // console.log("*****************data from server********************")
@@ -113,7 +119,7 @@ try{
     // Sign-in the user with the credential
     
     //auth().signInWithCredential(googleCredential);
-}
+
 
 
   return (
