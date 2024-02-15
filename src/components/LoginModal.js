@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet,ActivityIndicator } from 'react-native';
 import ProfileAcolyte from '../../screens/ProfileAcolyte';
 import ProfileMortimer from '../../screens/ProfileMortimer';
 import ProfileRider from '../../screens/ProfileKnight';
@@ -9,6 +9,9 @@ import { getUserData } from '../helpers/asyncStorageUser';
 import axios from 'axios';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
+//Constantes rutas
+import { routeAsier, apiUsers, token, routeOscar } from '../helpers/rutas';
+
 GoogleSignin.configure({
   webClientId: '278625394290-1u0iag96nrpv7aptlr1h5a7cbkhovlhd.apps.googleusercontent.com',
 });
@@ -17,7 +20,7 @@ import auth from '@react-native-firebase/auth';
 
 
 const LoginModal = () => {
-  
+
   const [showProfile, setShowProfile] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
   const [globalState, setGlobalState] = useState();
@@ -25,20 +28,18 @@ const LoginModal = () => {
   const [user, setUser] = useState(null); // Inicialmente, el usuario es null hasta que inicie sesión correctamente
 
 
-  useEffect(()=>{
+  useEffect(() => {
 
     getAllUsersFromDataBase();
 
     console.log(user);
-    
-  },[]);
+
+  }, []);
 
   const goProfile = () => {
-    console.log('hola')
-    if (isLogged) {
-      onGoogleButtonPress();
-      setShowProfile(true);
-    }
+    onGoogleButtonPress();
+    setShowProfile(true);
+
   };
 
   const goBack = () => {
@@ -47,29 +48,29 @@ const LoginModal = () => {
 
   const getAllUsersFromDataBase = async () => {
     try {
-        const urlUsers = 'http://localhost:5001/api/users';
-        // Realizar la solicitud al servidor con el token en el encabezado de autorización
-        //const responseUsers = await axiosInstance.get(urlUsers);
-        const responseUsers = await axios.get(urlUsers);
-        console.log('USUARIOS RECIBIDOS', responseUsers);
-        // Seleccionamos todos los usuarios y los seteamos 
-        setGlobalState(responseUsers);
-        console.log('GLOBAL STATE', globalState);
+
+      // Realizar la solicitud al servidor con el token en el encabezado de autorización
+      //const responseUsers = await axiosInstance.get(urlUsers);
+      const responseUsers = await axios.get(`${routeAsier + apiUsers}`);
+      console.log('USUARIOS RECIBIDOS', responseUsers.data);
+      // Seleccionamos todos los usuarios y los seteamos 
+      setGlobalState(responseUsers.data);
+      console.log('GLOBAL STATE', globalState);
 
     } catch (error) {
       console.log(error);
-  };
-}
+    };
+  }
 
-async function onGoogleButtonPress() {
-  setLoading(true)
+  async function onGoogleButtonPress() {
+    setLoading(true)
 
 
     // Check if your device supports Google Play
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
 
     console.log("paso1")
-    
+
     // Get the users ID token
     const { idToken } = await GoogleSignin.signIn();
 
@@ -93,18 +94,18 @@ async function onGoogleButtonPress() {
     console.log(idTokenResult.token);
     //const URL = "http://192.168.1.166:5001/api/users/token"
     const URL = "http://localhost:5001/api/users/";
-    try{
-      const decodedUser = await axios.post(URL, { idToken: idTokenResult.token });
+    try {
+      const decodedUser = await axios.post(`${routeAsier + apiUsers + token}`, { idToken: idTokenResult.token });
       console.log(decodedUser.data)
       setUser(decodedUser.data); // Asegúrate de tener el estado `user` definido en tu componente
       setIsLogged(true); //
     }
-    catch(error){
+    catch (error) {
       console.log("*****************************error")
       console.log(error)
     }
     // const decodedUser = await axios.get(URL);
-    
+
     // console.log(decodedUser)
     // const userMail = decodedUser;
     // console.log("*****************data from server********************")
@@ -112,38 +113,20 @@ async function onGoogleButtonPress() {
     // Sign-in the user with the credential
     setLoading(false);
     //auth().signInWithCredential(googleCredential);
-}
+  }
 
 
   return (
     <View>
-    
-    {showProfile ? (
-      user.role === 'acolyte' ? (
-        <ProfileAcolyte user={user} goBack={goBack} />
-      ) : user.role === 'mortimer' ? (
-        <ProfileMortimer user={user} goBack={goBack} />
-      ) : user.role === 'villano' ? (
-        <ProfileVillano user={user} goBack={goBack} />
-      ) : user.role === 'knight' ? (
-        <ProfileRider user={user} goBack={goBack} />
-      ) : (
-        <Text>No se ha encontrado un perfil para este rol.</Text>
-      )
-    ) : (
-      
-      <>
-          <StyledButton onPress={goProfile}>
-            <ButtonText>LOGIN</ButtonText>
-          </StyledButton>
-          {isLogged && (
-            <ActivityIndicator style={spinnerStyle} size="large" color="#0000ff" />
-          )}
-        </>
 
-      
-    )}
-  </View>
+
+      <StyledButton onPress={goProfile}>
+        <ButtonText>LOGIN</ButtonText>
+      </StyledButton>
+      {isLogged && (
+        <ActivityIndicator style={spinnerStyle} size="large" color="#0000ff" />
+      )}
+    </View>
   );
 };
 
