@@ -42,10 +42,9 @@ const AppScreen = () => {
    
     <View>
       <Context.Provider value={{globalState, globalStateHandler}}>  
-        {!isAuthenticated && <LoginModal onLogin={handleLogin}  />}
-        {isAuthenticated && (
+        
           <LoginModal/>
-        )}
+        
       </Context.Provider>
     </View>
   );

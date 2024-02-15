@@ -15,7 +15,7 @@ GoogleSignin.configure({
 
 import auth from '@react-native-firebase/auth';
 
-const LoginModal = ({onLogin}) => {
+const LoginModal = ({}) => {
   const [showProfile, setShowProfile] = useState(false);
   const [globalState, setGlobalState] = useState();
   const [isLoading, setLoading] = useState(false);
@@ -43,13 +43,12 @@ const LoginModal = ({onLogin}) => {
   };
 
   const handleSuccessfulLogin = () => {
-    onLogin();
     setShowProfile(true);
   };
 
   const getAllUsersFromDataBase = async () => {
     try {
-        const urlUsers = 'http://localhost:5001/api/users/';
+        const urlUsers = 'http://192.168.1.172:5001/api/users/';
         // const urlUsers = "http://192.168.1.166:5001/api/users/"
         // Realizar la solicitud al servidor con el token en el encabezado de autorización
         //const responseUsers = await axiosInstance.get(urlUsers);
@@ -95,7 +94,7 @@ async function onGoogleButtonPress() {
     console.log("********************token****************************")
     console.log(idTokenResult.token);
     //const URL = "http://192.168.1.1:5001/api/users/token"
-    const URL = "http://localhost:5001/api/users/";
+    const URL = 'http://192.168.1.172:5001/api/users/token';
     try{
       const decodedUser = await axios.post(URL, { idToken: idTokenResult.token });
       console.log('USUARIO REGISTRADO', decodedUser.data)
