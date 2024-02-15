@@ -11,6 +11,8 @@ const AppScreen = () => {
   const [isLogged, setIsLogged] = useState(false);
 
   const [globalState, setGlobalState] = useState(globalStateSchema);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userGlobalState, setUserGlobalState] = useState(); 
 
   const globalStateHandler = (data) =>{
     setGlobalState( globalState => ({
@@ -19,6 +21,12 @@ const AppScreen = () => {
     }));
 }
 
+const userGlobalStateHandler = (data) =>{
+  setUserGlobalState( globalState => ({
+    ...globalState,
+    ...data
+  }));
+}
   useEffect(()=>{
 
     const checkIfLogged = async ()=>{
@@ -32,7 +40,15 @@ const AppScreen = () => {
     
   },[]);
 
+   
+  useEffect(() => {
+    if (userGlobalState != null) {
+      setUserGlobalState(userGlobalState);
+    }
+  }, [userGlobalState]);
+  
   return (
+   
     <View>
 
       <Context.Provider value={{globalState, globalStateHandler}}> 
