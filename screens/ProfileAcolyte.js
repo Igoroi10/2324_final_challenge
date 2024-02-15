@@ -1,45 +1,53 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
+import { Context } from '../src/helpers/Context';
+const ProfileAcolyte = ({  goBack }) => {
+  //const [userGlobalState, setUseruserGlobalState] = useState(); 
+  const { userGlobalState,  setUseruserGlobalState }   = useContext(Context);
+  useEffect(()=>{
 
-const ProfileAcolyte = ({ user, goBack }) => {
+    console.log('userglobal', userGlobalState);
+    
+  },[]);
+
   return (
     <View >
       <Container>
       <ProfileText>ACOLYTE</ProfileText>
-        <Image
-          source={{ uri: user.imageUri }}
+        {/* <Image
+          source={{ uri: userGlobalState[3].imgURL }}
           style={{ width: 100, height: 100, borderRadius: 50 }}
-        />
-        <ProfileText>Name: {user.name}</ProfileText>
-        {/* <ProfileText>Email: {user.email}</ProfileText> */}
-        <ProfileText>Role: {user.role}</ProfileText>
+        /> */}
+        <ProfileText>Name: {userGlobalState.name}</ProfileText>
+        {/* <ProfileText>Email: {userGlobalState[3].email}</ProfileText> */}
+        <ProfileText>Role: {userGlobalState.role}</ProfileText>
 
         <ProfileText>Inventory:</ProfileText>
         <View style={styles.inlineContainer}>
-        {Object.keys(user.inventory).map((key, index) => (
-            <ProfileText key={index}>{user.inventory[key]}</ProfileText>
+        {Object.keys(userGlobalState.inventory).map((key, index) => (
+            <ProfileText key={index}>{userGlobalState.inventory[key]}</ProfileText>
           ))}
         </View>
 
         <ProfileText>Change Stats:</ProfileText>
         <View style={styles.inlineContainer}>
-          {Object.keys(user.changeStats).map((key, index) => (
-            <ProfileText key={index}>{user.changeStats[key]}</ProfileText>
+          {Object.keys(userGlobalState.changeStats).map((key, index) => (
+            <ProfileText key={index}>{userGlobalState.changeStats[key]}</ProfileText>
           ))}
         </View>
 
         {/* <ProfileText>Change Max Stats:</ProfileText>
         <View style={styles.inlineContainer}>
-          {Object.keys(user.changeMaxStats).map((key, index) => (
-            <ProfileText key={index}>{user.changeMaxStats[key]}</ProfileText>
+          {Object.keys(userGlobalState[3].changeMaxStats).map((key, index) => (
+            <ProfileText key={index}>{userGlobalState[3].changeMaxStats[key]}</ProfileText>
           ))}
         </View> */}
 
         <ProfileText>Diseases:</ProfileText>
         <View style={styles.inlineContainer}>
-          {Object.keys(user.diseases).map((key, index) => (
-            <ProfileText key={index}>{user.diseases[key]}</ProfileText>
+          {Object.keys(userGlobalState.diseases).map((key, index) => (
+            <ProfileText key={index}>{userGlobalState.diseases[key]}</ProfileText>
           ))}
         </View>
 
