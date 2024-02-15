@@ -1,57 +1,58 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet,Text } from 'react-native';
 import styled from 'styled-components/native';
 import { Context } from '../src/helpers/Context';
-const ProfileAcolyte = ({  goBack }) => {
-  //const [userGlobalState, setUseruserGlobalState] = useState(); 
-  const { userGlobalState,  setUseruserGlobalState }   = useContext(Context);
-  useEffect(()=>{
+const ProfileAcolyte = ({ goBack }) => {
 
-    console.log('userglobal', userGlobalState);
+  const { globalState, globalStateHandler } = useContext(Context);
+  useEffect(() => {
+
+    console.log('userglobal', globalState);
     
-  },[]);
+  }, []);
+  
+  useEffect(() => {
+    if (globalState)
+    {
 
+      console.log("ACOLITO globalState");
+      console.log(globalState.user);
+    }
+    
+  }, [globalState]);
+  
   return (
-    <View >
-      <Container>
+    <View>
+  {globalState.user.name !== "" ? (
+    <Container>
       <ProfileText>ACOLYTE</ProfileText>
-        {/* <Image
-          source={{ uri: userGlobalState[3].imgURL }}
-          style={{ width: 100, height: 100, borderRadius: 50 }}
-        /> */}
-        <ProfileText>Name: {userGlobalState.name}</ProfileText>
-        {/* <ProfileText>Email: {userGlobalState[3].email}</ProfileText> */}
-        <ProfileText>Role: {userGlobalState.role}</ProfileText>
 
-        <ProfileText>Inventory:</ProfileText>
-        <View style={styles.inlineContainer}>
-        {Object.keys(userGlobalState.inventory).map((key, index) => (
-            <ProfileText key={index}>{userGlobalState.inventory[key]}</ProfileText>
-          ))}
-        </View>
+      <ProfileText>Name: {globalState.user.name}</ProfileText>
+      {/* <ProfileText>Email: {globalState[3].email}</ProfileText> */}
+      <ProfileText>Role: {globalState.user.role}</ProfileText>
 
-        <ProfileText>Change Stats:</ProfileText>
-        <View style={styles.inlineContainer}>
-          {Object.keys(userGlobalState.changeStats).map((key, index) => (
-            <ProfileText key={index}>{userGlobalState.changeStats[key]}</ProfileText>
-          ))}
-        </View>
+      <ProfileText>Inventory:</ProfileText>
+      <View style={styles.inlineContainer}>
+        {Object.keys(globalState.user.inventory).map((key, index) => (
+          <ProfileText key={index}>{globalState.inventory[key]}</ProfileText>
+        ))}
+      </View>
 
-        {/* <ProfileText>Change Max Stats:</ProfileText>
-        <View style={styles.inlineContainer}>
-          {Object.keys(userGlobalState[3].changeMaxStats).map((key, index) => (
-            <ProfileText key={index}>{userGlobalState[3].changeMaxStats[key]}</ProfileText>
-          ))}
-        </View> */}
+    {/* Que es change stats? no existe ningún array en el globalStateSchema de changeStats */}
+      {/* <ProfileText>Change Stats:</ProfileText>
+      <View style={styles.inlineContainer}>
+        {Object.keys(globalState.changeStats).map((key, index) => (
+          <ProfileText key={index}>{globalState.changeStats[key]}</ProfileText>
+        ))}
+      </View> */}
 
-        <ProfileText>Diseases:</ProfileText>
-        <View style={styles.inlineContainer}>
-          {Object.keys(userGlobalState.diseases).map((key, index) => (
-            <ProfileText key={index}>{userGlobalState.diseases[key]}</ProfileText>
-          ))}
-        </View>
-
-      </Container>
+    {/* No entiendo el motivo del map, además diseases es un objeto con atributos por cada enfermedad */}
+      {/* <ProfileText>Diseases:</ProfileText>
+      <View style={styles.inlineContainer}>
+        {Object.keys(globalState.user.diseases).map((key, index) => (
+          <ProfileText key={index}>{globalState.diseases[key]}</ProfileText>
+        ))}
+      </View> */}
 
       <ButtonContainer>
         <CustomButton onPress={goBack}>
@@ -65,16 +66,20 @@ const ProfileAcolyte = ({  goBack }) => {
         </CustomButton>
       </ButtonContainer>
 
-        <SignOutButton onPress={goBack}>
-          <ButtonText>Sign Out</ButtonText>
-        </SignOutButton>
+      <SignOutButton onPress={goBack}>
+        <ButtonText>Sign Out</ButtonText>
+      </SignOutButton>
+    </Container>
+  ) : (
+    <Text>Loading...</Text>
+  )}
+</View>
 
-    </View>
   );
 };
 
 const styles = StyleSheet.create({
- 
+
   inlineContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -112,7 +117,7 @@ const Container = styled.View`
   margin-bottom: -50%;
   margin-left: 10%;
   `
-  const View = styled.View`
+const View = styled.View`
   width: 90%; 
   flex-direction: column;
   align-items: center;

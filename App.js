@@ -7,57 +7,45 @@ import LoginModal from './src/components/LoginModal';
 
 
 const AppScreen = () => {
-  
+
   const [isLogged, setIsLogged] = useState(false);
 
   const [globalState, setGlobalState] = useState(globalStateSchema);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userGlobalState, setUserGlobalState] = useState(); 
 
-  const globalStateHandler = (data) =>{
-    setGlobalState( globalState => ({
+  const globalStateHandler = (data) => {
+    setGlobalState(globalState => ({
       ...globalState,
       ...data
     }));
-}
+  }
 
-const userGlobalStateHandler = (data) =>{
-  setUserGlobalState( globalState => ({
-    ...globalState,
-    ...data
-  }));
-}
-  useEffect(()=>{
-
-    const checkIfLogged = async ()=>{
-      const user = await getUserData();
-      
-      if(user){
-        setIsLogged(true);
-      }
-    }
-    checkIfLogged();
-    
-  },[]);
-
-   
   useEffect(() => {
-    if (userGlobalState != null) {
-      setUserGlobalState(userGlobalState);
+    
+    const checkIfLogged = async () => {
+      const user = await getUserData();
+
+    if (user) {
+      setIsLogged(true);
     }
-  }, [userGlobalState]);
+  }
+  checkIfLogged();
   
-  return (
-   
-    <View>
+}, []);
 
-      <Context.Provider value={{globalState, globalStateHandler}}> 
 
-        <LoginModal/>
-      </Context.Provider>
 
-    </View>
-  );
+return (
+
+  <View>
+
+    <Context.Provider value={{ globalState, globalStateHandler }}>
+
+      <LoginModal />
+    </Context.Provider>
+
+  </View>
+);
 };
 
 export default AppScreen;
