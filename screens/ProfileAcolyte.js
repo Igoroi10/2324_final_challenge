@@ -30,10 +30,12 @@ const ProfileAcolyte = ({ goBack }) => {
   {globalState.user.name !== "" ? (
     <Container>
       <ProfileText>ACOLYTE</ProfileText>
-
+      <Image
+          source={{ uri: globalState.user.imgURL }}
+          style={{ width: 100, height: 100, borderRadius: 50 }}
+        />
       <ProfileText>Name: {globalState.user.name}</ProfileText>
-      {/* <ProfileText>Email: {globalState[3].email}</ProfileText> */}
-      <ProfileText>Role: {globalState.user.role}</ProfileText>
+      <ProfileText>Rol: {globalState.user.rol}</ProfileText>
 
       <ProfileText>Inventory:</ProfileText>
       <View style={styles.inlineContainer}>
@@ -50,13 +52,12 @@ const ProfileAcolyte = ({ goBack }) => {
         ))}
       </View> */}
 
-    {/* No entiendo el motivo del map, además diseases es un objeto con atributos por cada enfermedad */}
-      {/* <ProfileText>Diseases:</ProfileText>
+      <ProfileText>Diseases:</ProfileText>
       <View style={styles.inlineContainer}>
         {Object.keys(globalState.user.diseases).map((key, index) => (
-          <ProfileText key={index}>{globalState.diseases[key]}</ProfileText>
+          <ProfileText key={index}>{globalState.user.diseases[key]}</ProfileText>
         ))}
-      </View> */}
+      </View>
 
       <ButtonContainer>
         <CustomButton onPress={()=>{
