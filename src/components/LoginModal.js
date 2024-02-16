@@ -9,7 +9,7 @@ import { getUserData } from '../helpers/asyncStorageUser';
 import axios from 'axios';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Context } from "../helpers/Context";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { routeAsier, apiUsers, token, routeOscar } from '../helpers/rutas';
 
@@ -19,11 +19,11 @@ GoogleSignin.configure({
 
 import auth from '@react-native-firebase/auth';
 
-const LoginModal = ({ }) => {
+const LoginModal = ({ onLogin, setLoginModalVisible}) => {
   const [showProfile, setShowProfile] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const { globalState, globalStateHandler } = useContext(Context);
-
+  // const [isLoginModalVisible, setLoginModalVisible] = useState(true);
 
 
   useEffect(() => {
@@ -37,16 +37,13 @@ const LoginModal = ({ }) => {
       console.log("***********************************************************************USERGLOBALSTATE");
       console.log(globalState.user);
       setShowProfile(true);
-      setLoading(false);
+      
     }
   }, [globalState]);
-
 
   const goBack = () => {
     setShowProfile(false);
   };
-
-
 
   const getAllUsersFromDataBase = async () => {
     try {
@@ -100,6 +97,17 @@ const LoginModal = ({ }) => {
       const decodedUser = await axios.post(`${routeOscar + apiUsers + token}`, { idToken: idTokenResult.token });
       console.log('USUARIO REGISTRADO', decodedUser.data.user);
       globalStateHandler({ user: decodedUser.data.user});
+      // Constantes del usuario
+      
+      const rol = globalState.user.rol;
+      
+      //ASYNC STORAGE
+      await AsyncStorage.setItem('userRole', rol)
+        .then(() => {
+          console.log('rol guardado en AsyncStorage:', rol);
+        })
+
+      handleSuccessfulLogin();
     }
     catch (error) {
       // Manejar errores aquí
@@ -109,33 +117,19 @@ const LoginModal = ({ }) => {
       setLoading(false);
     }
   }
- 
 
+  const handleSuccessfulLogin = () => {
+    onLogin(); 
+    setLoginModalVisible(false); 
+  };
 
 
   return (
-    <View>
-
-      {showProfile && globalState.user ? (
-        globalState.user.rol === 'acolyte' ? (
-          <ProfileAcolyte user={globalState.user} goBack={goBack} />
-        ) : globalState.user.rol === 'mortimer' ? (
-          <ProfileMortimer user={globalState.user} goBack={goBack} />
-        ) : globalState.user.rol === 'villano' ? (
-          <ProfileVillano user={globalState.user} goBack={goBack} />
-        ) : globalState.user.rol === 'knight' ? (
-          <ProfileRider user={globalState.user} goBack={goBack} />
-        ) : (
-          <Text>No se ha encontrado un perfil para este rol.</Text>
-        )
-      ) : (
-        <>
+   <View>
           <StyledButton onPress={onGoogleButtonPress} disabled={isLoading}>
             {isLoading ? <ActivityIndicator color="white" /> : <ButtonText>Google Sign-In</ButtonText>}
           </StyledButton>
-        </>
-      )}
-    </View>
+  </View>
   );
 };
 

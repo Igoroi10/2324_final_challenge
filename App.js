@@ -6,14 +6,19 @@ import { globalStateSchema } from './src/helpers/Constants';
 import LoginModal from './src/components/LoginModal';
 import socket from './helpers/socket';
 import styled from 'styled-components/native';
-
+import ProfileAcolyte from './screens/ProfileAcolyte';
+import ProfileMortimer from './screens/ProfileMortimer';
+import ProfileVillano from './screens/ProfileVillano';
+import ProfileKnight from './screens/ProfileKnight';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AppScreen = () => {
 
   const [isLogged, setIsLogged] = useState(false);
-
+  const [isLoginModalVisible, setLoginModalVisible] = useState(true);
   const [globalState, setGlobalState] = useState(globalStateSchema);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userRole, setUserRole] = useState('');
 
   const globalStateHandler = (data) => {
     setGlobalState(globalState => ({
@@ -32,11 +37,16 @@ const AppScreen = () => {
       }
     }
     checkIfLogged();
+    
+    // Establece el rol del usuario autenticado
+    const setRole = async () => {
+      const role = await AsyncStorage.getItem('userRole');
+      setUserRole(role);
+    };
+    setRole();
 
     socket.connect();
     console.log("socket conectao");
-
-
     
     socket.on("test_broadcast", (data) => {
       console.log("*********************SOCKET************************")
@@ -45,23 +55,66 @@ const AppScreen = () => {
 
   },[]);
 
-return (
+  //Maneja el login
+  const handleLogin = async () => {
+    setIsAuthenticated(true);
+    setLoginModalVisible(false);
+  };
 
+   //renderiza las pestañas de navegacion
+   const renderTabScreens = () => {
+    switch (userRole) {
+      case 'acolyte':
+        return (
+          <>
+            <Tab.Screen name="ProfileAcolyte" component={ProfileAcolyte} />
+          
+          </>
+        );
+      case 'mortimer':
+        return (
+          <>
+            <Tab.Screen name="ProfileMortimer" component={ProfileMortimer} />
+            
+          </>
+        );
+      case 'villano':
+        return (
+          <>
+            <Tab.Screen name="ProfileVillano" component={ProfileVillano} />
+           
+          </>
+        );
+      case 'knigth':
+        return (
+          <>
+            <Tab.Screen name="ProfileKnigth" component={ProfileKnight} />
+            
+          </>
+        );
+     
+      default:
+        return null;
+    }
+  };
 
-
+  return (
     <Context.Provider value={{ globalState, globalStateHandler }}>
-
-      <LoginModal />
-      <StyledButton onPress={()=>{
-          socket.emit("test_broadcast", "sigo ")
-        }} >
+      
+          {!isAuthenticated && <LoginModal onLogin={handleLogin} setLoginModalVisible={setLoginModalVisible} />}
+          {isAuthenticated && (
+            <>
+                {renderTabScreens()}
+               
+            </>
+          )}
         
-      </StyledButton>
-
+     
+      {/* <SocketListener currentSocketEvent={currentEvent} /> */}
     </Context.Provider>
+  );
+}
 
-);
-};
 
 const StyledButton = styled.TouchableOpacity`
     background-color: rgba(171, 147, 192, 0.7);
