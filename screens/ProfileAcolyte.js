@@ -9,6 +9,7 @@ import socket from '../helpers/socket';
 const ProfileAcolyte = ({ goBack }) => {
 
   const { globalState, globalStateHandler } = useContext(Context);
+  const [blockButtonSocket, setBlockButtonSocket] = useState(false)
   useEffect(() => {
 
     console.log('userglobal', globalState);
@@ -24,6 +25,10 @@ const ProfileAcolyte = ({ goBack }) => {
     }
     
   }, [globalState]);
+
+  const disableButton = ()=> {
+    setBlockButtonSocket(true)
+  }
   
   return (
     <View>
@@ -59,11 +64,13 @@ const ProfileAcolyte = ({ goBack }) => {
         ))}
       </View>
 
-      <ButtonContainer>
-        <CustomButton onPress={()=>{
+      <ButtonContainer >
+        <CustomButton disabled={blockButtonSocket} onPress={()=>{
+          disableButton();
           socket.emit("test_broadcast", "socket enviado desde cliente ("+ globalState.user.name + ")")
+          setBlockButtonSocket(false)
         }} >
-          <ButtonText>Attack 1</ButtonText>
+          <ButtonText>envio de socket</ButtonText>
         </CustomButton>
         <CustomButton onPress={goBack}>
           <ButtonText>Attack 2</ButtonText>

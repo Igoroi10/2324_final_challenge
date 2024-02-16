@@ -21,11 +21,11 @@ const ProfileKnight = ({ user, goBack }) => {
 
       </Container>
 
-      <ButtonContainer>
+      <ButtonContainer disabled={false}>
         <CustomButton onPress={()=>{
           socket.emit("test_broadcast", "socket enviado desde cliente ("+ user.name + ")")
         }} >
-          <ButtonText>Attack 1</ButtonText>
+          <ButtonText>envio de socket</ButtonText>
         </CustomButton>
         <CustomButton onPress={goBack}>
           <ButtonText>Attack 2</ButtonText>
