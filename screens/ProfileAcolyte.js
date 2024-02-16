@@ -26,7 +26,10 @@ const ProfileAcolyte = ({ goBack }) => {
   {globalState.user.name !== "" ? (
     <Container>
       <ProfileText>ACOLYTE</ProfileText>
-
+    <Image
+          source={{ uri: globalState.user.imgURL }}
+          style={{ width: 100, height: 100, borderRadius: 50 }}
+        />
       <ProfileText>Name: {globalState.user.name}</ProfileText>
       {/* <ProfileText>Email: {globalState[3].email}</ProfileText> */}
       <ProfileText>Role: {globalState.user.role}</ProfileText>
