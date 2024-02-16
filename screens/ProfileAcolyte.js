@@ -60,7 +60,7 @@ const ProfileAcolyte = ({ goBack }) => {
 
       <ButtonContainer>
         <CustomButton onPress={()=>{
-          socket.emit("test_broadcast", "socket enviado desde cliente")
+          socket.emit("test_broadcast", "socket enviado desde cliente ("+ globalState.user.name + ")")
         }} >
           <ButtonText>Attack 1</ButtonText>
         </CustomButton>
