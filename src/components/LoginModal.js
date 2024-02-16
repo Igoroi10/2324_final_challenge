@@ -55,7 +55,8 @@ const LoginModal = ({ }) => {
       // Realizar la solicitud al servidor con el token en el encabezado de autorización
       const responseUsers = await axios.get(urlUsers);
       // const responseUsers = await axios.get(`${routeOscar + apiUsers}`);
-      console.log('USUARIOS RECIBIDOS', responseUsers.data);
+
+
       // Seleccionamos todos los usuarios y los seteamos 
       globalStateHandler({ userList: [responseUsers.data]});
 
@@ -71,34 +72,23 @@ const LoginModal = ({ }) => {
       // Check if your device supports Google Play
       await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
 
-      console.log('paso1');
 
       // Get the users ID token
       const { idToken } = await GoogleSignin.signIn();
 
-      console.log("paso2")
-
       // Create a Google credential with the token
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-      console.log("paso3")
-      console.log(googleCredential)
 
       const signInWithCredential = await auth().signInWithCredential(googleCredential);
 
-      console.log("paso4")
-      console.log("**********************SIGN IN W CREDENTIAL******************")
-      console.log(signInWithCredential)
-
       const idTokenResult = await auth().currentUser.getIdTokenResult();
 
-      console.log("********************token****************************")
-      console.log(idTokenResult.token);
       getAllUsersFromDataBase();
       //const URL = "http://192.168.1.1:5001/api/users/token"
 
       const decodedUser = await axios.post(`${routeOscar + apiUsers + token}`, { idToken: idTokenResult.token });
-      console.log('USUARIO REGISTRADO', decodedUser.data.user);
+
       globalStateHandler({ user: decodedUser.data.user});
     }
     catch (error) {
