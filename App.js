@@ -7,21 +7,22 @@ import LoginModal from './src/components/LoginModal';
 import socket from './helpers/socket';
 
 const AppScreen = () => {
-  
+
   const [isLogged, setIsLogged] = useState(false);
 
-  const [globalState, setGlobalState] = useState();
+  const [globalState, setGlobalState] = useState(globalStateSchema);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const globalStateHandler = (data) =>{
-    setGlobalState( globalState => ({
+  const globalStateHandler = (data) => {
+    setGlobalState(globalState => ({
       ...globalState,
       ...data
     }));
-}
+  }
 
-  useEffect(()=>{
-
-    const checkIfLogged = async ()=>{
+  useEffect(() => {
+    
+    const checkIfLogged = async () => {
       const user = await getUserData();
       
       if(user){
@@ -35,15 +36,17 @@ const AppScreen = () => {
     
   },[]);
 
-  return (
-    <View>
+return (
 
-      <Context.Provider value={{globalState, globalStateHandler}}>  
+  <View>
 
-      <LoginModal/>
-      </Context.Provider>
-    </View>
-  );
+    <Context.Provider value={{ globalState, globalStateHandler }}>
+
+      <LoginModal />
+    </Context.Provider>
+
+  </View>
+);
 };
 
 export default AppScreen;
