@@ -52,11 +52,7 @@ return (
     <Context.Provider value={{ globalState, globalStateHandler }}>
 
       <LoginModal />
-      <StyledButton onPress={()=>{
-          socket.emit("test_broadcast", "sigo ")
-        }} >
-        
-      </StyledButton>
+
 
     </Context.Provider>
 

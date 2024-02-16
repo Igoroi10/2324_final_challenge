@@ -2,6 +2,10 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Image, StyleSheet,Text } from 'react-native';
 import styled from 'styled-components/native';
 import { Context } from '../src/helpers/Context';
+import socket from '../helpers/socket';
+
+
+
 const ProfileAcolyte = ({ goBack }) => {
 
   const { globalState, globalStateHandler } = useContext(Context);
@@ -55,7 +59,9 @@ const ProfileAcolyte = ({ goBack }) => {
       </View> */}
 
       <ButtonContainer>
-        <CustomButton onPress={goBack}>
+        <CustomButton onPress={()=>{
+          socket.emit("test_broadcast", "socket enviado desde cliente")
+        }} >
           <ButtonText>Attack 1</ButtonText>
         </CustomButton>
         <CustomButton onPress={goBack}>
