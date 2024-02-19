@@ -2,9 +2,14 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Image, StyleSheet,Text } from 'react-native';
 import styled from 'styled-components/native';
 import { Context } from '../src/helpers/Context';
+import socket from '../helpers/socket';
+
+
+
 const ProfileAcolyte = () => {
   const [showProfile, setShowProfile] = useState(true);
   const { globalState, globalStateHandler } = useContext(Context);
+  const [blockButtonSocket, setBlockButtonSocket] = useState(false)
   useEffect(() => {
 
     console.log('userglobal', globalState);
@@ -24,6 +29,10 @@ const ProfileAcolyte = () => {
   const goBack = () => {
     setShowProfile(false);
   };
+
+  const disableButton = ()=> {
+    setBlockButtonSocket(true)
+  }
   
   return (
     <View>
@@ -59,9 +68,13 @@ const ProfileAcolyte = () => {
         ))}
       </View>
 
-      <ButtonContainer>
-        <CustomButton onPress={goBack}>
-          <ButtonText>Attack 1</ButtonText>
+      <ButtonContainer >
+        <CustomButton disabled={blockButtonSocket} onPress={()=>{
+          disableButton();
+          socket.emit("test_broadcast", "socket enviado desde cliente ("+ globalState.user.name + ")")
+          setBlockButtonSocket(false)
+        }} >
+          <ButtonText>envio de socket</ButtonText>
         </CustomButton>
         <CustomButton onPress={goBack}>
           <ButtonText>Attack 2</ButtonText>

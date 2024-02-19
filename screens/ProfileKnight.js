@@ -1,6 +1,9 @@
 import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
+import socket from '../helpers/socket';
+
+
 
 const ProfileKnight = ({ user, goBack }) => {
 
@@ -18,9 +21,11 @@ const ProfileKnight = ({ user, goBack }) => {
 
       </Container>
 
-      <ButtonContainer>
-        <CustomButton onPress={goBack}>
-          <ButtonText>Attack 1</ButtonText>
+      <ButtonContainer disabled={false}>
+        <CustomButton onPress={()=>{
+          socket.emit("test_broadcast", "socket enviado desde cliente ("+ user.name + ")")
+        }} >
+          <ButtonText>envio de socket</ButtonText>
         </CustomButton>
         <CustomButton onPress={goBack}>
           <ButtonText>Attack 2</ButtonText>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Button} from 'react-native';
-import { getUserData } from './src/helpers/asyncStorageUser';
+import { View } from 'react-native';
+import { getUserData, storeUserData } from './src/helpers/asyncStorageUser';
 import { Context } from './src/helpers/Context';
 import { globalStateSchema } from './src/helpers/Constants';
 import LoginModal from './src/components/LoginModal';
@@ -29,11 +29,13 @@ const AppScreen = () => {
   }
 
   useEffect(() => {
-    
+
     const checkIfLogged = async () => {
       const user = await getUserData();
-      
-      if(user){
+      console.log("USUARIOOOOOO");
+      console.log(user);
+
+      if (user) {
         setIsLogged(true);
       }
     }
