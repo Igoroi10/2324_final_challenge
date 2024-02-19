@@ -32,7 +32,6 @@ const AppScreen = () => {
 
     const checkIfLogged = async () => {
       const user = await getUserData();
-      console.log("USUARIOOOOOO");
       console.log(user);
 
       if (user) {

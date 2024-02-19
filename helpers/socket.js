@@ -1,5 +1,5 @@
 const { io } = require("socket.io-client");
-import { SOCKET_URL } from "../config";
+import { URL } from "../config";
 
-const socket = io(SOCKET_URL);
+const socket = io(URL);
 export default socket;

@@ -5,18 +5,16 @@ import { getUserData } from '../helpers/asyncStorageUser';
 import axios from 'axios';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Context } from "../helpers/Context";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import { routeMendoza, routeEtxebe, routeJonathan, routeAsier, apiUsers, token, routeOscar } from '../helpers/rutas';
 import socket from '../../helpers/socket';
 
-import { routeAsier, apiUsers, token, routeOscar } from '../helpers/rutas';
 
 GoogleSignin.configure({
   webClientId: '278625394290-1u0iag96nrpv7aptlr1h5a7cbkhovlhd.apps.googleusercontent.com',
 });
 
 import auth from '@react-native-firebase/auth';
+import { URL } from '../../config';
+import { token } from '../helpers/rutas';
 
 const LoginModal = ({ onLogin, setLoginModalVisible}) => {
   const [isLoading, setLoading] = useState(false);
@@ -28,21 +26,27 @@ const LoginModal = ({ onLogin, setLoginModalVisible}) => {
 
   }, []);
 
-  // useEffect(() => { //Revisar funcionalidad con globalState.user
-  //   if (globalState.user.name !== "") {
-  //     console.log("***********************************************************************USERGLOBALSTATE");
-  //     console.log(globalState.user);
-  //     setShowProfile(true);
-      
-  //   }
-  // }, [globalState]);
+  useEffect(() => { //Revisar funcionalidad con globalState.user
+    if (globalState.user.name !== "") {
+      setShowProfile(true);
+      setLoading(false);
+    }
+  }, [globalState]);
+
+
+  const goBack = () => {
+    setShowProfile(false);
+  };
+
+
 
   const getAllUsersFromDataBase = async () => {
     try {
-      const urlUsers = `${routeMendoza + apiUsers }`;
+      const urlUsers = URL+'api/users/';
+      // const urlUsers = "http://192.168.1.166:5001/api/users/"
       // Realizar la solicitud al servidor con el token en el encabezado de autorización
+      console.log(urlUsers)
       const responseUsers = await axios.get(urlUsers);
-      console.log('USUARIOS RECIBIDOS', responseUsers.data);
       // Seleccionamos todos los usuarios y los seteamos 
       globalStateHandler({ userList: [responseUsers.data]});
 
@@ -70,28 +74,18 @@ const LoginModal = ({ onLogin, setLoginModalVisible}) => {
 
       const idTokenResult = await auth().currentUser.getIdTokenResult();
 
-      console.log("********************token****************************")
-      console.log(idTokenResult.token);
-     
-      const tokenURL = URL
-      const decodedUser = await axios.post(`${routeMendoza + apiUsers + token}`, { idToken: idTokenResult.token });
-      console.log('USUARIO REGISTRADO', decodedUser.data.user);
+      getAllUsersFromDataBase();
+
+      const tokenURL = URL + "api/users/token"
+
+      const decodedUser = await axios.post(tokenURL, { idToken: idTokenResult.token });
 
       if(globalState){
       globalStateHandler({ user: decodedUser.data.user});
 
-      // Constantes del usuario
-      console.log('GLOBAL' , globalState.user.rol);
-      const rol = globalState.user.rol;
-      // const rol = "acolyte";
-      //ASYNC STORAGE
-      await AsyncStorage.setItem('userRole', rol)
-        .then(() => {
-          console.log('rol guardado en AsyncStorage:', rol);
-        })
+      socket.connect();
+      socket.emit("store_socket_id", decodedUser.data.user.email)
       }
-      handleSuccessfulLogin();
-
     }
     catch (error) {
       // Manejar errores aquí
