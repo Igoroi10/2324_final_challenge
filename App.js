@@ -7,7 +7,7 @@ import LoginModal from './src/components/LoginModal';
 import socket from './helpers/socket';
 
 const AppScreen = () => {
-
+  const [socketEvent, setSocketEvent] = useState(null)
   const [isLogged, setIsLogged] = useState(false);
 
   const [globalState, setGlobalState] = useState(globalStateSchema);
@@ -25,11 +25,12 @@ const AppScreen = () => {
 
     const checkIfLogged = async () => {
       const user = await getUserData();
-      console.log("USUARIOOOOOO");
       console.log(user);
 
       if (user) {
         setIsLogged(true);
+        socket.connect();
+        socket.emit("store_socket_id", user.email)
       }
     }
     checkIfLogged();
@@ -51,7 +52,6 @@ const AppScreen = () => {
   return (
 
    
-
     <Context.Provider value={{ globalState, globalStateHandler }}>
 
       <LoginModal />

@@ -3,7 +3,7 @@ export const routeOscar = "http://192.168.1.163:5001";
 
 
 //app.use
-export const apiUsers = "/api/users";
+export const apiUsers = "api/users";
 
 
 

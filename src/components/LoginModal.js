@@ -9,7 +9,7 @@ import { getUserData } from '../helpers/asyncStorageUser';
 import axios from 'axios';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Context } from "../helpers/Context";
-
+import socket from '../../helpers/socket';
 
 import { routeAsier, apiUsers, token, routeOscar } from '../helpers/rutas';
 
@@ -18,6 +18,7 @@ GoogleSignin.configure({
 });
 
 import auth from '@react-native-firebase/auth';
+import { SOCKET_URL } from '../../config';
 
 const LoginModal = ({ }) => {
   const [showProfile, setShowProfile] = useState(false);
@@ -34,8 +35,6 @@ const LoginModal = ({ }) => {
 
   useEffect(() => { //Revisar funcionalidad con globalState.user
     if (globalState.user.name !== "") {
-      console.log("***********************************************************************USERGLOBALSTATE");
-      console.log(globalState.user);
       setShowProfile(true);
       setLoading(false);
     }
@@ -50,12 +49,11 @@ const LoginModal = ({ }) => {
 
   const getAllUsersFromDataBase = async () => {
     try {
-      const urlUsers = 'http://192.168.1.163:5001/api/users/';
+      const urlUsers = SOCKET_URL+'api/users/';
       // const urlUsers = "http://192.168.1.166:5001/api/users/"
       // Realizar la solicitud al servidor con el token en el encabezado de autorización
+      console.log(urlUsers)
       const responseUsers = await axios.get(urlUsers);
-      // const responseUsers = await axios.get(`${routeOscar + apiUsers}`);
-
 
       // Seleccionamos todos los usuarios y los seteamos 
       globalStateHandler({ userList: [responseUsers.data]});
@@ -87,9 +85,12 @@ const LoginModal = ({ }) => {
       getAllUsersFromDataBase();
       //const URL = "http://192.168.1.1:5001/api/users/token"
 
-      const decodedUser = await axios.post(`${routeOscar + apiUsers + token}`, { idToken: idTokenResult.token });
+      const decodedUser = await axios.post(`${SOCKET_URL + apiUsers + token}`, { idToken: idTokenResult.token });
 
       globalStateHandler({ user: decodedUser.data.user});
+
+      socket.connect();
+      socket.emit("store_socket_id", decodedUser.data.user.email)
     }
     catch (error) {
       // Manejar errores aquí
