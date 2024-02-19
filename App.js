@@ -57,8 +57,8 @@ const AppScreen = () => {
     socket.connect();
     console.log("socket conectao");
     
-    socket.on("test_broadcast", (data) => {
-      console.log("*********************SOCKET************************")
+    socket.on("test_broadcast_response", (data) => {
+      console.log("*********************SOCKET TEST************************")
       console.log(data)
     })
 
