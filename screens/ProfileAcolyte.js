@@ -72,7 +72,7 @@ const ProfileAcolyte = () => {
       <ButtonContainer >
         <CustomButton disabled={blockButtonSocket} onPress={()=>{
           disableButton();
-          socket.emit("test_broadcast", "socket enviado desde cliente ("+ globalState.user.name + ")")
+          socket.emit("test_broadcast", globalState.user.name)
           setBlockButtonSocket(false)
         }} >
           <ButtonText>envio de socket</ButtonText>

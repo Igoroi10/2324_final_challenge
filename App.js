@@ -54,8 +54,15 @@ const AppScreen = () => {
     
     }
     setRole();
-    },[]);
+    socket.connect();
+    console.log("socket conectao");
     
+    socket.on("test_broadcast_response", (data) => {
+      console.log("*********************SOCKET TEST************************")
+      console.log(data)
+    })
+
+  },[isAuthenticated]);
 
   //Maneja el login
   const handleLogin = async () => {
