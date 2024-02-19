@@ -18,7 +18,7 @@ GoogleSignin.configure({
 });
 
 import auth from '@react-native-firebase/auth';
-import { SOCKET_URL } from '../../config';
+import { URL } from '../../config';
 
 const LoginModal = ({ }) => {
   const [showProfile, setShowProfile] = useState(false);
@@ -49,7 +49,7 @@ const LoginModal = ({ }) => {
 
   const getAllUsersFromDataBase = async () => {
     try {
-      const urlUsers = SOCKET_URL+'api/users/';
+      const urlUsers = URL+'api/users/';
       // const urlUsers = "http://192.168.1.166:5001/api/users/"
       // Realizar la solicitud al servidor con el token en el encabezado de autorización
       console.log(urlUsers)
@@ -85,7 +85,7 @@ const LoginModal = ({ }) => {
       getAllUsersFromDataBase();
       //const URL = "http://192.168.1.1:5001/api/users/token"
 
-      const decodedUser = await axios.post(`${SOCKET_URL + apiUsers + token}`, { idToken: idTokenResult.token });
+      const decodedUser = await axios.post(`${URL + apiUsers + token}`, { idToken: idTokenResult.token });
 
       globalStateHandler({ user: decodedUser.data.user});
 
