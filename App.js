@@ -31,38 +31,31 @@ const AppScreen = () => {
   useEffect(() => {
 
     const checkIfLogged = async () => {
-      const user = await getUserData();
-      console.log(user);
-
-      if (user) {
-        setIsLogged(true);
-        socket.connect();
-        socket.emit("store_socket_id", user.email)
-      }
+    const user = await AsyncStorage.getItem('user');
+    console.log(user);
+    if (user) {
+    setIsLogged(true);
+    socket.connect();
+    socket.emit("store_socket_id", user.email)
+    }
     }
     checkIfLogged();
-
-  }, []);
+    
+    },[]);
 
   useEffect(() => {
-    
     // Establece el rol del usuario autenticado
     const setRole = async () => {
-
-      //ASYNC STORAGE
-      const role = await AsyncStorage.getItem('userRole');
-      setUserRole(role);
-    };
-    setRole();
-    socket.connect();
-    console.log("socket conectao");
+   
+    //ASYNC STORAGE
+    const role = await AsyncStorage.getItem('userRole');
+    console.log('ooool', role)
+    setUserRole(role);
     
-    socket.on("test_broadcast", (data) => {
-      console.log("*********************SOCKET************************")
-      console.log(data)
-    })
-
-  },[isAuthenticated]);
+    }
+    setRole();
+    },[]);
+    
 
   //Maneja el login
   const handleLogin = async () => {
@@ -79,7 +72,7 @@ const AppScreen = () => {
         <>
           {userRole === 'acolyte' && <ProfileAcolyte />}
           {userRole === 'mortimer' && <ProfileMortimer />}
-          {userRole === 'villano' && <ProfileVillano />}
+          {userRole === 'villain' && <ProfileVillano />}
           {userRole === 'knigth' && <ProfileKnight />}
         </>
       )}

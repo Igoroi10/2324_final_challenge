@@ -6,7 +6,7 @@ import axios from 'axios';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Context } from "../helpers/Context";
 import socket from '../../helpers/socket';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 GoogleSignin.configure({
   webClientId: '278625394290-1u0iag96nrpv7aptlr1h5a7cbkhovlhd.apps.googleusercontent.com',
@@ -14,7 +14,7 @@ GoogleSignin.configure({
 
 import auth from '@react-native-firebase/auth';
 import { URL } from '../../config';
-import { token } from '../helpers/rutas';
+import { token , apiUsers} from '../helpers/rutas';
 
 const LoginModal = ({ onLogin, setLoginModalVisible}) => {
   const [isLoading, setLoading] = useState(false);
@@ -25,20 +25,6 @@ const LoginModal = ({ onLogin, setLoginModalVisible}) => {
     getAllUsersFromDataBase()
 
   }, []);
-
-  useEffect(() => { //Revisar funcionalidad con globalState.user
-    if (globalState.user.name !== "") {
-      setShowProfile(true);
-      setLoading(false);
-    }
-  }, [globalState]);
-
-
-  const goBack = () => {
-    setShowProfile(false);
-  };
-
-
 
   const getAllUsersFromDataBase = async () => {
     try {
@@ -80,12 +66,24 @@ const LoginModal = ({ onLogin, setLoginModalVisible}) => {
 
       const decodedUser = await axios.post(tokenURL, { idToken: idTokenResult.token });
 
+      const user = decodedUser.data.user.email;
+      await AsyncStorage.setItem('user', user)
+      .then(() => {
+      console.log('email guardado en AsyncStorage:', user);
+      })
+      const rol = decodedUser.data.user.rol;
+      await AsyncStorage.setItem('userRole', rol)
+      .then(() => {
+      console.log('rol guardado en AsyncStorage:', rol);
+      })
+
       if(globalState){
       globalStateHandler({ user: decodedUser.data.user});
 
       socket.connect();
       socket.emit("store_socket_id", decodedUser.data.user.email)
       }
+      handleSuccessfulLogin();
     }
     catch (error) {
       // Manejar errores aquí

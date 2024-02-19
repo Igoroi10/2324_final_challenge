@@ -37,6 +37,7 @@ const ProfileAcolyte = () => {
   return (
     <View>
   {globalState.user.name !== "" ? (
+    <View>
     <Container>
       <ProfileText>ACOLYTE</ProfileText>
       <Image
@@ -88,6 +89,7 @@ const ProfileAcolyte = () => {
         <ButtonText>Sign Out</ButtonText>
       </SignOutButton>
     </Container>
+    </View>
   ) : (
     <Text>Loading...</Text>
   )}
