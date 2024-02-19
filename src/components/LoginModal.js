@@ -8,6 +8,9 @@ import { Context } from "../helpers/Context";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { routeMendoza, routeEtxebe, routeJonathan, routeAsier, apiUsers, token, routeOscar } from '../helpers/rutas';
+import socket from '../../helpers/socket';
+
+import { routeAsier, apiUsers, token, routeOscar } from '../helpers/rutas';
 
 GoogleSignin.configure({
   webClientId: '278625394290-1u0iag96nrpv7aptlr1h5a7cbkhovlhd.apps.googleusercontent.com',
@@ -70,6 +73,7 @@ const LoginModal = ({ onLogin, setLoginModalVisible}) => {
       console.log("********************token****************************")
       console.log(idTokenResult.token);
      
+      const tokenURL = URL
       const decodedUser = await axios.post(`${routeMendoza + apiUsers + token}`, { idToken: idTokenResult.token });
       console.log('USUARIO REGISTRADO', decodedUser.data.user);
 
@@ -87,6 +91,7 @@ const LoginModal = ({ onLogin, setLoginModalVisible}) => {
         })
       }
       handleSuccessfulLogin();
+
     }
     catch (error) {
       // Manejar errores aquí

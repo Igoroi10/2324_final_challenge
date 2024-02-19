@@ -14,7 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const AppScreen = () => {
-  
+  const [socketEvent, setSocketEvent] = useState(null)
   const [isLogged, setIsLogged] = useState(false);
   const [isLoginModalVisible, setLoginModalVisible] = useState(true);
   const [globalState, setGlobalState] = useState(globalStateSchema);
@@ -37,11 +37,13 @@ const AppScreen = () => {
 
       if (user) {
         setIsLogged(true);
+        socket.connect();
+        socket.emit("store_socket_id", user.email)
       }
     }
     checkIfLogged();
 
-  },[]);
+  }, []);
 
   useEffect(() => {
     
@@ -69,7 +71,7 @@ const AppScreen = () => {
     setLoginModalVisible(false);
   };
 
-   
+    
 
   return (
     <Context.Provider value={{ globalState, globalStateHandler }}>
