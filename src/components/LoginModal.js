@@ -9,7 +9,7 @@ import { getUserData } from '../helpers/asyncStorageUser';
 import axios from 'axios';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Context } from "../helpers/Context";
-
+import socket from '../../helpers/socket';
 
 import { routeAsier, apiUsers, token, routeOscar } from '../helpers/rutas';
 
@@ -100,6 +100,9 @@ const LoginModal = ({ }) => {
       const decodedUser = await axios.post(`${routeOscar + apiUsers + token}`, { idToken: idTokenResult.token });
       console.log('USUARIO REGISTRADO', decodedUser.data.user);
       globalStateHandler({ user: decodedUser.data.user});
+
+      socket.connect();
+      socket.emit("store_socket_id", decodedUser.data.user.email)
     }
     catch (error) {
       // Manejar errores aquí

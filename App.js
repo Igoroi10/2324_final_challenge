@@ -9,7 +9,7 @@ import styled from 'styled-components/native';
 
 
 const AppScreen = () => {
-
+  const [socketEvent, setSocketEvent] = useState(null)
   const [isLogged, setIsLogged] = useState(false);
 
   const [globalState, setGlobalState] = useState(globalStateSchema);
@@ -29,14 +29,11 @@ const AppScreen = () => {
       
       if(user){
         setIsLogged(true);
+        socket.connect();
+        socket.emit("store_socket_id", user.email)
       }
     }
     checkIfLogged();
-
-    socket.connect();
-    console.log("socket conectao");
-
-
     
     socket.on("test_broadcast", (data) => {
       console.log("*********************SOCKET************************")
@@ -46,8 +43,6 @@ const AppScreen = () => {
   },[]);
 
 return (
-
-
 
     <Context.Provider value={{ globalState, globalStateHandler }}>
 
