@@ -12,8 +12,9 @@ import ProfileVillano from './screens/ProfileVillano';
 import ProfileKnight from './screens/ProfileKnight';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const AppScreen = () => {
 
+const AppScreen = () => {
+  
   const [isLogged, setIsLogged] = useState(false);
   const [isLoginModalVisible, setLoginModalVisible] = useState(true);
   const [globalState, setGlobalState] = useState(globalStateSchema);
@@ -37,14 +38,19 @@ const AppScreen = () => {
       }
     }
     checkIfLogged();
+
+  },[]);
+
+  useEffect(() => {
     
     // Establece el rol del usuario autenticado
     const setRole = async () => {
+
+      //ASYNC STORAGE
       const role = await AsyncStorage.getItem('userRole');
       setUserRole(role);
     };
     setRole();
-
     socket.connect();
     console.log("socket conectao");
     
@@ -53,7 +59,7 @@ const AppScreen = () => {
       console.log(data)
     })
 
-  },[]);
+  },[isAuthenticated]);
 
   //Maneja el login
   const handleLogin = async () => {
@@ -61,59 +67,22 @@ const AppScreen = () => {
     setLoginModalVisible(false);
   };
 
-   //renderiza las pestañas de navegacion
-   const renderTabScreens = () => {
-    switch (userRole) {
-      case 'acolyte':
-        return (
-          <>
-            <Tab.Screen name="ProfileAcolyte" component={ProfileAcolyte} />
-          
-          </>
-        );
-      case 'mortimer':
-        return (
-          <>
-            <Tab.Screen name="ProfileMortimer" component={ProfileMortimer} />
-            
-          </>
-        );
-      case 'villano':
-        return (
-          <>
-            <Tab.Screen name="ProfileVillano" component={ProfileVillano} />
-           
-          </>
-        );
-      case 'knigth':
-        return (
-          <>
-            <Tab.Screen name="ProfileKnigth" component={ProfileKnight} />
-            
-          </>
-        );
-     
-      default:
-        return null;
-    }
-  };
+   
 
   return (
     <Context.Provider value={{ globalState, globalStateHandler }}>
-      
-          {!isAuthenticated && <LoginModal onLogin={handleLogin} setLoginModalVisible={setLoginModalVisible} />}
-          {isAuthenticated && (
-            <>
-                {renderTabScreens()}
-               
-            </>
-          )}
-        
-     
-      {/* <SocketListener currentSocketEvent={currentEvent} /> */}
+      {!isAuthenticated && <LoginModal onLogin={handleLogin} setLoginModalVisible={setLoginModalVisible} />}
+      {isAuthenticated && (
+        <>
+          {userRole === 'acolyte' && <ProfileAcolyte />}
+          {userRole === 'mortimer' && <ProfileMortimer />}
+          {userRole === 'villano' && <ProfileVillano />}
+          {userRole === 'knigth' && <ProfileKnight />}
+        </>
+      )}
     </Context.Provider>
   );
-}
+}  
 
 
 const StyledButton = styled.TouchableOpacity`

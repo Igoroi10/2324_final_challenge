@@ -2,8 +2,8 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Image, StyleSheet,Text } from 'react-native';
 import styled from 'styled-components/native';
 import { Context } from '../src/helpers/Context';
-const ProfileAcolyte = ({ goBack }) => {
-
+const ProfileAcolyte = () => {
+  const [showProfile, setShowProfile] = useState(true);
   const { globalState, globalStateHandler } = useContext(Context);
   useEffect(() => {
 
@@ -20,6 +20,10 @@ const ProfileAcolyte = ({ goBack }) => {
     }
     
   }, [globalState]);
+
+  const goBack = () => {
+    setShowProfile(false);
+  };
   
   return (
     <View>
