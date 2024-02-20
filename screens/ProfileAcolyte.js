@@ -1,170 +1,41 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Image, StyleSheet,Text } from 'react-native';
 import styled from 'styled-components/native';
 import { Context } from '../src/helpers/Context';
-import socket from '../helpers/socket';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import auth from '@react-native-firebase/auth';
 
-const ProfileAcolyte = () => {
-  const [showProfile, setShowProfile] = useState(true);
+// Imports de los componentes de User
+import ReadyButton from '../src/components/ProfileCompontents/ReadyButton';
+import FightButtons from '../src/components/ProfileCompontents/FightButtons';
+import Profile from '../src/components/ProfileCompontents/Profile';
+
+const ProfileAcolyte = ({ }) => {
+  
   const { globalState, globalStateHandler } = useContext(Context);
   const [blockButtonSocket, setBlockButtonSocket] = useState(false)
-  const [userRole, setUserRole] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
-  const [isLoginModalVisible, setLoginModalVisible] = useState(false);
+  const [fightOn, setFightOn] = useState(false)
 
-  const goBack = () => {
-    setShowProfile(false);
-  };
-
-  const disableButton = ()=> {
-    setBlockButtonSocket(true)
-  }
-
-  async function onSignOutButtonPress() {
-    try {
-      await GoogleSignin.revokeAccess(); // Revoca el acceso de Google
-      await GoogleSignin.signOut(); // Cierra sesión de Google
-      await auth().signOut(); // Cierra sesión de Firebase (si estás utilizando Firebase)
-      setUserRole(null); // Actualiza el estado del usuario autenticado
-      setIsAuthenticated(false);
-      setLoginModalVisible(true);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  
   return (
-    <View>
-      {isAuthenticated ? (
-          globalState.user.ready ? (
-            <>
-            {globalState.user.name !== "" ? (
-              <Container>
-                <ProfileText>ACOLYTE</ProfileText>
-                <Image
-                  source={{ uri: globalState.user.imgURL }}
-                  style={{ width: 100, height: 100, borderRadius: 50 }}
-                />
-                <ProfileText>Name: {globalState.user.name}</ProfileText>
-                <ProfileText>Rol: {globalState.user.rol}</ProfileText>
-    
-                <ProfileText>Inventory:</ProfileText>
-                <View style={styles.inlineContainer}>
-                  {Object.keys(globalState.user.inventory).map((key, index) => (
-                    <ProfileText key={index}>{globalState.inventory[key]}</ProfileText>
-                  ))}
-                </View>
-    
-                <ProfileText>Diseases:</ProfileText>
-                <View style={styles.inlineContainer}>
-                  {Object.keys(globalState.user.diseases).map((key, index) => (
-                    <ProfileText key={index}>{globalState.user.diseases[key]}</ProfileText>
-                  ))}
-                </View>
-    
-                <ButtonContainer>
-                  <CustomButton
-                    disabled={blockButtonSocket}
-                    onPress={() => {
-                      disableButton();
-                      socket.emit("test_broadcast", globalState.user.name);
-                      setBlockButtonSocket(false);
-                    }}
-                  >
-                    <ButtonText>envio de socket</ButtonText>
-                  </CustomButton>
-                  <CustomButton onPress={goBack}>
-                    <ButtonText>Attack 2</ButtonText>
-                  </CustomButton>
-                  <CustomButton onPress={goBack}>
-                    <ButtonText>Reset</ButtonText>
-                  </CustomButton>
-                </ButtonContainer>
-    
-                <SignOutButton onPress={onSignOutButtonPress}>
-                  <ButtonText>Sign Out</ButtonText>
-                </SignOutButton>
-              </Container>
-            ) : (
-              <Text>Loading...</Text>
-            )}
-        </>
-        ): (
-          //user ready
-        
-          <View style={{  justifyContent: 'center', alignItems: 'center',  marginTop: '100%'}}>
-            <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white' }}> User ready</Text>
-          </View>
+    <MainContainer>
 
-        )
+      <Profile />
 
-      ) : (
-          <></>
-        // <LoginModal />
-      )}
-    </View>
+      {fightOn && ( <FightButtons /> )}
+
+      < ReadyButton /> 
+      
+    </MainContainer>
+
   );
-      }
+};
 
-const styles = StyleSheet.create({
 
-  inlineContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});
-
-const SignOutButton = styled.TouchableOpacity`
-  background-color: rgba(232, 0, 0, 0.6);
-  justify-content: center;
-  width: 40%;
-  height: 8%;
-  border-radius: 60px;
-  align-self: center;
-  margin-top: -9%;
-  margin-left: 10%;
-`
-const ButtonText = styled.Text`
-  color: rgba(255, 255, 255, 1);
-  font-size: 20px;
-  text-align: center;
-`
-const ProfileText = styled.Text`
-  color: black;
-  font-size: 20px;
-  text-align: center;
-  margin: 5px;
-`
-const Container = styled.View`
-  width: 80%; 
+const MainContainer = styled.View`
+  width: 100%;
+  height: 100%; 
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 24px;
-  border: rgba(232, 0, 0, 0.6);
-  margin-bottom: -50%;
-  margin-left: 10%;
-  `
-const View = styled.View`
-  width: 90%; 
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  `
-const ButtonContainer = styled.View`
-  flex-direction: row;
-  justify-content: space-around;
-  margin-top: 58%;
+  border: rgba(255, 255, 255, 0.6);
 `
-const CustomButton = styled.TouchableOpacity`
-  background-color: rgba(0, 0, 255, 0.6);
-  justify-content: center;
-  width: 30%;
-  height: 40%;
-  border-radius: 60px;
-  margin: 10px;
-`
+
+
 export default ProfileAcolyte;
