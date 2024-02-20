@@ -8,7 +8,6 @@ import styled from 'styled-components/native';
 import ProfileManager from './src/components/ProfileCompontents/ProfileManager';
 import { getAllUsers } from './src/helpers/axiosPetitions';
 import SocketListener from './src/components/SocketListener';
-import AllUsersReadyModal from './src/components/AllUsersReadyModal';
 
 
 const MainContainer = styled.View`
@@ -94,7 +93,7 @@ const App = () => {
       <MainContainer>
 
         {!isLogged && <Login setIsLogged={setIsLogged} />}
-        {(isLogged && globalState.user.name !== "")&& <AllUsersReadyModal/>}
+        {(isLogged && globalState.user.name !== "")&& <ProfileManager/>}
       </MainContainer>
     </Context.Provider>
   );
