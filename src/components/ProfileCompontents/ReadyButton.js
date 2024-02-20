@@ -14,7 +14,7 @@ const ReadyButton = ({ }) => {
       email: globalState.user.email
     }
 
-    socket.emit('userReady', sendData);
+    socket.emit('user_ready', sendData);
   }
 
 

@@ -9,7 +9,7 @@ const ReadyModal = ({ }) => {
   return (
 
     <View style={{  justifyContent: 'center', alignItems: 'center'}}>
-        <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white' }}> User ready</Text>
+        <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white' }}>User ready</Text>
     </View>
   )
 }
