@@ -39,7 +39,7 @@ const ProfileAcolyte = () => {
     <View>
       {isAuthenticated ? (
           globalState.user.ready ? (
-            <View>
+            <>
             {globalState.user.name !== "" ? (
               <Container>
                 <ProfileText>ACOLYTE</ProfileText>
@@ -90,15 +90,15 @@ const ProfileAcolyte = () => {
             ) : (
               <Text>Loading...</Text>
             )}
-        </View>
+        </>
         ): (
           //user ready
-        <>
-          <View>
-          <Text>User ready</Text>
-
+        
+          <View style={{  justifyContent: 'center', alignItems: 'center',  marginTop: '100%'}}>
+            <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white' }}> User ready</Text>
           </View>
-        </>)
+
+        )
 
       ) : (
           <></>
