@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { getUserData, storeUserData } from './src/helpers/asyncStorageUser';
+import { getUserData } from './src/helpers/asyncStorageUser';
 import { Context } from './src/helpers/Context';
 import { globalStateSchema } from './src/helpers/Constants';
-import LoginModal from './src/components/LoginComponents/Login';
+import Login from './src/components/LoginComponents/Login';
 import socket from './helpers/socket';
 import styled from 'styled-components/native';
 import ProfileAcolyte from './screens/ProfileAcolyte';
 import { getAllUsers } from './src/helpers/axiosPetitions';
+import SocketListener from './src/components/SocketListener';
 
 
 const MainContainer = styled.View`
@@ -55,14 +56,25 @@ const App = () => {
       return user;
     }
     
+    const socketConnection = (user)=>{
+      
+
+      socket.emit("store_socket_id", user.email);
+      
+      socket.onAny((eventName, ...data) => {
+        setSocketEvent({event: eventName, value: data[0]})
+      }) 
+
+      return () => {
+        socket.removeAllListeners();
+      };
+    }
 
     const initialLoad = async()=>{
 
       const user = await storeGlobalUser();
       await storeGlobalUserList();
-
-      socket.connect();
-      socket.emit("store_socket_id", user.email);
+      socketConnection(user)
     }
 
     if(isLogged){
@@ -75,12 +87,14 @@ const App = () => {
 
   return (
     <Context.Provider value={{ globalState, globalStateHandler }}>
-      <MainContainer>
-        {!isLogged && <LoginModal setIsLogged={setIsLogged} />}
-        {isLogged && <ProfileAcolyte/>}
 
+      {socketEvent !== null && (<SocketListener props={socketEvent}/>)}
+
+      <MainContainer>
+
+        {!isLogged && <Login setIsLogged={setIsLogged} />}
+        {isLogged && <ProfileAcolyte/>}
       </MainContainer>
-      
     </Context.Provider>
   );
 }  
