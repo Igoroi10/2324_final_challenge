@@ -138,6 +138,9 @@ const MortimerProfile = () => {
         if(readyUsers.length === usersList.length){
         console.log("la longitud de los dos arrays es la misma");
         setIsStartFight(true);
+        }else{
+        setIsStartFight(false);
+
         }
     }
   }, [usersList]);
@@ -187,11 +190,13 @@ const MortimerProfile = () => {
           <ProfileVariblesTitle>HP</ProfileVariblesTitle>
           <ProfileVariblesTexts>INT</ProfileVariblesTexts>
           <ProfileVariblesTexts>STR</ProfileVariblesTexts>
-        </RowContainer>
+        </RowContainer> 
         <TextsContainer>
+        {isStartFight && 
           <BattleButton>
             <ButtonStyle source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/the-final-battle-287a4.appspot.com/o/Buttons%2FlaunchBattle.png?alt=media&token=2c3f73ed-e51a-4eaf-8a12-edc53271213f' }} />
           </BattleButton>
+          }
         </TextsContainer>
       </LeftContainer>
 
@@ -215,11 +220,6 @@ const MortimerProfile = () => {
 
           })
         }
-
-      {isStartFight && 
-      <BattleButton>
-        <ButtonText>Start Battle</ButtonText>
-      </BattleButton>}
 
       </RightContainer>
     </ProfileContainer>
