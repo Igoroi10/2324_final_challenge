@@ -115,7 +115,7 @@ const MortimerProfile = () => {
 
     if (usersList) {
 
-        const readyUsers = usersList.filter(user => user.ready);
+        const readyUsers = usersList.filter(user => user.isReady);
 
         if(readyUsers.length === usersList.length && readyUsers.length !== 0){
         console.log("la longitud de los dos arrays es la misma");
@@ -188,8 +188,8 @@ const MortimerProfile = () => {
                 width: 60,
                 height: 60,
                 borderRadius: 40,
-                borderWidth: el.ready ? 3 : 30,
-                borderColor: el.ready ? 'white' : 'rgba(0, 0, 0, 0.4)',
+                borderWidth: el.isReady ? 3 : 30,
+                borderColor: el.isReady ? 'white' : 'rgba(0, 0, 0, 0.4)',
                 position: 'absolute',
                 ...position,
                 };
