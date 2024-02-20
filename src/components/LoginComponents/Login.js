@@ -85,7 +85,7 @@ const StyledButton = styled.TouchableOpacity`
 `;
 
 const MainContainer = styled.View`
-  displa: flex;
+  display: flex;
   align-items: center;
   justify-content: center; 
   bottom: -70%;
