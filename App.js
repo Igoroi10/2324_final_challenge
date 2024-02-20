@@ -11,6 +11,7 @@ import ProfileMortimer from './screens/ProfileMortimer';
 import ProfileVillano from './screens/ProfileVillano';
 import ProfileKnight from './screens/ProfileKnight';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SocketListener from './src/components/SocketListener';
 
 
 const AppScreen = () => {
@@ -41,6 +42,12 @@ const AppScreen = () => {
     }
     checkIfLogged();
 
+    socket.onAny((eventName, ...data) => {
+      console.log('************ SOCKET EVENT **************')
+      console.log(socketEvent)
+      setSocketEvent({event: eventName, value: data[0]})
+    })
+
     return () => {
       socket.removeAllListeners();
       };
@@ -60,10 +67,6 @@ const AppScreen = () => {
     socket.connect();
     console.log("socket conectao");
     
-    socket.on("test_broadcast_response", (data) => {
-      console.log("*********************SOCKET TEST************************")
-      console.log(data)
-    })
 
   },[isAuthenticated]);
 
@@ -77,6 +80,7 @@ const AppScreen = () => {
 
   return (
     <Context.Provider value={{ globalState, globalStateHandler }}>
+      {socketEvent !== null && (<SocketListener props={socketEvent}/>)}
       {!isAuthenticated && <LoginModal onLogin={handleLogin} setLoginModalVisible={setLoginModalVisible} />}
       {isAuthenticated && (
         <>
