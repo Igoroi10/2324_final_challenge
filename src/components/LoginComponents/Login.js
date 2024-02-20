@@ -1,30 +1,11 @@
 import React, { useState } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, ImageBackground, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 import { storeUserData } from '../../helpers/asyncStorageUser';
 import axios from 'axios';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import { URL } from '../../../config';
-
-
-const StyledButton = styled.TouchableOpacity`
-    background-color: rgba(171, 147, 192, 0.7);
-    display: flex;
-    justify-content: center;
-    height: 60px;
-    width: 40%;
-    margin-top: 35%;
-    border-radius: 60px;
-    border: #7B26C4;
-    align-self: center;
-`;
-const ButtonText = styled.Text`
-    color:rgba(92, 0, 172, 0.8);
-    font-size: 20px;
-    text-align: center;
-
-`;
 
 
 const LoginModal = ({setIsLogged}) => {
@@ -55,6 +36,8 @@ const LoginModal = ({setIsLogged}) => {
 
       const tokenURL = URL + "api/users/token"
 
+      console.log(tokenURL);
+
       const decodedUser = await axios.post(tokenURL, { idToken: idTokenResult.token });
 
       const user = decodedUser.data.user;
@@ -73,12 +56,49 @@ const LoginModal = ({setIsLogged}) => {
   }
 
   return (
-    <View>
-      <StyledButton onPress={onGoogleButtonPress} disabled={isButtonLoading}>
-        {isButtonLoading ? <ActivityIndicator color="white" /> : <ButtonText>Google Sign-In</ButtonText>}
-      </StyledButton>
-    </View>
+    <ImageBackground source={require("../../../assets/wallpaper_login.jpeg")} style={styles.imageBackground}>
+      <MainContainer>
+        <StyledButton onPress={onGoogleButtonPress} disabled={isButtonLoading}>
+          {isButtonLoading ? <ActivityIndicator color="white" /> : <ButtonText>Google Sign-In</ButtonText>}
+        </StyledButton>
+      </MainContainer>
+    </ImageBackground>
   );
 };
+
+const styles = StyleSheet.create({
+  imageBackground: {
+    width: '100%',
+    height: '100%',
+  }
+});
+
+const StyledButton = styled.TouchableOpacity`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  background-color: rgba(255, 255, 255, 0.9);
+  border: rgba(255, 255, 255, 1);
+  border-radius: 60px;
+  
+  height: 27%;
+  width: 40%;
+`;
+
+const MainContainer = styled.View`
+  displa: flex;
+  align-items: center;
+  justify-content: center; 
+  bottom: -70%;
+
+`
+
+const ButtonText = styled.Text`
+  color:rgba(92, 0, 172, 0.8);
+  font-size: 20px;
+  text-align: center;
+
+`;
 
 export default LoginModal;
