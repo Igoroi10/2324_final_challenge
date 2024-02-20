@@ -31,9 +31,13 @@ function SocketListener(props) {
             console.log(data)
         }
 		
+		const handleNewUser = (data) => {
+			console.log(`Conexión de socket: ${data}` )
+		}
 		const handlers = {
 			userList: handleUserList,
             test_broadcast_response: handleTest,
+			new_user: handleNewUser,
 		}
 	}
 	return null;
