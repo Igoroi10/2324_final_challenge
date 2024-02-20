@@ -22,7 +22,7 @@ const ProfileManager = () => {
         <MortimerProfile/>
         :
         <>
-          {!globalState.user.ready ? (
+          {!globalState.user.isReady ? (
           <>
           <Profile />
   

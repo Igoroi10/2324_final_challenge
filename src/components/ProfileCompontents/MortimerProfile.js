@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
 import styled from 'styled-components/native';
 import { Context } from '../../helpers/Context';
+import socket from '../../../helpers/socket';
 
 const ProfileContainer = styled.View`
   display: flex;
@@ -95,33 +96,12 @@ const AcolyteImage = styled.Image`
   border-radius: 300px;
 `
 
-const EnterTheTower = styled.TouchableOpacity`
-    margin-top: 40px;
-    align-items: center;
-    justify-content: center;
-    height: 50px;
-    background-color: rgba(220, 222, 220, 0.4);
-    margin-bottom: 90px;
-    border-radius: 20px;
-`
-
-const EnterTowerButtonText = styled.Text`
-    font-size: 20px;
-    font-family: 'Breathe Fire IV';
-    letter-spacing: 5px;
-`
-
-const ButtonText = styled.Text`
-  color: rgba(255, 255, 255, 1);
-  font-size: 20px;
-  text-align: center;
-`
-
 const MortimerProfile = () => {
 
   const { globalState } = useContext(Context);
   const [usersList, setUsersList] = useState();
   const [isStartFight, setIsStartFight] = useState(false);
+  const [isButtonPress, setIsButtonPress] = useState(false);
 
   useEffect(() => {
     const connectedUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isConnected);
@@ -129,34 +109,30 @@ const MortimerProfile = () => {
     setUsersList(connectedUsers);
 
   }, [globalState.userList]);
+  
 
   useEffect(() => {
+
     if (usersList) {
 
-      const readyUsers = usersList.filter(user => user.isReady);
+        const readyUsers = usersList.filter(user => user.isReady);
 
-        if(readyUsers.length === usersList.length){
+        if(readyUsers.length === usersList.length && readyUsers.length !== 0){
         console.log("la longitud de los dos arrays es la misma");
         setIsStartFight(true);
         }else{
-        setIsStartFight(false);
-
+            setIsStartFight(false)
         }
     }
   }, [usersList]);
 
-  // const countActiveAcolytes = () => {
-  //   let activeAcolytes = 0;
+  useEffect(()=>{
 
-  //   globalState.userList.forEach(el => {
-  //     console.log("FOR EACH GLOBAL STATE USER *************************************");
-  //     // console.log(globalState.userList.length);
-  //     if (el.isConnected)
-  //       activeAcolytes++
-  //   });
+    if(battleStart === true){
+        setIsButtonPress(false);
+    }
+  },[globalState.battleStart])
 
-  //   return activeAcolytes
-  // }
 
   const calculateArtifactPosition = (index) => {
     if (usersList)
@@ -173,55 +149,55 @@ const MortimerProfile = () => {
     }
   };
 
+  const battleStart = ()=>{
+    setIsButtonPress(true);
+    socket.emit("start_battle");
+  }
   return (
     <ProfileContainer>
-      <LeftContainer>
-        <RowContainer>
-          <PictureContainer>
-            <ProfilePicture source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/the-final-battle-287a4.appspot.com/o/Avatare%2F0_0.webp?alt=media&token=5d085dec-f8d8-4022-b9ce-0581f533fa1b' }} />
-          </PictureContainer>
-          <ProfileInformation>
-            <ProfileVariblesTitle>{globalState.user.name}</ProfileVariblesTitle>
-            <ProfileVariblesTexts>{globalState.user.rol}</ProfileVariblesTexts>
-            <ProfileVariblesTexts>{globalState.rol}</ProfileVariblesTexts>
-          </ProfileInformation>
-        </RowContainer>
-        <RowContainer>
-          <ProfileVariblesTitle>HP</ProfileVariblesTitle>
-          <ProfileVariblesTexts>INT</ProfileVariblesTexts>
-          <ProfileVariblesTexts>STR</ProfileVariblesTexts>
-        </RowContainer> 
-        <TextsContainer>
-        {isStartFight && 
-          <BattleButton>
-            <ButtonStyle source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/the-final-battle-287a4.appspot.com/o/Buttons%2FlaunchBattle.png?alt=media&token=2c3f73ed-e51a-4eaf-8a12-edc53271213f' }} />
-          </BattleButton>
-          }
-        </TextsContainer>
-      </LeftContainer>
+        <LeftContainer>
+            <RowContainer>
+            <PictureContainer>
+                <ProfilePicture source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/the-final-battle-287a4.appspot.com/o/Avatare%2F0_0.webp?alt=media&token=5d085dec-f8d8-4022-b9ce-0581f533fa1b' }} />
+            </PictureContainer>
+            <ProfileInformation>
+                <ProfileVariblesTitle>{globalState.user.name}</ProfileVariblesTitle>
+                <ProfileVariblesTexts>{globalState.user.rol}</ProfileVariblesTexts>
+                <ProfileVariblesTexts>{globalState.rol}</ProfileVariblesTexts>
+            </ProfileInformation>
+            </RowContainer>
+            <RowContainer>
+            <ProfileVariblesTitle>HP</ProfileVariblesTitle>
+            <ProfileVariblesTexts>INT</ProfileVariblesTexts>
+            <ProfileVariblesTexts>STR</ProfileVariblesTexts>
+            </RowContainer>
+            {isStartFight &&
+                <TextsContainer>
+                    <BattleButton onPress={()=>{battleStart()}} disabled={isButtonPress}>
+                    <ButtonStyle source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/the-final-battle-287a4.appspot.com/o/Buttons%2FlaunchBattle.png?alt=media&token=2c3f73ed-e51a-4eaf-8a12-edc53271213f' }} />
+                    </BattleButton>
+                </TextsContainer>
+            }
+        </LeftContainer>
 
-      <RightContainer>
-        <RosetePicture source={require('../../../assets/Rosete.png')} />
-        {
-          usersList && usersList.map((el, index) => {
-            const position = calculateArtifactPosition(index);
-            const styles = {
-              width: 60,
-              height: 60,
-              borderRadius: 40,
-              borderWidth: el.isReady ? 3 : 30,
-              borderColor: el.isReady ? 'white' : 'rgba(0, 0, 0, 0.4)',
-              position: 'absolute',
-              ...position,
-            };
-              return (
-                <AcolyteImage key={index} source={{ uri: el.imgURL }} style={styles} />
-              );
-
-          })
-        }
-
-      </RightContainer>
+        <RightContainer>
+            <RosetePicture source={require('../../../assets/Rosete.png')} />
+            {usersList && usersList.map((el, index) => {
+                const position = calculateArtifactPosition(index);
+                const styles = {
+                width: 60,
+                height: 60,
+                borderRadius: 40,
+                borderWidth: el.isReady ? 3 : 30,
+                borderColor: el.isReady ? 'white' : 'rgba(0, 0, 0, 0.4)',
+                position: 'absolute',
+                ...position,
+                };
+                return (
+                    <AcolyteImage key={index} source={{ uri: el.imgURL }} style={styles} />
+                );
+            })}
+        </RightContainer>
     </ProfileContainer>
   );
 };
