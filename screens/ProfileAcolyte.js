@@ -6,6 +6,7 @@ import { Context } from '../src/helpers/Context';
 import ReadyButton from '../src/components/ProfileCompontents/ReadyButton';
 import FightButtons from '../src/components/ProfileCompontents/FightButtons';
 import Profile from '../src/components/ProfileCompontents/Profile';
+import ReadyModal from '../src/components/ReadyModal';
 
 const ProfileAcolyte = ({ }) => {
   
@@ -16,11 +17,18 @@ const ProfileAcolyte = ({ }) => {
   return (
     <MainContainer>
 
-      <Profile />
+      {globalState.user.ready ? (
+        <>
+        <Profile />
 
-      {fightOn && ( <FightButtons /> )}
+        {fightOn && ( <FightButtons /> )}
 
-      < ReadyButton /> 
+        < ReadyButton /> 
+        </>
+      ): (
+        <ReadyModal />
+      )}
+
       
     </MainContainer>
 
