@@ -31,9 +31,9 @@ const App = () => {
 
     const checkIfLogged = async () => {
       const user = await getUserData();
-      await getAllUsers();
+
       if (user) {
-      setIsLogged(true);
+        setIsLogged(true);
       }
     }
     checkIfLogged();
