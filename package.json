@@ -24,6 +24,7 @@
     "metro-file-map": "^0.80.5",
     "postcss": "^8.4.34",
     "react": "18.2.0",
+    "react-modal": "^3.16.1",
     "react-native": "0.73.3",
     "react-native-screens": "^3.29.0",
     "socket.io-client": "^4.7.4",

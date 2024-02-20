@@ -38,59 +38,68 @@ const ProfileAcolyte = () => {
   return (
     <View>
       {isAuthenticated ? (
-       
-        <View>
-          {globalState.user.name !== "" ? (
-            <Container>
-              <ProfileText>ACOLYTE</ProfileText>
-              <Image
-                source={{ uri: globalState.user.imgURL }}
-                style={{ width: 100, height: 100, borderRadius: 50 }}
-              />
-              <ProfileText>Name: {globalState.user.name}</ProfileText>
-              <ProfileText>Rol: {globalState.user.rol}</ProfileText>
-  
-              <ProfileText>Inventory:</ProfileText>
-              <View style={styles.inlineContainer}>
-                {Object.keys(globalState.user.inventory).map((key, index) => (
-                  <ProfileText key={index}>{globalState.inventory[key]}</ProfileText>
-                ))}
-              </View>
-  
-              <ProfileText>Diseases:</ProfileText>
-              <View style={styles.inlineContainer}>
-                {Object.keys(globalState.user.diseases).map((key, index) => (
-                  <ProfileText key={index}>{globalState.user.diseases[key]}</ProfileText>
-                ))}
-              </View>
-  
-              <ButtonContainer>
-                <CustomButton
-                  disabled={blockButtonSocket}
-                  onPress={() => {
-                    disableButton();
-                    socket.emit("test_broadcast", globalState.user.name);
-                    setBlockButtonSocket(false);
-                  }}
-                >
-                  <ButtonText>envio de socket</ButtonText>
-                </CustomButton>
-                <CustomButton onPress={goBack}>
-                  <ButtonText>Attack 2</ButtonText>
-                </CustomButton>
-                <CustomButton onPress={goBack}>
-                  <ButtonText>Reset</ButtonText>
-                </CustomButton>
-              </ButtonContainer>
-  
-              <SignOutButton onPress={onSignOutButtonPress}>
-                <ButtonText>Sign Out</ButtonText>
-              </SignOutButton>
-            </Container>
-          ) : (
-            <Text>Loading...</Text>
-          )}
+          globalState.user.ready ? (
+            <View>
+            {globalState.user.name !== "" ? (
+              <Container>
+                <ProfileText>ACOLYTE</ProfileText>
+                <Image
+                  source={{ uri: globalState.user.imgURL }}
+                  style={{ width: 100, height: 100, borderRadius: 50 }}
+                />
+                <ProfileText>Name: {globalState.user.name}</ProfileText>
+                <ProfileText>Rol: {globalState.user.rol}</ProfileText>
+    
+                <ProfileText>Inventory:</ProfileText>
+                <View style={styles.inlineContainer}>
+                  {Object.keys(globalState.user.inventory).map((key, index) => (
+                    <ProfileText key={index}>{globalState.inventory[key]}</ProfileText>
+                  ))}
+                </View>
+    
+                <ProfileText>Diseases:</ProfileText>
+                <View style={styles.inlineContainer}>
+                  {Object.keys(globalState.user.diseases).map((key, index) => (
+                    <ProfileText key={index}>{globalState.user.diseases[key]}</ProfileText>
+                  ))}
+                </View>
+    
+                <ButtonContainer>
+                  <CustomButton
+                    disabled={blockButtonSocket}
+                    onPress={() => {
+                      disableButton();
+                      socket.emit("test_broadcast", globalState.user.name);
+                      setBlockButtonSocket(false);
+                    }}
+                  >
+                    <ButtonText>envio de socket</ButtonText>
+                  </CustomButton>
+                  <CustomButton onPress={goBack}>
+                    <ButtonText>Attack 2</ButtonText>
+                  </CustomButton>
+                  <CustomButton onPress={goBack}>
+                    <ButtonText>Reset</ButtonText>
+                  </CustomButton>
+                </ButtonContainer>
+    
+                <SignOutButton onPress={onSignOutButtonPress}>
+                  <ButtonText>Sign Out</ButtonText>
+                </SignOutButton>
+              </Container>
+            ) : (
+              <Text>Loading...</Text>
+            )}
         </View>
+        ): (
+          //user ready
+        <>
+          <View>
+          <Text>User ready</Text>
+
+          </View>
+        </>)
+
       ) : (
           <></>
         // <LoginModal />
