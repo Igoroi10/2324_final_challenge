@@ -17,7 +17,7 @@ const ProfileAcolyte = ({ }) => {
   return (
     <MainContainer>
 
-      {globalState.user.ready ? (
+      {!globalState.user.ready ? (
         <>
         <Profile />
 
