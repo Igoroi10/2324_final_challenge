@@ -7,6 +7,7 @@ import ReadyButton from './ReadyButton';
 import FightButtons from './FightButtons';
 import Profile from './Profile';
 import ReadyModal from '../ReadyModal';
+import MortimerProfile from './MortimerProfile';
 
 const ProfileManager = () => {
   
@@ -18,9 +19,7 @@ const ProfileManager = () => {
 
       {globalState.user.rol === "mortimer" ? 
 
-        <>
-        {/* Mortimer Profile */}
-        </>
+        <MortimerProfile/>
         :
         <>
           {!globalState.user.ready ? (
