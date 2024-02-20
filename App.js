@@ -5,7 +5,7 @@ import { globalStateSchema } from './src/helpers/Constants';
 import Login from './src/components/LoginComponents/Login';
 import socket from './helpers/socket';
 import styled from 'styled-components/native';
-import ProfileAcolyte from './screens/ProfileAcolyte';
+import ProfileManager from './src/components/ProfileCompontents/ProfileManager';
 import { getAllUsers } from './src/helpers/axiosPetitions';
 import SocketListener from './src/components/SocketListener';
 
@@ -93,7 +93,7 @@ const App = () => {
       <MainContainer>
 
         {!isLogged && <Login setIsLogged={setIsLogged} />}
-        {(isLogged && globalState.user.name !== "")&& <ProfileAcolyte/>}
+        {(isLogged && globalState.user.name !== "")&& <ProfileManager/>}
       </MainContainer>
     </Context.Provider>
   );
