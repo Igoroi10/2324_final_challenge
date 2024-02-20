@@ -40,6 +40,10 @@ const AppScreen = () => {
     }
     }
     checkIfLogged();
+
+    return () => {
+      socket.removeAllListeners();
+      };
     
     },[]);
 
@@ -49,7 +53,6 @@ const AppScreen = () => {
    
     //ASYNC STORAGE
     const role = await AsyncStorage.getItem('userRole');
-    console.log('ooool', role)
     setUserRole(role);
     
     }
