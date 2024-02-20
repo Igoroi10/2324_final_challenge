@@ -25,6 +25,7 @@
     "postcss": "^8.4.34",
     "react": "18.2.0",
     "react-native": "0.73.3",
+    "react-native-progress": "^5.0.1",
     "react-native-screens": "^3.29.0",
     "socket.io-client": "^4.7.4",
     "styled-components": "^6.1.8"

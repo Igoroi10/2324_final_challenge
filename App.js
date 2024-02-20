@@ -93,7 +93,7 @@ const App = () => {
       <MainContainer>
 
         {!isLogged && <Login setIsLogged={setIsLogged} />}
-        {isLogged && <ProfileAcolyte/>}
+        {(isLogged && globalState.user.name !== "")&& <ProfileAcolyte/>}
       </MainContainer>
     </Context.Provider>
   );
