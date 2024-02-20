@@ -2,10 +2,11 @@ import { useContext, useEffect, useState } from 'react';
 import { Context } from '../helpers/Context';
 
 function SocketListener(props) {
+	console.log(props)
 	if(props !== null){
 		const currentSocketEvent = props.props;
 		const [currentEvent, setEvent] = useState(currentSocketEvent);
-		const {globalState, handleGlobalState} = useContext(Context);
+		const {globalState, globalStateHandler} = useContext(Context);
 
 		useEffect(() => { 
 			setEvent(currentSocketEvent);  
@@ -17,11 +18,11 @@ function SocketListener(props) {
 		}, [currentEvent]);
 
 		const handleUserList = (data) => {
-			handleGlobalState({userList: data});   
+			globalStateHandler({userList: data});   
 
 			data.forEach((userFromList) => {
 				if(userFromList.email === globalState.user.email){
-					handleGlobalState({user: userFromList});
+					globalStateHandler({user: userFromList});
 
 				}
 			}); 
@@ -35,9 +36,9 @@ function SocketListener(props) {
 			console.log(`Conexión de socket: ${data}` )
 		}
 		const handlers = {
-			userList: handleUserList,
             test_broadcast_response: handleTest,
 			new_user: handleNewUser,
+			user_list: handleUserList,
 		}
 	}
 	return null;
