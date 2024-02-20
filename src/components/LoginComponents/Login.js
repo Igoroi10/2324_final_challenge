@@ -36,8 +36,6 @@ const LoginModal = ({setIsLogged}) => {
 
       const tokenURL = URL + "api/users/token"
 
-      console.log(tokenURL);
-
       const decodedUser = await axios.post(tokenURL, { idToken: idTokenResult.token });
 
       const user = decodedUser.data.user;
