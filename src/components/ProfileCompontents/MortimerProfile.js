@@ -108,6 +108,7 @@ const MortimerProfile = () => {
 
     setUsersList(connectedUsers);
 
+    checkLife();
   }, [globalState.userList]);
   
 
@@ -118,8 +119,7 @@ const MortimerProfile = () => {
         const readyUsers = usersList.filter(user => user.isReady);
 
         if(readyUsers.length === usersList.length && readyUsers.length !== 0){
-        console.log("la longitud de los dos arrays es la misma");
-        setIsStartFight(true);
+          setIsStartFight(true);
         }else{
             setIsStartFight(false)
         }
@@ -148,6 +148,17 @@ const MortimerProfile = () => {
       return { left: x, top: y };
     }
   };
+
+  const checkLife = () => {
+    globalState.userList.forEach(element => {
+    if(element.rol === "acolyte" || element.rol === "knight"){
+      if(element.characterStats.hp <= 0 && element.isReady){
+          console.log(`${element.name} ha muerto!!`);
+          console.log(element.characterStats);
+        }
+      }
+    });
+  }
 
   const battleStart = ()=>{
     setIsButtonPress(true);
