@@ -101,6 +101,8 @@ function SocketListener(props) {
 			}
 		}
 
+		const handleTry = (data) => {}
+
 		const handlers = {
 			test_broadcast_response: handleTest,
 			new_user: handleNewUser,
@@ -108,6 +110,7 @@ function SocketListener(props) {
 			start_battle_response: handleBattleResponse,
 			switch_turn: handleChangeTurn,
 			attack: handleAttack,
+			attack_try: handleTry,
 		}
 	}
 	return null;

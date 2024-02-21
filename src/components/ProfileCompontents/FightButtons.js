@@ -6,6 +6,7 @@ import { Image, StyleSheet } from 'react-native';
 // Assets
 import iconAtack from '../../../assets/Icon_attack_v1.png'
 import iconShield from '../../../assets/Icon_shield_v1.png'
+import socket from '../../../helpers/socket';
 
 const FightButtons = ({ }) => {
 
@@ -14,17 +15,44 @@ const FightButtons = ({ }) => {
   return (
 
     <ButtonsContainer>
-      <Square>
-        <Image source={iconAtack} style={styles.image} />
+      <Square onPress={showEnemyList}>
+        <Image source={iconAtack} style={styles.image}  />
       </Square>
 
-      <Square>
+      <Square onPress={attackTest}>
         <Image source={iconShield} style={styles.image} />
       </Square>
 
     </ButtonsContainer>
 
   )
+}
+
+const attackTest = () =>{
+  const user = globalState.user;
+  let isGood;
+
+  if(user.rol === "acolyte" || user.rol === "mortimer")
+      isGood = true
+  else    
+      isGood = false
+
+  const posibleTargets = globalState.userList.map((el) => {
+      if(isGood){
+        if(el.rol !== "acolyte" && el.rol !== "mortimer")
+          return el;
+      }
+      else{
+        if(el.rol === "acolyte" || el.rol === "mortimer")
+          return el;
+      }
+  })
+  const dataToSend = {
+    id: globalState.user._id,
+    targId: posibleTargets[1]._id,
+    stat: globalState.user.characterStats.strength
+  }
+  socket.emit()
 }
 
 const styles = StyleSheet.create({
