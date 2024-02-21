@@ -26,7 +26,7 @@ const ProfileManager = () => {
           <>
           <Profile />
   
-          {fightOn && ( <FightButtons /> )}
+          {!fightOn && ( <FightButtons /> )}
   
           < ReadyButton /> 
           </>
