@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components/native';
 import { Context } from '../../helpers/Context';
+import AllUsersReadyModal from '../AllUsersReadyModal';
 
 // Imports de los componentes de User
 import ReadyButton from './ReadyButton';
@@ -15,6 +16,8 @@ const ProfileManager = () => {
   const { globalState } = useContext(Context);
   const [fightOn, setFightOn] = useState(false);
   const [openEnemyList, setOpenEnemyList] = useState(false);
+  const [showAllUsersReadyModal, setShowAllUsersReadyModal] = useState(false);
+
 
   useEffect(() => { 
     console.log("ENEMY LIST:")  
@@ -22,19 +25,29 @@ const ProfileManager = () => {
   }, [openEnemyList]);
   
 
-  return (
+  useEffect(() => {
+    if (globalState.userList && globalState.user.rol === "acolyte") {
+      const readyUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isReady);
+      const connectedUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isConnected);
+      if (readyUsers.length === connectedUsers.length && readyUsers.length !== 0) {
+        setShowAllUsersReadyModal(true);
+      } else {
+        setShowAllUsersReadyModal(false);
+      }
+    }
+  }, [globalState.userList, globalState.user.rol]);
+
+return (
     <MainContainer>
-
       {globalState.user.rol === "mortimer" ? 
-
         <MortimerProfile/>
         :
         <>
           {!globalState.user.isReady ? (
           <>
-          <Profile />
+          <Profile showAllUsersReadyModal={showAllUsersReadyModal} /> 
   
-          {!fightOn && ( <FightButtons setOpenEnemyList = {setOpenEnemyList}/> )}
+          {fightOn && ( <FightButtons setOpenEnemyList = {setOpenEnemyList}/> )}
   
           < ReadyButton /> 
           {openEnemyList && globalState.userList.length > 0 && (
@@ -44,13 +57,14 @@ const ProfileManager = () => {
           </>
           ): (
             <>
-            <ReadyModal />
+            <ReadyModal showAllUsersReadyModal={showAllUsersReadyModal} />
             </>
+
           )}
         </>
       }
+      {showAllUsersReadyModal && <AllUsersReadyModal />}
     </MainContainer>
-
   );
 };
 

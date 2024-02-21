@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import { View, ActivityIndicator, ImageBackground, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 import { storeUserData } from '../../helpers/asyncStorageUser';
@@ -7,10 +7,12 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import { URL } from '../../../config';
 
-
 const LoginModal = ({setIsLogged}) => {
 
   const [isButtonLoading, setIsButtonLoading] = useState(false);
+
+
+
 
   async function onGoogleButtonPress() {
 
@@ -57,7 +59,7 @@ const LoginModal = ({setIsLogged}) => {
     <ImageBackground source={require("../../../assets/wallpaper_login.jpeg")} style={styles.imageBackground}>
       <MainContainer>
         <StyledButton onPress={onGoogleButtonPress} disabled={isButtonLoading}>
-          {isButtonLoading ? <ActivityIndicator color="white" /> : <ButtonText>Google Sign-In</ButtonText>}
+          {isButtonLoading ? <ActivityIndicator color="black" /> : <ButtonText>Google Sign-In</ButtonText>}
         </StyledButton>
       </MainContainer>
     </ImageBackground>

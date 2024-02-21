@@ -7,11 +7,13 @@ const AllUsersReadyModal = () => {
 
 
   return (
-    <ImageBackground source={require("../../assets/wallpaper_login.jpeg")} style={styles.imageBackground}>
-    
-          <Text >ALL USERS ARE READY FOR BATTLE</Text>
+    <MainContainer>
+      <ImageBackground source={require("../../assets/wallpaper_login.jpeg")} style={styles.imageBackground}>
       
-    </ImageBackground>
+            <Text >ALL USERS ARE READY FOR BATTLE</Text>
+        
+      </ImageBackground>
+    </MainContainer>
   )
 }
 
@@ -29,6 +31,14 @@ const Text = styled.Text`
  top: 20%;
  width: 50%;
  left: 25%;
+`
+const MainContainer = styled.View`
+  width: 110%;
+  height: 110%; 
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
 `
 
 export default AllUsersReadyModal;
