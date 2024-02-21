@@ -8,7 +8,7 @@ import iconAtack from '../../../assets/Icon_attack_v1.png'
 import iconShield from '../../../assets/Icon_shield_v1.png'
 import socket from '../../../helpers/socket';
 
-const FightButtons = ({ }) => {
+const FightButtons = ({setOpenEnemyList} ) => {
 
   const { globalState, globalStateHandler } = useContext(Context);
 
@@ -32,7 +32,6 @@ const FightButtons = ({ }) => {
             return el;
         }
     })
-    console.log(globalState.user._id)
     const dataToSend = {
       id: user._id,
       targId: globalState.userList[1]._id,
@@ -40,10 +39,18 @@ const FightButtons = ({ }) => {
     }
     socket.emit('attack_try', dataToSend);
   }
+
+  const openEnemyList = () =>{
+   setOpenEnemyList(true);
+  }
+
+  
+
   return (
 
     <ButtonsContainer>
-      <Square onPress={console.log("showEnemyList")}>
+      {/* este boton */}
+      <Square onPress={openEnemyList}>
         <Image source={iconAtack} style={styles.image}  />
       </Square>
       <Square onPress={attackTest}>
