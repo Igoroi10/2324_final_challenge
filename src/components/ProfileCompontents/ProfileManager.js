@@ -22,9 +22,9 @@ const ProfileManager = () => {
         <MortimerProfile/>
         :
         <>
+            <Profile /> 
           {!globalState.user.isReady ? (
-          <>
-          <Profile />
+            <>
   
           {fightOn && ( <FightButtons /> )}
   

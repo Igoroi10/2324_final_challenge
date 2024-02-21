@@ -190,7 +190,7 @@ const MortimerProfile = () => {
         <LeftContainer>
             <RowContainer>
             <PictureContainer>
-                <ProfilePicture source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/the-final-battle-287a4.appspot.com/o/Avatare%2F0_0.webp?alt=media&token=5d085dec-f8d8-4022-b9ce-0581f533fa1b' }} />
+                <ProfilePicture source={{ uri: globalState.user.imgURL }} />
             </PictureContainer>
             <ProfileInformation>
                 <ProfileVariblesTitle>{globalState.user.name}</ProfileVariblesTitle>
