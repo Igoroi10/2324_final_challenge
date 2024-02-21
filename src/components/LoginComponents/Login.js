@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useContext,useEffect } from 'react';
 import { View, ActivityIndicator, ImageBackground, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 import { storeUserData } from '../../helpers/asyncStorageUser';
@@ -6,11 +6,32 @@ import axios from 'axios';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import { URL } from '../../../config';
-
+import { Context } from '../../helpers/Context';
 
 const LoginModal = ({setIsLogged}) => {
 
   const [isButtonLoading, setIsButtonLoading] = useState(false);
+
+  const {globalState, globalStateHandler} = useContext(Context);
+
+
+
+
+  useEffect(() => {
+    console.log("ENTRAMOS")
+    console.log(globalState.initiative);
+    if (globalState.initiative == []) {
+      globalStateHandler({currentTurn: `${globalState.initiative[0].id}`});
+    }
+  }, [globalState.initiative]);
+
+  useEffect(() => {
+    if (globalState.currentTurn != "")
+    {
+      console.log("Entra en currentTurn");
+      console.log(globalState.currentTurn);
+    }
+  }, [globalState.currentTurn]);
 
   async function onGoogleButtonPress() {
 

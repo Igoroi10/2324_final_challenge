@@ -103,6 +103,8 @@ const MortimerProfile = () => {
   const [isStartFight, setIsStartFight] = useState(false);
   const [isButtonPress, setIsButtonPress] = useState(false);
 
+  
+
   useEffect(() => {
     const connectedUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isConnected);
 
