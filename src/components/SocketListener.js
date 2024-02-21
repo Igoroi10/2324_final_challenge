@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Context } from '../helpers/Context';
+import socket from '../../helpers/socket';
 
 function SocketListener(props) {
 	console.log(props)
@@ -53,7 +54,16 @@ function SocketListener(props) {
 
 			//if target (data.targId) y origen (data.id)
 
-			//emit de cambio de turno (if user.rol === Mortimer)
+			if(globalState.user.rol === "mortimer"){
+
+				const index = globals.initiative.indexOf(globals.currentTurn);
+
+				const dataToSend = {
+					index: index,
+					length: globals.initiative.length
+				}
+				socket.emit("change_turn", dataToSend);
+			}
 		}
 
 		const handlers = {
