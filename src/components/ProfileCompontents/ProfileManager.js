@@ -28,30 +28,25 @@ const ProfileManager = () => {
     }
   }, [globalState.userList, globalState.user.rol]);
 
-  return (
+return (
     <MainContainer>
-
       {globalState.user.rol === "mortimer" ? 
-
         <MortimerProfile/>
         :
         <>
-           
           {!globalState.user.isReady ? (
             <>
-            <Profile /> 
-          {fightOn && ( <FightButtons /> )}
-  
-          < ReadyButton /> 
-          </>
-          ): (
-            <ReadyModal />
+              <Profile showAllUsersReadyModal={showAllUsersReadyModal} /> 
+              {fightOn && <FightButtons />}  
+              <ReadyButton /> 
+            </>
+          ) : (
+            <ReadyModal showAllUsersReadyModal={showAllUsersReadyModal} />
           )}
         </>
       }
       {showAllUsersReadyModal && <AllUsersReadyModal />}
     </MainContainer>
-
   );
 };
 

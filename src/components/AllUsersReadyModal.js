@@ -38,7 +38,6 @@ const MainContainer = styled.View`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: rgba(255, 255, 255, 0.6);
   background-color: black;
 `
 
