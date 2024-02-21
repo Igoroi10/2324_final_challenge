@@ -51,10 +51,25 @@ function SocketListener(props) {
 			globalStateHandler({
 				currentTurn: `${globalState.initiative[data.index]}`,
 			});
-			
-			const userIndex = globalState.userList.findIndex(user => user._id.toString() === globalState.userList[data.index]);
 
-			if(globalState.userList[userIndex].rol === "knight"){
+			console.log(globalState.initiative[data.index])
+			
+			let turnNumber = 0
+
+			globalState.userList.forEach((el, index) => {
+				if(globalState.initiative[data.index] === el._id)
+					turnNumber = index;
+			})
+
+			const userIndex = globalState.userList.findIndex(user => user._id.toString() === globalState.userList[data.index]);
+			console.log("//////// USER INDEX //////")
+			console.log(turnNumber)
+			console.log("///////////////////////////")
+			console.log("//////////// Current turn user ////////")
+			console.log(globalState.userList[turnNumber].name)
+			
+			if(globalState.userList[turnNumber].rol === "knight"){
+				
 
 				const acolyteArray = globalState.initiative.filter((id)=>{
 					
@@ -90,12 +105,14 @@ function SocketListener(props) {
 			//if target (data.targId) y origen (data.id)
 
 			if(globalState.user.rol === "mortimer"){
-
-				const index = globals.initiative.indexOf(globals.currentTurn);
+				const index = globalState.initiative.filter((id, index) => {
+					if(id == globalState.currentTurn)
+						return index
+				});
 
 				const dataToSend = {
 					index: index,
-					length: globals.initiative.length
+					length: globalState.initiative.length
 				}
 				socket.emit("change_turn", dataToSend);
 			}
