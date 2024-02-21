@@ -3,6 +3,7 @@ import { Dimensions } from 'react-native';
 import styled from 'styled-components/native';
 import { Context } from '../../helpers/Context';
 import socket from '../../../helpers/socket';
+import { all } from 'axios';
 
 const ProfileContainer = styled.View`
   display: flex;
@@ -110,6 +111,12 @@ const MortimerProfile = () => {
 
     setUsersList(connectedUsers);
 
+<<<<<<< HEAD
+    checkLife();
+=======
+    checkAllUsersHP();
+
+>>>>>>> develop
   }, [globalState.userList]);
   
 
@@ -120,8 +127,7 @@ const MortimerProfile = () => {
         const readyUsers = usersList.filter(user => user.isReady);
 
         if(readyUsers.length === usersList.length && readyUsers.length !== 0){
-        console.log("la longitud de los dos arrays es la misma");
-        setIsStartFight(true);
+          setIsStartFight(true);
         }else{
             setIsStartFight(false)
         }
@@ -151,10 +157,50 @@ const MortimerProfile = () => {
     }
   };
 
-  const battleStart = ()=>{
-    setIsButtonPress(true);
-    socket.emit("start_battle");
+  const checkLife = () => {
+    globalState.userList.forEach(element => {
+    if(element.rol === "acolyte" || element.rol === "knight"){
+      if(element.characterStats.hp <= 0 && element.isReady){
+          console.log(`${element.name} ha muerto!!`);
+          console.log(element.characterStats);
+        }
+      }
+    });
   }
+
+  const battleStart = ()=>{
+
+    setIsButtonPress(true);
+
+    const userIDs = usersList.map(({_id})=>_id);
+    const dataToSend ={
+
+        userIDs: userIDs
+    }
+    socket.emit("start_battle", dataToSend);
+  }
+
+  const checkAllUsersHP = () => {
+    const userList = globalState.userList;
+    const acolyteUsers = userList.filter(user => user.rol === 'acolyte');
+    const knightUsers = userList.filter(user => user.rol === 'knight');
+
+    const allAcolyteHPZero = userList.filter(user => user.rol === 'acolyte' && user.characterStats.hp <= 0)
+    const allKnightHPZero = userList.filter(user => user.rol === 'knight' && user.characterStats.hp <= 0)
+    
+    console.log("allKnighteHPZero: ", allKnightHPZero.length);
+    
+    console.log("allAcolyteHPZero: ", allAcolyteHPZero.length);
+
+    if(knightUsers.length === allKnightHPZero.length){
+      console.log("//////////  Todos los jinetes han fallecido  //////////////");
+    }
+    else if(acolyteUsers.length === allAcolyteHPZero.length){
+      console.log('///////  Todos los acolitos han fallecido  /////////');
+    }
+  };
+
+
   return (
     <ProfileContainer>
         <LeftContainer>
