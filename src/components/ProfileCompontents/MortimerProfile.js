@@ -150,8 +150,15 @@ const MortimerProfile = () => {
   };
 
   const battleStart = ()=>{
+
     setIsButtonPress(true);
-    socket.emit("start_battle");
+
+    const userIDs = usersList.map(({_id})=>_id);
+    const dataToSend ={
+
+        userIDs: userIDs
+    }
+    socket.emit("start_battle", dataToSend);
   }
   return (
     <ProfileContainer>
