@@ -56,12 +56,15 @@ function SocketListener(props) {
 			//emit de cambio de turno (if user.rol === Mortimer)
 		}
 
+		const handleTry = (data) => {}
+
 		const handlers = {
             test_broadcast_response: handleTest,
 			new_user: handleNewUser,
 			user_list: handleUserList,
 			start_battle_response:handleBattleResponse,
 			attack: handleAttack,
+			attack_try: handleTry,
 		}
 	}
 	return null;
