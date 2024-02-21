@@ -18,7 +18,6 @@ const ProfileManager = () => {
   const [openEnemyList, setOpenEnemyList] = useState(false);
   const [showAllUsersReadyModal, setShowAllUsersReadyModal] = useState(false);
 
-
   useEffect(() => { 
     console.log("ENEMY LIST:")  
     console.log(openEnemyList);
@@ -43,24 +42,25 @@ return (
         <MortimerProfile/>
         :
         <>
-          {!globalState.user.isReady ? (
-          <>
-          <Profile showAllUsersReadyModal={showAllUsersReadyModal} /> 
-  
-          {fightOn && ( <FightButtons setOpenEnemyList = {setOpenEnemyList}/> )}
-  
-          < ReadyButton /> 
-          {openEnemyList && globalState.userList.length > 0 && (
-            <UserListModal setOpenEnemyList = {setOpenEnemyList} /> 
-          )}
-
-          </>
-          ): (
+          {!globalState.user.isReady && (
             <>
-            <ReadyModal showAllUsersReadyModal={showAllUsersReadyModal} />
-            </>
-
+              <Profile showAllUsersReadyModal={showAllUsersReadyModal} />
+              <ReadyButton />
+            </> 
           )}
+  
+          {globalState.battleStart && ( 
+            <>
+              <Profile showAllUsersReadyModal={showAllUsersReadyModal} />
+              <FightButtons setOpenEnemyList = {setOpenEnemyList}/> 
+              {(openEnemyList && globalState.userList.length > 0) && (
+                <UserListModal setOpenEnemyList = {setOpenEnemyList} /> 
+              )}
+            </>
+          )}
+
+          {globalState.user.isReady && !globalState.battleStart && (<ReadyModal showAllUsersReadyModal={showAllUsersReadyModal} />)}
+
         </>
       }
       {showAllUsersReadyModal && <AllUsersReadyModal />}
