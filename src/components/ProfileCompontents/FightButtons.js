@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components/native';
 import { Context } from '../../helpers/Context';
-import { Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet, Text } from 'react-native';
 
 // Assets
 import iconAtack from '../../../assets/Icon_attack_v1.png'
@@ -12,13 +12,40 @@ const FightButtons = ({ }) => {
 
   const { globalState, globalStateHandler } = useContext(Context);
 
+  const attackTest = () =>{
+    const user = globalState.user;
+    let isGood;
+  
+    if(user.rol === "acolyte" || user.rol === "mortimer")
+        isGood = true
+    else    
+        isGood = false
+  
+    const posibleTargets = globalState.userList.map((el) => {
+
+        if(isGood){
+          if(el.rol !== "acolyte" && el.rol !== "mortimer")
+            return el;
+        }
+        else{
+          if(el.rol === "acolyte" || el.rol === "mortimer")
+            return el;
+        }
+    })
+    console.log(globalState.user._id)
+    const dataToSend = {
+      id: user._id,
+      targId: globalState.userList[1]._id,
+      stat: "strength"
+    }
+    socket.emit('attack_try', dataToSend);
+  }
   return (
 
     <ButtonsContainer>
-      <Square onPress={showEnemyList}>
+      <Square onPress={console.log("showEnemyList")}>
         <Image source={iconAtack} style={styles.image}  />
       </Square>
-
       <Square onPress={attackTest}>
         <Image source={iconShield} style={styles.image} />
       </Square>
@@ -28,32 +55,7 @@ const FightButtons = ({ }) => {
   )
 }
 
-const attackTest = () =>{
-  const user = globalState.user;
-  let isGood;
 
-  if(user.rol === "acolyte" || user.rol === "mortimer")
-      isGood = true
-  else    
-      isGood = false
-
-  const posibleTargets = globalState.userList.map((el) => {
-      if(isGood){
-        if(el.rol !== "acolyte" && el.rol !== "mortimer")
-          return el;
-      }
-      else{
-        if(el.rol === "acolyte" || el.rol === "mortimer")
-          return el;
-      }
-  })
-  const dataToSend = {
-    id: globalState.user._id,
-    targId: posibleTargets[1]._id,
-    stat: globalState.user.characterStats.strength
-  }
-  socket.emit('attack_try', dataToSend);
-}
 
 const styles = StyleSheet.create({
   image: {
