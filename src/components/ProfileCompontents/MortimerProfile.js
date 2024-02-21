@@ -111,12 +111,9 @@ const MortimerProfile = () => {
 
     setUsersList(connectedUsers);
 
-<<<<<<< HEAD
     checkLife();
-=======
     checkAllUsersHP();
 
->>>>>>> develop
   }, [globalState.userList]);
   
 
