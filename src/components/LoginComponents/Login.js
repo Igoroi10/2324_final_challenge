@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import { View, ActivityIndicator, ImageBackground, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 import { storeUserData } from '../../helpers/asyncStorageUser';
@@ -7,10 +7,12 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import { URL } from '../../../config';
 
-
 const LoginModal = ({setIsLogged}) => {
 
   const [isButtonLoading, setIsButtonLoading] = useState(false);
+
+
+
 
   async function onGoogleButtonPress() {
 
