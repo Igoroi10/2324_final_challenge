@@ -163,6 +163,7 @@ const MortimerProfile = () => {
   const battleStart = ()=>{
 
     setIsButtonPress(true);
+    setIsBattleField(true);
 
     const userIDs = usersList.map(({_id})=>_id);
     const dataToSend ={
