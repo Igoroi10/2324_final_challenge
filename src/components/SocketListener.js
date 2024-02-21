@@ -41,11 +41,27 @@ function SocketListener(props) {
 			globalStateHandler({battleStart: data.battleStart});
 		}
 
+		const handleAttack = (data) => {
+			globalStateHandler({userList: data.userList});   
+
+			data.userList.forEach((userFromList) => {
+				if(userFromList.email === globalState.user.email){
+					globalStateHandler({user: userFromList});
+
+				}
+			}); 
+
+			//if target (data.targId) y origen (data.id)
+
+			//emit de cambio de turno (if user.rol === Mortimer)
+		}
+
 		const handlers = {
             test_broadcast_response: handleTest,
 			new_user: handleNewUser,
 			user_list: handleUserList,
-			start_battle_response:handleBattleResponse
+			start_battle_response:handleBattleResponse,
+			attack: handleAttack,
 		}
 	}
 	return null;
