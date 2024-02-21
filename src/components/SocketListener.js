@@ -47,9 +47,34 @@ function SocketListener(props) {
 		}
 
 		const handleChangeTurn = (data) => {
+			
 			globalStateHandler({
 				currentTurn: `${globalState.initiative[data.index]}`,
-			  });
+			});
+			
+			const userIndex = globalState.userList.findIndex(user => user._id.toString() === globalState.userList[data.index]);
+
+			if(globalState.userList[userIndex].rol === "knight"){
+
+				const acolyteArray = globalState.initiative.filter((id)=>{
+					
+					const idIndex = globalState.userList.findIndex((user)=> user._id.toString() === id);
+
+					const userObject = globalState.userList[idIndex];
+
+					if(userObject.rol === "acolyte"){
+						return userObject;
+					}
+				})
+				const randomAcolyte = Math.floor(Math.random() * acolyteArray.length); 
+
+				const dataToSend = {
+					id: globalState.userList._id,
+					targId: acolyteArray[randomAcolyte]._id,
+					stat: "strength"
+				}
+				socket.emit('attack_try', dataToSend);
+			}
 		}
 
 		const handleAttack = (data) => {
