@@ -59,7 +59,7 @@ const LoginModal = ({setIsLogged}) => {
     <ImageBackground source={require("../../../assets/wallpaper_login.jpeg")} style={styles.imageBackground}>
       <MainContainer>
         <StyledButton onPress={onGoogleButtonPress} disabled={isButtonLoading}>
-          {isButtonLoading ? <ActivityIndicator color="white" /> : <ButtonText>Google Sign-In</ButtonText>}
+          {isButtonLoading ? <ActivityIndicator color="black" /> : <ButtonText>Google Sign-In</ButtonText>}
         </StyledButton>
       </MainContainer>
     </ImageBackground>
