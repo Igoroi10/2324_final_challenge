@@ -31,7 +31,7 @@ export const globalStateSchema = {
 
     battleStart:false,
 
-    initiative: [{id:"45a2049bfc0ed721a22aefe4"},{id:"65d4ec5a680d3d9581bcf2bf"}],
+    initiative: [],
     
     currentTurn: "",
 
