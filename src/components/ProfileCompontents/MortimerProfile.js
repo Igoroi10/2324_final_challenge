@@ -131,8 +131,8 @@ const MortimerProfile = () => {
 
   useEffect(()=>{
 
-    if(battleStart === true){
-        setIsButtonPress(false);
+    if(globalState.battleStart === true){
+        console.log("Battle Started")
     }
   },[globalState.battleStart])
 
@@ -153,8 +153,15 @@ const MortimerProfile = () => {
   };
 
   const battleStart = ()=>{
+
     setIsButtonPress(true);
-    socket.emit("start_battle");
+
+    const userIDs = usersList.map(({_id})=>_id);
+    const dataToSend ={
+
+        userIDs: userIDs
+    }
+    socket.emit("start_battle", dataToSend);
   }
 
   const checkAllUsersHP = () => {
