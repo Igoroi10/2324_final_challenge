@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components/native';
 import { Context } from '../../helpers/Context';
+import AllUsersReadyModal from '../AllUsersReadyModal';
 
 // Imports de los componentes de User
 import ReadyButton from './ReadyButton';
@@ -13,6 +14,19 @@ const ProfileManager = () => {
   
   const { globalState } = useContext(Context);
   const [fightOn, setFightOn] = useState(false)
+  const [showAllUsersReadyModal, setShowAllUsersReadyModal] = useState(false);
+
+  useEffect(() => {
+    if (globalState.userList && globalState.user.rol === "acolyte") {
+      const readyUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isReady);
+      const connectedUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isConnected);
+      if (readyUsers.length === connectedUsers.length && readyUsers.length !== 0) {
+        setShowAllUsersReadyModal(true);
+      } else {
+        setShowAllUsersReadyModal(false);
+      }
+    }
+  }, [globalState.userList, globalState.user.rol]);
 
   return (
     <MainContainer>
@@ -22,10 +36,10 @@ const ProfileManager = () => {
         <MortimerProfile/>
         :
         <>
-            <Profile /> 
+           
           {!globalState.user.isReady ? (
             <>
-  
+            <Profile /> 
           {fightOn && ( <FightButtons /> )}
   
           < ReadyButton /> 
@@ -35,6 +49,7 @@ const ProfileManager = () => {
           )}
         </>
       }
+      {showAllUsersReadyModal && <AllUsersReadyModal />}
     </MainContainer>
 
   );
