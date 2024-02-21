@@ -2,25 +2,43 @@ import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components/native';
 import { Context } from '../../helpers/Context';
 import { Image, StyleSheet } from 'react-native';
-
+import AllUsersReadyModal from '../AllUsersReadyModal';
 import Stats from './Stats';
 
 const Profile = ({ }) => {
 
   const { globalState, globalStateHandler } = useContext(Context);
+  const [isStartFight, setIsStartFight] = useState(false);
+  
+  useEffect(() => {
+
+    if (globalState.userList) {
+
+        const readyUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isReady);
+        const connectedUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isConnected)
+
+        if(readyUsers.length === connectedUsers.length && readyUsers.length !== 0){
+        setIsStartFight(true);
+        }else{
+            setIsStartFight(false)
+        }
+    }
+  }, [globalState.userList]);
 
   return (
-
-    <ProfileContainer>
-
-      <Image source={{ uri: globalState.user.imgURL }} style={styles.image} />
-
-      <ProfileText> {globalState.user.name}</ProfileText>
-
-      < Stats />
-
-    </ProfileContainer>
-  )
+    <>
+      {!isStartFight && (
+        <ProfileContainer>
+          <Image source={{ uri: globalState.user.imgURL }} style={styles.image} />
+          <ProfileText>{globalState.user.name}</ProfileText>
+          <Stats />
+        </ProfileContainer>
+      )}
+  
+      {isStartFight && <AllUsersReadyModal />}
+    </>
+  );
+  
 }
 
 const styles = StyleSheet.create({
