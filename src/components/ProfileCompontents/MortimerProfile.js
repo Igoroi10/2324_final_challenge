@@ -128,8 +128,8 @@ const MortimerProfile = () => {
 
   useEffect(()=>{
 
-    if(battleStart === true){
-        setIsButtonPress(false);
+    if(globalState.battleStart === true){
+        console.log("Battle Started")
     }
   },[globalState.battleStart])
 
