@@ -52,7 +52,7 @@ const attackTest = () =>{
     targId: posibleTargets[1]._id,
     stat: globalState.user.characterStats.strength
   }
-  socket.emit()
+  socket.emit('attack_try', dataToSend);
 }
 
 const styles = StyleSheet.create({
