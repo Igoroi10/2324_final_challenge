@@ -38,6 +38,7 @@ function SocketListener(props) {
 
 		const handleBattleResponse = (data)=>{
 			console.log(data)
+			globalStateHandler({battleStart: data.battleStart});
 		}
 
 		const handlers = {
