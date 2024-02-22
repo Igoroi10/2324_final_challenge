@@ -13,7 +13,37 @@ const VillanoButtons = ({} ) => {
 
   const { globalState, globalStateHandler } = useContext(Context);
   const [openEnemyList, setOpenEnemyList] = useState(false);
-  
+
+  const rottingPlague = () =>{
+    
+    const data = {
+      id: user._id,
+      illness: "rotting_plague",
+      active: true
+    }
+    socket.emit('disease_try', data);
+  }
+
+  const epicWeakness = () =>{
+    
+    const data = {
+      id: user._id,
+      illness: "epic_weakness",
+      active: true
+    }
+    socket.emit('disease_try', data);
+  }
+
+  const marrowApocalypse = () =>{
+    
+    const data = {
+      id: user._id,
+      illness: "marrow_apocalypse",
+      active: true
+    }
+    socket.emit('disease_try', data);
+  }
+
   return (
     globalState.user._id ? (
       <ButtonsContainer>

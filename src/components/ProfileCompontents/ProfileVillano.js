@@ -9,6 +9,8 @@ const ProfileVillano = ({ }) => {
 
   const { globalState, globalStateHandler } = useContext(Context);
   
+  globalState.user.isReady = true;
+  
   return (
     <> 
         <ProfileContainer>
