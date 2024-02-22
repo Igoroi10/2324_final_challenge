@@ -10,6 +10,7 @@ import Profile from './Profile';
 import ReadyModal from '../ReadyModal';
 import MortimerProfile from './MortimerProfile';
 import UserListModal from '../UserListModal'
+import ProfileVillano from './ProfileVillano';
 
 const ProfileManager = () => {
   const { globalState } = useContext(Context);
@@ -37,32 +38,33 @@ const ProfileManager = () => {
 
   return (
     <MainContainer>
-      {globalState.user.rol === "mortimer" ?
-        <MortimerProfile />
-        :
-        <>
-          {!globalState.user.isReady && (
-            <>
-              <Profile />
-              <ReadyButton />
-            </>
-          )}
-          {globalState.battleStart && (
-            <>
-              <Profile />
-              <FightButtons setOpenEnemyList={setOpenEnemyList} />
-              {(openEnemyList && globalState.userList.length > 0) && (
-                <UserListModal setOpenEnemyList={setOpenEnemyList} />
-              )}
-            </>
-          )}
-
-          {globalState.user.isReady && !globalState.battleStart && (<ReadyModal />)}
-
-        </>
-      }
-      {showAllUsersReadyModal && !globalState.battleStart && <AllUsersReadyModal />}
-    </MainContainer>
+    {globalState.user.rol === "mortimer" ? (
+      <MortimerProfile />
+    ) : globalState.user.rol === "villano" ? (
+      <ProfileVillano />
+    ) : (
+      <>
+        {!globalState.user.isReady && (
+          <>
+            <Profile />
+            <ReadyButton />
+          </>
+        )}
+        {globalState.battleStart && (
+          <>
+            <Profile />
+            <FightButtons setOpenEnemyList={setOpenEnemyList} />
+            {(openEnemyList && globalState.userList.length > 0) && (
+              <UserListModal setOpenEnemyList={setOpenEnemyList} />
+            )}
+          </>
+        )}
+        {globalState.user.isReady && !globalState.battleStart && (<ReadyModal />)}
+      </>
+    )}
+    {showAllUsersReadyModal && !globalState.battleStart && <AllUsersReadyModal />}
+  </MainContainer>
+  
   );
 };
 
