@@ -38,6 +38,12 @@ const BattleField = ({ }) => {
     
 
   }, [globalState]);
+
+  useEffect(()=>{
+    setTimeout(() => {  
+      globalStateHandler({currentMessage: ""});
+    }, 4000);
+  },[globalState.currentMessage])
   
   if(acolites === null || knights === null){
     return null
@@ -82,7 +88,10 @@ const BattleField = ({ }) => {
         </TurnContainer>
 
         <MessagesContainer>
-          <Text style={{color: 'white'}}t> INTERFACE MESSAGES </Text>
+          {globalState.currentMessage !== "" &&
+           <Text style={{color: 'white'}}t>{globalState.currentMessage}</Text>
+          }
+         
         </MessagesContainer>
       </Interface>
 
