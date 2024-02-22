@@ -64,7 +64,7 @@ const BattleField = ({ }) => {
             <Progress.Bar 
               color={'rgba(100, 255, 100, 1)'}
               style={styles.AcolyteProgressBar} 
-              progress={acolite.characterStats.hp / acolite.characterMaxStats.maxHp} 
+              progress={acolite.characterMaxStats.maxHp / acolite.characterStats.hp} 
               
             />
 
@@ -81,7 +81,9 @@ const BattleField = ({ }) => {
           </TurnImageContainer>
         </TurnContainer>
 
-        <Text style={{color: 'white'}}t> INTERFACE MESSAGES </Text>
+        <MessagesContainer>
+          <Text style={{color: 'white'}}t> INTERFACE MESSAGES </Text>
+        </MessagesContainer>
       </Interface>
 
       <EnemiesContainer>
@@ -96,14 +98,13 @@ const BattleField = ({ }) => {
             <Progress.Bar 
               color={'rgba(255, 0, 0, 1)'}
               style={styles.KnightProgressBar} 
-              progress={knight.characterStats.hp / knight.characterMaxStats.maxHp}
+              progress={ knight.characterMaxStats.maxHp / knight.characterStats.hp }
             />
           </EnemyContainer >
         </>
         )}
 
       </EnemiesContainer>
-
     </MainContainer>
     
     </>
@@ -144,7 +145,7 @@ const Interface = styled.View`
 
 const TurnImageContainer = styled.View`
   border: 2px solid white;
-  borderRadius: 50px;
+  border-radius: 50px;
   width: 55px;
 `
 
@@ -163,7 +164,7 @@ const EnemiesContainer = styled.View`
   flex-direction: row;
   width: 70%;
   height: 28%;
-  justifyContent: space-around; 
+  justify-content: space-around; 
   align-items: top;
 `
 const EnemyContainer = styled.View`
@@ -174,7 +175,7 @@ const EnemyContainer = styled.View`
 
 const EnemyImageContainer = styled.View`
   border: 2px solid white;
-  borderRadius: 100px;
+  border-radius: 100px;
   margin-top: 5%; 
 `
 
@@ -203,13 +204,12 @@ const AcolyteContainer = styled.View`
   margin-left: 1%;
   align-items: center;
   justify-content: center;
-   padding-top: ${(prop => prop.isPair ? '0': '10%')};
-  `
+  padding-top: ${(prop => prop.isPair ? '0': '10%')};
+`
   
 const AcolyteImageContainer = styled.View`
   border: 2px solid white;
-  borderRadius: 100px;
-
+  border-radius: 100px;
 `
 
 const AcolyteImage = styled.Image`
@@ -221,6 +221,11 @@ const AcolyteImage = styled.Image`
 
 const TurnContainer = styled.View`
   width: 15%;
+`
+
+const MessagesContainer = styled.View`
+  width: 50%;
+  height: 100%;
 `
 
 export default BattleField
