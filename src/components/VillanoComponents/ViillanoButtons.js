@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components/native';
 import { Context } from '../../helpers/Context';
-import { Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet, TurboModuleRegistry } from 'react-native';
 
 // Assets
 import iconAtack from '../../../assets/Icon_attack_v1.png'
 import iconShield from '../../../assets/Icon_shield_v1.png'
 import socket from '../../../helpers/socket';
-import UserListModal from '../UserListModal';
+import VillanoUserListModal from './VillanoUserListModal';
 
 const VillanoButtons = ({} ) => {
 
@@ -21,7 +21,7 @@ const VillanoButtons = ({} ) => {
       illness: "rotting_plague",
       active: true
     }
-    socket.emit('disease_try', data);
+    socket.emit('disease', data);
   }
 
   const epicWeakness = () =>{
@@ -31,7 +31,7 @@ const VillanoButtons = ({} ) => {
       illness: "epic_weakness",
       active: true
     }
-    socket.emit('disease_try', data);
+    socket.emit('disease', data);
   }
 
   const marrowApocalypse = () =>{
@@ -41,7 +41,7 @@ const VillanoButtons = ({} ) => {
       illness: "marrow_apocalypse",
       active: true
     }
-    socket.emit('disease_try', data);
+    socket.emit('disease', data);
   }
 
   return (
@@ -50,19 +50,19 @@ const VillanoButtons = ({} ) => {
         <Square onPress={setOpenEnemyList}>
           <Image source={iconAtack} style={styles.image}  />
           {(openEnemyList && globalState.userList.length > 0) && (
-              <UserListModal setOpenEnemyList={setOpenEnemyList} />
+              <VillanoUserListModal setOpenEnemyList={setOpenEnemyList} />
             )}
         </Square>
         <Square onPress={setOpenEnemyList}>
           <Image source={iconShield} style={styles.image} />
           {(openEnemyList && globalState.userList.length > 0) && (
-              <UserListModal setOpenEnemyList={setOpenEnemyList} />
+              <VillanoUserListModal setOpenEnemyList={setOpenEnemyList} />
             )}
         </Square>
         <Square onPress={setOpenEnemyList}>
           <Image source={iconAtack} style={styles.image} />
           {(openEnemyList && globalState.userList.length > 0) && (
-              <UserListModal setOpenEnemyList={setOpenEnemyList} />
+              <VillanoUserListModal setOpenEnemyList={setOpenEnemyList} />
             )}
         </Square>
       </ButtonsContainer>
