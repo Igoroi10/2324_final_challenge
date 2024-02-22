@@ -12,22 +12,21 @@ import MortimerProfile from './MortimerProfile';
 import UserListModal from '../UserListModal'
 
 const ProfileManager = () => {
-  
   const { globalState } = useContext(Context);
-  const [fightOn, setFightOn] = useState(false);
   const [openEnemyList, setOpenEnemyList] = useState(false);
   const [showAllUsersReadyModal, setShowAllUsersReadyModal] = useState(false);
 
-  useEffect(() => { 
-    // console.log("ENEMY LIST:")  
+  useEffect(() => {
+    // console.log("ENEMY LIST:") 
     // console.log(openEnemyList);
   }, [openEnemyList]);
-  
 
   useEffect(() => {
     if (globalState.userList && globalState.user.rol === "acolyte") {
       const readyUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isReady);
       const connectedUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isConnected);
+      // console.log('conected', connectedUsers.length);
+      // console.log('ready', readyUsers.length);
       if (readyUsers.length === connectedUsers.length && readyUsers.length !== 0) {
         setShowAllUsersReadyModal(true);
       } else {
@@ -36,39 +35,36 @@ const ProfileManager = () => {
     }
   }, [globalState.userList, globalState.user.rol]);
 
-return (
+  return (
     <MainContainer>
-      {globalState.user.rol === "mortimer" ? 
-        <MortimerProfile/>
+      {globalState.user.rol === "mortimer" ?
+        <MortimerProfile />
         :
         <>
-        <FightButtons setOpenEnemyList = {setOpenEnemyList}/> 
           {!globalState.user.isReady && (
             <>
-              <Profile showAllUsersReadyModal={showAllUsersReadyModal} />
+              <Profile />
               <ReadyButton />
-            </> 
+            </>
           )}
-  
-          {globalState.battleStart && ( 
+          {globalState.battleStart && (
             <>
-              <Profile showAllUsersReadyModal={showAllUsersReadyModal} />
-              <FightButtons setOpenEnemyList = {setOpenEnemyList}/> 
+              <Profile />
+              <FightButtons setOpenEnemyList={setOpenEnemyList} />
               {(openEnemyList && globalState.userList.length > 0) && (
-                <UserListModal setOpenEnemyList = {setOpenEnemyList} /> 
+                <UserListModal setOpenEnemyList={setOpenEnemyList} />
               )}
             </>
           )}
 
-          {/* {globalState.user.isReady && !globalState.battleStart && (<ReadyModal showAllUsersReadyModal={showAllUsersReadyModal} />)} */}
+          {globalState.user.isReady && !globalState.battleStart && (<ReadyModal />)}
 
         </>
       }
-      {showAllUsersReadyModal && <AllUsersReadyModal />}
+      {showAllUsersReadyModal && !globalState.battleStart && <AllUsersReadyModal />}
     </MainContainer>
   );
 };
-
 
 const MainContainer = styled.View`
   width: 100%;
@@ -79,6 +75,4 @@ const MainContainer = styled.View`
   border: rgba(255, 255, 255, 0.6);
   background-color: black;
 `
-
-
 export default ProfileManager;

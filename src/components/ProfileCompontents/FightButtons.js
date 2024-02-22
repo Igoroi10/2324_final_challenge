@@ -44,8 +44,6 @@ const FightButtons = ({setOpenEnemyList} ) => {
    setOpenEnemyList(true);
   }
 
-  
-
   return (
 
     <ButtonsContainer>
@@ -61,8 +59,6 @@ const FightButtons = ({setOpenEnemyList} ) => {
 
   )
 }
-
-
 
 const styles = StyleSheet.create({
   image: {
