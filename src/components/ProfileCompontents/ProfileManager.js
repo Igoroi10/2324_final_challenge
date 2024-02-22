@@ -19,8 +19,8 @@ const ProfileManager = () => {
   const [showAllUsersReadyModal, setShowAllUsersReadyModal] = useState(false);
 
   useEffect(() => { 
-    console.log("ENEMY LIST:")  
-    console.log(openEnemyList);
+    // console.log("ENEMY LIST:")  
+    // console.log(openEnemyList);
   }, [openEnemyList]);
   
 

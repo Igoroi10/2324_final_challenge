@@ -17,14 +17,14 @@ const Profile = ({ }) => {
         const readyUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isReady);
         const connectedUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isConnected)
 
-        console.log("readyUsers.length")
-        console.log(readyUsers.length)
+        // console.log("readyUsers.length")
+        // console.log(readyUsers.length)
 
-        console.log("connectedUsers.length")
-        console.log(connectedUsers.length)
+        // console.log("connectedUsers.length")
+        // console.log(connectedUsers.length)
 
         if(readyUsers.length === connectedUsers.length && readyUsers.length !== 0){
-        console.log("la longitud de los dos arrays es la misma");
+        // console.log("la longitud de los dos arrays es la misma");
         setIsStartFight(true);
         }else{
             setIsStartFight(false)
@@ -33,8 +33,8 @@ const Profile = ({ }) => {
   }, [globalState.userList]);
 
   useEffect(() => {
-    console.log("isStartFight")
-    console.log(isStartFight)
+    // console.log("isStartFight")
+    // console.log(isStartFight)
   }, [isStartFight])
 
   return (

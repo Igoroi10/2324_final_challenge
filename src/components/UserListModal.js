@@ -21,7 +21,7 @@ const showEnemyList = ({setOpenEnemyList}) => {
     else    
         isGood = false
 
-        console.log("globalSatte user list " + globalState.userList.length)
+        // console.log("globalSatte user list " + globalState.userList.length)
     
 
     useEffect(() => { 
@@ -42,7 +42,7 @@ const showEnemyList = ({setOpenEnemyList}) => {
 
     const selectedtarget = (item) => {
       setTarget(item)
-      console.log("selected user");
+      // console.log("selected user");
       attackTarget(item);
     };
 
