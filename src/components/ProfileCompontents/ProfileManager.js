@@ -11,6 +11,7 @@ import ReadyModal from '../ReadyModal';
 import MortimerProfile from './MortimerProfile';
 import UserListModal from '../UserListModal'
 import ProfileVillano from './ProfileVillano';
+import VillanoButtons from './ViillanoButtons';
 
 const ProfileManager = () => {
   const { globalState } = useContext(Context);

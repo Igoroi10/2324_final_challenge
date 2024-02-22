@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 import { Context } from '../../helpers/Context';
 import { Image, StyleSheet } from 'react-native';
 import * as Progress from 'react-native-progress';
+import VillanoButtons from './ViillanoButtons';
 
 const ProfileVillano = ({ }) => {
 
@@ -24,6 +25,7 @@ const ProfileVillano = ({ }) => {
               </Progress.Bar>
             </StatsContainer>
         </ProfileContainer> 
+        <VillanoButtons />
     </>
   );
 }
