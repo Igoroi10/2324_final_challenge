@@ -10,6 +10,7 @@ import Profile from './Profile';
 import ReadyModal from '../ReadyModal';
 import MortimerProfile from './MortimerProfile';
 import UserListModal from '../UserListModal'
+import ApplyEthazium from './ApplyEthazium'
 
 const ProfileManager = () => {
   const { globalState } = useContext(Context);
@@ -37,9 +38,10 @@ const ProfileManager = () => {
 
   return (
     <MainContainer>
-      {globalState.user.rol === "mortimer" ?
+      {globalState.user.rol === "mortimer" && (
         <MortimerProfile />
-        :
+      )}
+      {globalState.user.rol === "acolyte" && (
         <>
           {!globalState.user.isReady && (
             <>
@@ -58,10 +60,20 @@ const ProfileManager = () => {
           )}
 
           {globalState.user.isReady && !globalState.battleStart && (<ReadyModal />)}
+          {showAllUsersReadyModal && !globalState.battleStart && <AllUsersReadyModal />}
 
         </>
-      }
-      {showAllUsersReadyModal && !globalState.battleStart && <AllUsersReadyModal />}
+      )}
+      {globalState.user.rol === "guest" && (
+        <>
+          <Profile />
+          <ApplyEthazium setOpenEnemyList={setOpenEnemyList}  />
+          {(openEnemyList && globalState.userList.length > 0) && (
+                <UserListModal setOpenEnemyList={setOpenEnemyList} />
+              )}
+        </>
+      )}
+
     </MainContainer>
   );
 };

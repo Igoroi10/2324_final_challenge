@@ -86,7 +86,7 @@ const LoginModal = ({setIsLogged}) => {
       imgURL:
         'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_640.jpg',
       socketID: '',
-      isReady: false,
+      isReady: true,
       __v: 0,
       isConnected: false,
     };
