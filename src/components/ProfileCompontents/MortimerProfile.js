@@ -149,6 +149,70 @@ const MortimerProfile = () => {
     }
   },[globalState.battleStart])
 
+  useEffect(()=>{  
+    console.log("_____________________________")
+
+    console.log("_____________________________")
+
+    console.log("USEEFFECT CURRENTURN")
+    console.log("_____________________________")
+    console.log("_____________________________")
+
+    if(globalState.currentTurn !== ""){
+
+
+        
+        let user;
+
+			globalState.userList.forEach((el) => {
+				if(globalState.currentTurn === el._id)
+					user = el;
+
+			})
+
+            let turnNumber;
+            globalState.userList.forEach((el, index)=>{
+
+                if(el.name === user.name){
+                  turnNumber = index
+                }
+            })
+
+
+            console.log("_____________________________")
+            console.log("TURNO DE ")
+            console.log(globalState.userList[turnNumber].name);
+
+        if(globalState.userList[turnNumber].rol === "knight"){
+				
+
+            console.log("TURNO DE JINETE");
+            console.log(globalState.userList[turnNumber].name)
+            let acolyteArray = [];
+            for(let i = 0; i< globalState.userList.length; i++){
+
+                for(let j = 0; j< globalState.initiative.length; j++){
+
+                    if(globalState.initiative[j] === globalState.userList[i]._id && globalState.userList[i].rol === "acolyte" && globalState.userList[i].characterStats.hp > 0){
+                        acolyteArray.push(globalState.userList[i]);
+                    }
+                }
+            }
+
+            const randomAcolyte = Math.floor(Math.random() * acolyteArray.length);  
+
+            const dataToSend = {
+                id: globalState.userList[turnNumber]._id,
+                targId: acolyteArray[randomAcolyte]._id,
+                stat: "strength"
+            }
+            socket.emit('attack_try', dataToSend);
+        }
+
+    }
+    
+  },[globalState.currentTurn])
+
 
   const calculateArtifactPosition = (index) => {
     if (usersList)

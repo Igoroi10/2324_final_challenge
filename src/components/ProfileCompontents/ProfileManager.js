@@ -42,6 +42,7 @@ return (
         <MortimerProfile/>
         :
         <>
+        <FightButtons setOpenEnemyList = {setOpenEnemyList}/> 
           {!globalState.user.isReady && (
             <>
               <Profile showAllUsersReadyModal={showAllUsersReadyModal} />
@@ -59,7 +60,7 @@ return (
             </>
           )}
 
-          {globalState.user.isReady && !globalState.battleStart && (<ReadyModal showAllUsersReadyModal={showAllUsersReadyModal} />)}
+          {/* {globalState.user.isReady && !globalState.battleStart && (<ReadyModal showAllUsersReadyModal={showAllUsersReadyModal} />)} */}
 
         </>
       }

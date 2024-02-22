@@ -25,13 +25,17 @@ const BattleField = ({ }) => {
 
   useEffect(() => {
 
-    // Se recibe el email del jugador al que le toca
-    // const currentTurnId = globalState.currentTurn
-    const currentTurnId= "65d34053779787d852d6568f"
+    if(globalState.currentTurn != ""){
+      // Se recibe el email del jugador al que le toca
+      const currentTurnId = globalState.currentTurn
 
-    // Se muestra en pantalla a que jugador le toca
-    const currentTurnPlayer = globalState.userList.filter(user => user._id === currentTurnId)
-    setCurrentTurnPlayer(currentTurnPlayer[0])
+      // Se muestra en pantalla a que jugador le toca
+      const currentTurnPlayer = globalState.userList.filter(user => user._id === currentTurnId)
+      setCurrentTurnPlayer(currentTurnPlayer[0])
+    }else{
+      
+    }
+    
 
   }, [globalState]);
   
