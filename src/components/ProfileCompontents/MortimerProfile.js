@@ -109,7 +109,7 @@ const MortimerProfile = () => {
   const [isTESTStartFight, setIsTESTStartFight] = useState(true);
 
   useEffect(() => {
-    const connectedUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isConnected);
+    const connectedUsers = globalState.userList.filter(user => (user.rol === "acolyte" || user.rol === "guest" || user.rol === "villain") && user.isConnected);
 
     setUsersList(connectedUsers);
 
@@ -227,8 +227,7 @@ const MortimerProfile = () => {
                 <ProfilePicture source={{ uri: globalState.user.imgURL }} />
                 <ProfileVariblesTitle> MORTIMER </ProfileVariblesTitle>
               </RowContainer>
-
-              {isTESTStartFight &&
+            {isStartFight &&
                   <TextsContainer>
                       <BattleButton onPress={()=>{battleStart()}} disabled={isButtonPress}>
                       <ButtonStyle source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/the-final-battle-287a4.appspot.com/o/Backgrounds%2FButtonLaunchBattle.png?alt=media&token=1af48244-6ba7-452b-bd5a-ab40849d04fb' }} />
