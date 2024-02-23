@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, ImageBackground, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 import { Context } from '../../helpers/Context';
 import socket from '../../../helpers/socket';
 import BattleField from '../MortimerComponents/battleField';
 import { all } from 'axios';
+
+const imageBackground_urt = 'https://firebasestorage.googleapis.com/v0/b/the-final-battle-287a4.appspot.com/o/Backgrounds%2FMortimer.png?alt=media&token=d663c266-cbcb-48df-9080-8375fcef2427'
 
 const ProfileContainer = styled.View`
   display: flex;
@@ -15,11 +17,11 @@ const ProfileContainer = styled.View`
 `
 
 const LeftContainer = styled.View`
+  padding-top: 2%;
+  padding-bottom: 2%;
   width: 40%;
   height:100%;
   align-items: center; 
-  border: 1px solid white;
-  border-radius: 20px;
 `
 
 const TextsContainer = styled.View`
@@ -46,38 +48,24 @@ const RightContainer = styled.View`
 `
 
 const RowContainer = styled.View`
-  flex-direction: row;
-  justify-content:space-around;
+  flex-direction: column;
   width: 100%;
-`
-
-const PictureContainer = styled.View`
-  width: 33%;
-  height: 60%;
-  padding:2%;
+  justify-content: center;
+  align-items: center;
 `
 
 const ProfilePicture = styled.Image`
   border-radius: 300px;
-  width: 100%;
-  height: 80%;
-  margin-right: 5%;
-`
-
-const ProfileInformation = styled.View`
-  padding-top: 5%;
-  width: 67%;
+  width: 45%;
+  height: 50%;
 `
 
 const ProfileVariblesTitle = styled.Text`
   font-size: 20px;
   letter-spacing: 4px;
   color: white;
-`
-const ProfileVariblesTexts = styled.Text`
-  font-size: 15px;
-  letter-spacing: 4px;
-  color: gray;
+  text-shadow: 2px 2px 3px rgba(255, 255, 255, 1);
+  margin-top: 6%;
 `
 
 const ButtonStyle = styled.Image`
@@ -111,10 +99,14 @@ const MortimerProfile = () => {
   const { globalState } = useContext(Context);
   const [usersList, setUsersList] = useState();
   const [readyUserList, setReadyUserList] = useState();
-  const [isStartFight, setIsStartFight] = useState(false);
   const [isButtonPress, setIsButtonPress] = useState(false);
-
+  
+  const [isStartFight, setIsStartFight] = useState(false);
   const [isBattleField, setIsBattleField] = useState(false);
+
+
+  // const [isTESTBattleField, setIsTESTBattleField] = useState(false);
+  const [isTESTStartFight, setIsTESTStartFight] = useState(true);
 
   useEffect(() => {
     const connectedUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isConnected);
@@ -149,85 +141,32 @@ const MortimerProfile = () => {
     }
   },[globalState.battleStart])
 
-  useEffect(()=>{  
-    console.log("_____________________________")
-
-    console.log("_____________________________")
-
-    console.log("USEEFFECT CURRENTURN")
-    console.log("_____________________________")
-    console.log("_____________________________")
-
-    if(globalState.currentTurn !== ""){
+  
 
 
-        
-        let user;
-
-			globalState.userList.forEach((el) => {
-				if(globalState.currentTurn === el._id)
-					user = el;
-
-			})
-
-            let turnNumber;
-            globalState.userList.forEach((el, index)=>{
-
-                if(el.name === user.name){
-                  turnNumber = index
-                }
-            })
-
-
-            console.log("_____________________________")
-            console.log("TURNO DE ")
-            console.log(globalState.userList[turnNumber].name);
-
-        if(globalState.userList[turnNumber].rol === "knight"){
-				
-
-            console.log("TURNO DE JINETE");
-            console.log(globalState.userList[turnNumber].name)
-            let acolyteArray = [];
-            for(let i = 0; i< globalState.userList.length; i++){
-
-                for(let j = 0; j< globalState.initiative.length; j++){
-
-                    if(globalState.initiative[j] === globalState.userList[i]._id && globalState.userList[i].rol === "acolyte" && globalState.userList[i].characterStats.hp > 0){
-                        acolyteArray.push(globalState.userList[i]);
-                    }
-                }
-            }
-
-            const randomAcolyte = Math.floor(Math.random() * acolyteArray.length);  
-
-            const dataToSend = {
-                id: globalState.userList[turnNumber]._id,
-                targId: acolyteArray[randomAcolyte]._id,
-                stat: "strength"
-            }
-            socket.emit('attack_try', dataToSend);
-        }
-
-    }
-    
-  },[globalState.currentTurn])
-
-
-  const calculateArtifactPosition = (index) => {
-    if (usersList)
-    {
-      const acolytes = usersList.length
-
-      const radius = 150;
-      const centerX = Dimensions.get('window').width / 4.3;
-      const centerY = Dimensions.get('window').height / 2.3;
+  const calculateAcolytesPosition = (index) => {
+    if (usersList) {
+      const acolytes = usersList.length;
+  
+      const radiusPercentage = 40; // ajusta este valor según tus necesidades
+      const screenWidth = Dimensions.get('window').width * 0.7;
+      const screenHeight = Dimensions.get('window').height;
+  
+      // Convierte el radio a porcentaje del tamaño de la pantalla
+      const radius = (radiusPercentage / 100) * Math.min(screenWidth, screenHeight);
+  
+      const centerX = screenWidth / 2.3;
+      const centerY = screenHeight / 2.2;
       const angle = (((index * (360 / acolytes)) + 270) * (Math.PI / 180));
-      const x = centerX + radius * Math.cos(angle);
-      const y = centerY + radius * Math.sin(angle);
-      return { left: x, top: y };
+      
+      // Convierte las coordenadas a porcentaje del tamaño de la pantalla
+      const x = (centerX + radius * Math.cos(angle)) / screenWidth * 100;
+      const y = (centerY + radius * Math.sin(angle)) / screenHeight * 100;
+  
+      return { left: `${x}%`, top: `${y}%` };
     }
   };
+  
 
   const checkLife = () => {
     globalState.userList.forEach(element => {
@@ -278,33 +217,30 @@ const MortimerProfile = () => {
       {!isBattleField && (
         <ProfileContainer>
           <LeftContainer>
+              <ImageBackground 
+                imageStyle={{ borderRadius: 20}} style={styles.imageLeft} 
+                key={"imagen"} 
+                source={{ uri: imageBackground_urt }}
+              >
+
               <RowContainer>
-              <PictureContainer>
-                  <ProfilePicture source={{ uri: globalState.user.imgURL }} />
-              </PictureContainer>
-              <ProfileInformation>
-                  <ProfileVariblesTitle>{globalState.user.name}</ProfileVariblesTitle>
-                  <ProfileVariblesTexts>{globalState.user.rol}</ProfileVariblesTexts>
-                  <ProfileVariblesTexts>{globalState.rol}</ProfileVariblesTexts>
-              </ProfileInformation>
+                <ProfilePicture source={{ uri: globalState.user.imgURL }} />
+                <ProfileVariblesTitle> MORTIMER </ProfileVariblesTitle>
               </RowContainer>
-              <RowContainer>
-              <ProfileVariblesTitle>HP</ProfileVariblesTitle>
-              <ProfileVariblesTexts>INT</ProfileVariblesTexts>
-              <ProfileVariblesTexts>STR</ProfileVariblesTexts>
-              </RowContainer>
-              {isStartFight &&
+
+              {isTESTStartFight &&
                   <TextsContainer>
                       <BattleButton onPress={()=>{battleStart()}} disabled={isButtonPress}>
-                      <ButtonStyle source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/the-final-battle-287a4.appspot.com/o/Buttons%2FlaunchBattle.png?alt=media&token=2c3f73ed-e51a-4eaf-8a12-edc53271213f' }} />
+                      <ButtonStyle source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/the-final-battle-287a4.appspot.com/o/Backgrounds%2FButtonLaunchBattle.png?alt=media&token=1af48244-6ba7-452b-bd5a-ab40849d04fb' }} />
                       </BattleButton>
                   </TextsContainer>
               }
+              </ImageBackground>
           </LeftContainer>
           <RightContainer>
               <RosetePicture source={require('../../../assets/Rosete.png')} />
               {usersList && usersList.map((el, index) => {
-                  const position = calculateArtifactPosition(index);
+                  const position = calculateAcolytesPosition(index);
                   const styles = {
                   width: 60,
                   height: 60,
@@ -329,6 +265,14 @@ const MortimerProfile = () => {
 
   );
 };
+
+const styles = StyleSheet.create({
+  imageLeft: {
+    width: '100%', 
+    height: '100%', 
+    borderRadius: '20px'
+  }
+});
 
 
 export default MortimerProfile;

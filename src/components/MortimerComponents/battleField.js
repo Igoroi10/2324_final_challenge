@@ -4,6 +4,11 @@ import { Context } from '../../helpers/Context';
 import { Image, StyleSheet, Text, View} from 'react-native';
 import * as Progress from 'react-native-progress';
 
+import MagicIcon from '../../../assets/MagicIcon2.png';
+import PotionIcon from '../../../assets/PotionIcon.png';
+import swordSlashIcon from '../../../assets/swordSlashIcon.png';
+
+
 
 const BattleField = ({ }) => {
 
@@ -15,13 +20,36 @@ const BattleField = ({ }) => {
 
   
   useEffect(() => {
-    const acolites  = globalState.userList.filter(user => user.rol === "acolyte");
-    const knights   = globalState.userList.filter(user => user.rol === "knight");
 
-    setAcolites(acolites);
-    setKnights(knights);
+    if(globalState.initiative.length !== 0){
+      
+        const acolites = [];
+        const knights = [];
 
-  }, [globalState]);
+        globalState.initiative.forEach((intiativeId)=>{
+
+        globalState.userList.forEach((userObject)=>{
+
+          if(intiativeId === userObject._id){
+
+            if(userObject.rol === "acolyte"){
+
+              acolites.push(userObject);
+            }else{
+              knights.push(userObject);
+            } 
+
+          }
+        })      
+      })
+
+      setAcolites(acolites);
+      setKnights(knights);
+    }
+
+    
+
+  }, [globalState.userList, globalState.initiative]);
 
   useEffect(() => {
 
@@ -38,6 +66,12 @@ const BattleField = ({ }) => {
     
 
   }, [globalState]);
+
+  useEffect(()=>{
+    setTimeout(() => {  
+      globalStateHandler({currentMessage: ""});
+    }, 4000);
+  },[globalState.currentMessage])
   
   if(acolites === null || knights === null){
     return null
@@ -64,7 +98,7 @@ const BattleField = ({ }) => {
             <Progress.Bar 
               color={'rgba(100, 255, 100, 1)'}
               style={styles.AcolyteProgressBar} 
-              progress={acolite.characterMaxStats.maxHp / acolite.characterStats.hp} 
+              progress={acolite.characterStats.hp/acolite.characterMaxStats.maxHp } 
               
             />
 
@@ -72,7 +106,7 @@ const BattleField = ({ }) => {
         )
       }
       </AcolytesContainer>
-
+    <Spacer></Spacer>
       <Interface>
         <TurnContainer>
           <Text style={{color: 'white'}}>TURNO DE: </Text>
@@ -80,15 +114,25 @@ const BattleField = ({ }) => {
             <TurnImage source={{uri: currentTurnPlayer.imgURL }} alt='currentTurn'/>
           </TurnImageContainer>
         </TurnContainer>
-
         <MessagesContainer>
-          <Text style={{color: 'white'}}t> INTERFACE MESSAGES </Text>
+          {globalState.currentMessage !== "" &&
+            <>
+            <InterfaceMessage>
+              <TurnImage source={{ uri: globalState.attacker.imgURL }} alt='attackerImg'/>
+              <TurnImage source={{ uri: globalState.icon.imgURL }} alt='pruebar'/>
+              <TurnImage source={{uri: globalState.defender.imgURL }} alt='defenderImg'/>
+            </InterfaceMessage>
+            <InterfaceMessage>
+              
+              <Text style={{color: 'white'}}t> {globalState.currentMessage} </Text>
+            </InterfaceMessage>
+            </>
+          }
         </MessagesContainer>
       </Interface>
 
       <EnemiesContainer>
         {knights.map( knight => 
-        <>
           <EnemyContainer key={knight._id}>
 
             <EnemyImageContainer>
@@ -98,10 +142,10 @@ const BattleField = ({ }) => {
             <Progress.Bar 
               color={'rgba(255, 0, 0, 1)'}
               style={styles.KnightProgressBar} 
-              progress={ knight.characterMaxStats.maxHp / knight.characterStats.hp }
+              progress={knight.characterStats.hp / knight.characterMaxStats.maxHp }
             />
+
           </EnemyContainer >
-        </>
         )}
 
       </EnemiesContainer>
@@ -110,6 +154,7 @@ const BattleField = ({ }) => {
     </>
   )
 }
+
 
 const styles = StyleSheet.create({
   AcolyteProgressBar: {
@@ -134,13 +179,29 @@ const MainContainer = styled.View`
   flex: 1;
 `
 
+const Spacer = styled.View`
+  height: 40%;
+`
+
 const Interface = styled.View`
   display: flex; 
   flex-direction: row;
   width: 95%;
-  height: 30%;
+  height: 80%;
   justify-content: space-between; 
   align-items: center;
+  position: absolute;
+  z-index: 3;
+`
+
+const InterfaceMessage = styled.View`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 50%;
+  background-color: blue;
+  align-items:center;
+  justify-content: center;
 `
 
 const TurnImageContainer = styled.View`
@@ -224,8 +285,15 @@ const TurnContainer = styled.View`
 `
 
 const MessagesContainer = styled.View`
-  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   height: 100%;
+  background-color: rgba(100,100,100, 0.4);
+  z-index: 4;
+  position: absolute;
 `
 
 export default BattleField
