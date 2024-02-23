@@ -17,11 +17,11 @@ const ProfileContainer = styled.View`
 `
 
 const LeftContainer = styled.View`
+  padding-top: 2%;
+  padding-bottom: 2%;
   width: 40%;
   height:100%;
   align-items: center; 
-  border: 1px solid white;
-  border-radius: 20px;
 `
 
 const TextsContainer = styled.View`
@@ -55,10 +55,9 @@ const RowContainer = styled.View`
 `
 
 const ProfilePicture = styled.Image`
-  margin-top: 10%;
   border-radius: 300px;
-  width: 100px;
-  height: 100px;
+  width: 45%;
+  height: 50%;
 `
 
 const ProfileVariblesTitle = styled.Text`
@@ -106,8 +105,8 @@ const MortimerProfile = () => {
   const [isBattleField, setIsBattleField] = useState(false);
 
 
-  const [isTESTBattleField, setIsTESTBattleField] = useState(false);
-  const [isTESTStartFight, setIsTESTStartFight] = useState(true);
+  // const [isTESTBattleField, setIsTESTBattleField] = useState(false);
+  // const [isTESTStartFight, setIsTESTStartFight] = useState(true);
 
   useEffect(() => {
     const connectedUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isConnected);
@@ -206,7 +205,7 @@ const MortimerProfile = () => {
 
 
     <MainContainer>
-      {!isTESTBattleField && (
+      {!isBattleField && (
         <ProfileContainer>
           <LeftContainer>
               <ImageBackground 
@@ -220,7 +219,7 @@ const MortimerProfile = () => {
                 <ProfileVariblesTitle> MORTIMER </ProfileVariblesTitle>
               </RowContainer>
 
-              {isTESTStartFight &&
+              {isStartFight &&
                   <TextsContainer>
                       <BattleButton onPress={()=>{battleStart()}} disabled={isButtonPress}>
                       <ButtonStyle source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/the-final-battle-287a4.appspot.com/o/Backgrounds%2FButtonLaunchBattle.png?alt=media&token=1af48244-6ba7-452b-bd5a-ab40849d04fb' }} />
@@ -250,7 +249,7 @@ const MortimerProfile = () => {
       </ProfileContainer>
     )}
     
-      {isTESTBattleField && ( <BattleField /> )}
+      {isBattleField && ( <BattleField /> )}
     
     </MainContainer>
 
