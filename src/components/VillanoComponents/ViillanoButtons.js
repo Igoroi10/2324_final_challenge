@@ -4,9 +4,9 @@ import { Context } from '../../helpers/Context';
 import { Image, StyleSheet, TurboModuleRegistry } from 'react-native';
 
 // Assets
-import iconAtack from '../../../assets/Icon_attack_v1.png'
-import iconShield from '../../../assets/Icon_shield_v1.png'
-import socket from '../../../helpers/socket';
+import iconMarrow from '../../../assets/agilityIcon.png';
+import iconEpic from '../../../assets/strenghtIcon.png'
+import iconRotting from '../../../assets/intelligenceIcon.png';
 import VillanoUserListModal from './VillanoUserListModal';
 
 const VillanoButtons = ({} ) => {
@@ -25,18 +25,18 @@ const VillanoButtons = ({} ) => {
     globalState.user._id ? (
       <ButtonsContainer>
         <Square onPress={() => handleButtonPress('epic_weakness')}>
-          <Image source={iconAtack} style={{ width: 60, height: 60 }} />
+          <Image source={iconEpic} style={{ width: 100, height: 100 }} />
         </Square>
         <Square onPress={() => handleButtonPress('rotting_plague')}>
-          <Image source={iconShield} style={{ width: 60, height: 60 }} />
+          <Image source={iconRotting} style={{ width: 100, height: 100 }} />
         </Square>
         <Square onPress={() => handleButtonPress('marrow_apocalypse')}>
-          <Image source={iconAtack} style={{ width: 60, height: 60 }} />
+          <Image source={iconMarrow} style={{ width: 100, height: 100 }} />
         </Square>
         {openEnemyList && <VillanoUserListModal setOpenEnemyList={setOpenEnemyList} illnessToSend={illnessToSend} />}
       </ButtonsContainer>
     ) : (
-      <Text>No es tu turno</Text>
+      <Text>NO ES TU TURNO</Text>
     )
   );
 };
@@ -53,8 +53,9 @@ const styles = StyleSheet.create({
 const ButtonsContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  height: 12%;
-  width: 80%;
+  height: 15%;
+  width: 82%;
+  top: 15%;
 `
 const Square = styled.TouchableOpacity`
   display: flex;
@@ -63,8 +64,8 @@ const Square = styled.TouchableOpacity`
   margin: -4%;
   opacity: ${(props) => (props.disabled ? 0.8 : 1)};
   background-color: ${(props) => (props.disabled ? 'rgba(0, 0, 0, 0)' : 'transparent')}; 
-  height: 65%;
-  width: 40%;
+  height: 75%;
+  width: 50%;
   border: 1px;
   border-color: white;
   border-radius: 1000px;

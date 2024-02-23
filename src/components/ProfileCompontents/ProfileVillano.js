@@ -46,10 +46,10 @@ const ProfileText = styled.Text`
 `
 
 const ProfileContainer = styled.View`
-  height: 50%;
+  height: 45%;
   align-items: center;
   border: rgba(255,255,255, 0.6);
-  width: 88%;
+  width: 80%;
 
 `
 const StatsContainer = styled.View`
@@ -58,6 +58,7 @@ const StatsContainer = styled.View`
   justify-content: center;
   align-items: center;
   border: rgba(255, 0, 255, 0.6);
-  width: 90%;
+  width: 80%;
+  height: 30%;
 `
 export default ProfileVillano;
