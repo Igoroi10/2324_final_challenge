@@ -106,7 +106,7 @@ const MortimerProfile = () => {
 
 
   // const [isTESTBattleField, setIsTESTBattleField] = useState(false);
-  // const [isTESTStartFight, setIsTESTStartFight] = useState(true);
+  const [isTESTStartFight, setIsTESTStartFight] = useState(true);
 
   useEffect(() => {
     const connectedUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isConnected);
@@ -144,20 +144,29 @@ const MortimerProfile = () => {
   
 
 
-  const calculateArtifactPosition = (index) => {
-    if (usersList)
-    {
-      const acolytes = usersList.length
-
-      const radius = 150;
-      const centerX = Dimensions.get('window').width / 4.3;
-      const centerY = Dimensions.get('window').height / 2.3;
+  const calculateAcolytesPosition = (index) => {
+    if (usersList) {
+      const acolytes = usersList.length;
+  
+      const radiusPercentage = 40; // ajusta este valor según tus necesidades
+      const screenWidth = Dimensions.get('window').width * 0.7;
+      const screenHeight = Dimensions.get('window').height;
+  
+      // Convierte el radio a porcentaje del tamaño de la pantalla
+      const radius = (radiusPercentage / 100) * Math.min(screenWidth, screenHeight);
+  
+      const centerX = screenWidth / 2.3;
+      const centerY = screenHeight / 2.2;
       const angle = (((index * (360 / acolytes)) + 270) * (Math.PI / 180));
-      const x = centerX + radius * Math.cos(angle);
-      const y = centerY + radius * Math.sin(angle);
-      return { left: x, top: y };
+      
+      // Convierte las coordenadas a porcentaje del tamaño de la pantalla
+      const x = (centerX + radius * Math.cos(angle)) / screenWidth * 100;
+      const y = (centerY + radius * Math.sin(angle)) / screenHeight * 100;
+  
+      return { left: `${x}%`, top: `${y}%` };
     }
   };
+  
 
   const checkLife = () => {
     globalState.userList.forEach(element => {
@@ -219,7 +228,7 @@ const MortimerProfile = () => {
                 <ProfileVariblesTitle> MORTIMER </ProfileVariblesTitle>
               </RowContainer>
 
-              {isStartFight &&
+              {isTESTStartFight &&
                   <TextsContainer>
                       <BattleButton onPress={()=>{battleStart()}} disabled={isButtonPress}>
                       <ButtonStyle source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/the-final-battle-287a4.appspot.com/o/Backgrounds%2FButtonLaunchBattle.png?alt=media&token=1af48244-6ba7-452b-bd5a-ab40849d04fb' }} />
@@ -231,7 +240,7 @@ const MortimerProfile = () => {
           <RightContainer>
               <RosetePicture source={require('../../../assets/Rosete.png')} />
               {usersList && usersList.map((el, index) => {
-                  const position = calculateArtifactPosition(index);
+                  const position = calculateAcolytesPosition(index);
                   const styles = {
                   width: 60,
                   height: 60,
