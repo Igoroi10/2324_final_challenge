@@ -148,15 +148,15 @@ const MortimerProfile = () => {
     if (usersList) {
       const acolytes = usersList.length;
   
-      const radiusPercentage = 40; // ajusta este valor según tus necesidades
+      const radiusPercentage = 37; // ajusta este valor según tus necesidades
       const screenWidth = Dimensions.get('window').width * 0.7;
       const screenHeight = Dimensions.get('window').height;
   
       // Convierte el radio a porcentaje del tamaño de la pantalla
       const radius = (radiusPercentage / 100) * Math.min(screenWidth, screenHeight);
   
-      const centerX = screenWidth / 2.3;
-      const centerY = screenHeight / 2.2;
+      const centerX = screenWidth / 2.28;
+      const centerY = screenHeight / 2.15;
       const angle = (((index * (360 / acolytes)) + 270) * (Math.PI / 180));
       
       // Convierte las coordenadas a porcentaje del tamaño de la pantalla
@@ -228,7 +228,7 @@ const MortimerProfile = () => {
                 <ProfileVariblesTitle> MORTIMER </ProfileVariblesTitle>
               </RowContainer>
 
-              {isTESTStartFight &&
+              {isStartFight &&
                   <TextsContainer>
                       <BattleButton onPress={()=>{battleStart()}} disabled={isButtonPress}>
                       <ButtonStyle source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/the-final-battle-287a4.appspot.com/o/Backgrounds%2FButtonLaunchBattle.png?alt=media&token=1af48244-6ba7-452b-bd5a-ab40849d04fb' }} />
@@ -242,11 +242,11 @@ const MortimerProfile = () => {
               {usersList && usersList.map((el, index) => {
                   const position = calculateAcolytesPosition(index);
                   const styles = {
-                  width: 60,
-                  height: 60,
+                  width: 100,
+                  height: 100,
                   borderRadius: 40,
-                  borderWidth: el.isReady ? 3 : 30,
-                  borderColor: el.isReady ? 'white' : 'rgba(0, 0, 0, 0.4)',
+                  borderWidth: el.isReady ? 4 : 30,
+                  borderColor: el.isReady ? 'rgba(216,147,222,1)' : 'rgba(0, 0, 0, 0.4)',
                   position: 'absolute',
                   ...position,
                   };
