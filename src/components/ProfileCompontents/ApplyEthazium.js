@@ -17,14 +17,21 @@ const ApplyEthazium = ({setOpenEnemyList} ) => {
   }
 
   return (
+    globalState.user._id === globalState.currentTurn ? (
       <ButtonsContainer>
-        {/* este boton */}
         <Square onPress={openEnemyList}>
           <Image source={iconAtack} style={styles.image}  />
         </Square>
+      
 
       </ButtonsContainer>
-  )
+    ):(
+     <>
+        <Text> No es tu turno </Text>
+      </>
+
+
+  ))
 }
 
 const styles = StyleSheet.create({
