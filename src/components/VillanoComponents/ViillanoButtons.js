@@ -25,13 +25,16 @@ const VillanoButtons = ({} ) => {
     globalState.user._id ? (
       <ButtonsContainer>
         <Square onPress={() => handleButtonPress('epic_weakness')}>
-          <Image source={iconEpic} style={{ width: 100, height: 100 }} />
+          <IconImage source={iconEpic} style={{ width: 100, height: 100 }} />
+          <IconText>EPIC_WEAKNESS</IconText>
         </Square>
         <Square onPress={() => handleButtonPress('rotting_plague')}>
-          <Image source={iconRotting} style={{ width: 100, height: 100 }} />
+          <IconImage source={iconRotting} style={{ width: 100, height: 100 }} />
+          <IconText>ROTTING_PLAGUE</IconText>
         </Square>
         <Square onPress={() => handleButtonPress('marrow_apocalypse')}>
-          <Image source={iconMarrow} style={{ width: 100, height: 100 }} />
+          <IconImage source={iconMarrow} style={{ width: 100, height: 100 }} />
+          <IconText>MARROW_APOCALY</IconText>
         </Square>
         {openEnemyList && <VillanoUserListModal setOpenEnemyList={setOpenEnemyList} illnessToSend={illnessToSend} />}
       </ButtonsContainer>
@@ -53,8 +56,8 @@ const styles = StyleSheet.create({
 const ButtonsContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  height: 15%;
-  width: 82%;
+  height: 20%;
+  width: 85%;
   top: 15%;
 `
 const Square = styled.TouchableOpacity`
@@ -76,5 +79,13 @@ const Square = styled.TouchableOpacity`
 const Text = styled.Text`
   font-size: 40px;
   color: white;
+`
+const IconText = styled.Text`
+  font-size: 10px;
+  color: white;
+  top: 15%
+`
+const IconImage = styled.Image`
+  top: 5%
 `
 export default VillanoButtons;
