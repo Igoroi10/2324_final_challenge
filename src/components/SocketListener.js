@@ -227,7 +227,24 @@ function SocketListener(props) {
 				}
 			}); 
 
-			//if target (data.targId) y origen (data.id)
+			globalState.userList.forEach ((el) => {
+				if (el.rol === data.user.rol)
+				{
+					let saveName = el.name;
+					const iconPic = calculateIcon(data.user)
+					globalStateHandler({icon: {imgURL:iconPic}})
+					globalStateHandler({attacker: el})
+					globalState.userList.forEach ( (element) => {
+						if(element._id === data.id)
+						{
+							const message = `${saveName} ha infligido  ${data.disease} a ${element.name}`;
+							globalStateHandler({defender: element})
+							globalStateHandler({currentMessage: message});
+
+						}
+					})
+				}
+			})
 
 			if(globalState.user.rol === "mortimer"){
 
