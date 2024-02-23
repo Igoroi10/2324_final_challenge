@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, ImageBackground, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 import { Context } from '../../helpers/Context';
 import socket from '../../../helpers/socket';
 import BattleField from '../MortimerComponents/battleField';
 import { all } from 'axios';
+
+const imageBackground_urt = 'https://firebasestorage.googleapis.com/v0/b/the-final-battle-287a4.appspot.com/o/Backgrounds%2FMortimer.png?alt=media&token=d663c266-cbcb-48df-9080-8375fcef2427'
 
 const ProfileContainer = styled.View`
   display: flex;
@@ -46,38 +48,25 @@ const RightContainer = styled.View`
 `
 
 const RowContainer = styled.View`
-  flex-direction: row;
-  justify-content:space-around;
+  flex-direction: column;
   width: 100%;
-`
-
-const PictureContainer = styled.View`
-  width: 33%;
-  height: 60%;
-  padding:2%;
+  justify-content: center;
+  align-items: center;
 `
 
 const ProfilePicture = styled.Image`
+  margin-top: 10%;
   border-radius: 300px;
-  width: 100%;
-  height: 80%;
-  margin-right: 5%;
-`
-
-const ProfileInformation = styled.View`
-  padding-top: 5%;
-  width: 67%;
+  width: 100px;
+  height: 100px;
 `
 
 const ProfileVariblesTitle = styled.Text`
   font-size: 20px;
   letter-spacing: 4px;
   color: white;
-`
-const ProfileVariblesTexts = styled.Text`
-  font-size: 15px;
-  letter-spacing: 4px;
-  color: gray;
+  text-shadow: 2px 2px 3px rgba(255, 255, 255, 1);
+  margin-top: 6%;
 `
 
 const ButtonStyle = styled.Image`
@@ -111,10 +100,14 @@ const MortimerProfile = () => {
   const { globalState } = useContext(Context);
   const [usersList, setUsersList] = useState();
   const [readyUserList, setReadyUserList] = useState();
-  const [isStartFight, setIsStartFight] = useState(false);
   const [isButtonPress, setIsButtonPress] = useState(false);
-
+  
+  const [isStartFight, setIsStartFight] = useState(false);
   const [isBattleField, setIsBattleField] = useState(false);
+
+
+  const [isTESTBattleField, setIsTESTBattleField] = useState(false);
+  const [isTESTStartFight, setIsTESTStartFight] = useState(true);
 
   useEffect(() => {
     const connectedUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isConnected);
@@ -275,31 +268,28 @@ const MortimerProfile = () => {
 
 
     <MainContainer>
-      {!isBattleField && (
+      {!isTESTBattleField && (
         <ProfileContainer>
           <LeftContainer>
+              <ImageBackground 
+                imageStyle={{ borderRadius: 20}} style={styles.imageLeft} 
+                key={"imagen"} 
+                source={{ uri: imageBackground_urt }}
+              >
+
               <RowContainer>
-              <PictureContainer>
-                  <ProfilePicture source={{ uri: globalState.user.imgURL }} />
-              </PictureContainer>
-              <ProfileInformation>
-                  <ProfileVariblesTitle>{globalState.user.name}</ProfileVariblesTitle>
-                  <ProfileVariblesTexts>{globalState.user.rol}</ProfileVariblesTexts>
-                  <ProfileVariblesTexts>{globalState.rol}</ProfileVariblesTexts>
-              </ProfileInformation>
+                <ProfilePicture source={{ uri: globalState.user.imgURL }} />
+                <ProfileVariblesTitle> MORTIMER </ProfileVariblesTitle>
               </RowContainer>
-              <RowContainer>
-              <ProfileVariblesTitle>HP</ProfileVariblesTitle>
-              <ProfileVariblesTexts>INT</ProfileVariblesTexts>
-              <ProfileVariblesTexts>STR</ProfileVariblesTexts>
-              </RowContainer>
-              {isStartFight &&
+
+              {isTESTStartFight &&
                   <TextsContainer>
                       <BattleButton onPress={()=>{battleStart()}} disabled={isButtonPress}>
-                      <ButtonStyle source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/the-final-battle-287a4.appspot.com/o/Buttons%2FlaunchBattle.png?alt=media&token=2c3f73ed-e51a-4eaf-8a12-edc53271213f' }} />
+                      <ButtonStyle source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/the-final-battle-287a4.appspot.com/o/Backgrounds%2FButtonLaunchBattle.png?alt=media&token=1af48244-6ba7-452b-bd5a-ab40849d04fb' }} />
                       </BattleButton>
                   </TextsContainer>
               }
+              </ImageBackground>
           </LeftContainer>
           <RightContainer>
               <RosetePicture source={require('../../../assets/Rosete.png')} />
@@ -322,13 +312,21 @@ const MortimerProfile = () => {
       </ProfileContainer>
     )}
     
-      {isBattleField && ( <BattleField /> )}
+      {isTESTBattleField && ( <BattleField /> )}
     
     </MainContainer>
 
 
   );
 };
+
+const styles = StyleSheet.create({
+  imageLeft: {
+    width: '100%', 
+    height: '100%', 
+    borderRadius: '20px'
+  }
+});
 
 
 export default MortimerProfile;
