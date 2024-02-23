@@ -37,22 +37,20 @@ const showVillanoEnemyList = ({ setOpenEnemyList, illnessToSend }) => {
     const handleDisease = (item) => {
       console.log
         
-            const data = {
-                id: user._id,
-                illness: illnessToSend, // Se usa la enfermedad proporcionada
-                targId: item._id,
-                active: true
-            }
-            console.log(data);
-            socket.emit('disease_try', data);
-            setOpenEnemyList(false);
-        
+        const data = {
+            illness: illnessToSend, // Se usa la enfermedad proporcionada
+            id: item._id,
+            active: true
+        }
+        console.log(data);
+        socket.emit('disease_try', data);
+        setOpenEnemyList(false);  
     }
 
     const selectedTarget = (item) => {
       setTarget(item);
       console.log("selected user", item.name);
-      handleDisease(item); 
+      handleDisease(item); // Llama a la función de enfermedad correspondiente pasando el objetivo seleccionado
       setOpenEnemyList(false);
   };
 
