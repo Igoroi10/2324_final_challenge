@@ -15,13 +15,36 @@ const BattleField = ({ }) => {
 
   
   useEffect(() => {
-    const acolites  = globalState.userList.filter(user => user.rol === "acolyte");
-    const knights   = globalState.userList.filter(user => user.rol === "knight");
 
-    setAcolites(acolites);
-    setKnights(knights);
+    if(globalState.initiative.length !== 0){
+      
+        const acolites = [];
+        const knights = [];
 
-  }, [globalState]);
+        globalState.initiative.forEach((intiativeId)=>{
+
+        globalState.userList.forEach((userObject)=>{
+
+          if(intiativeId === userObject._id){
+
+            if(userObject.rol === "acolyte"){
+
+              acolites.push(userObject);
+            }else{
+              knights.push(userObject);
+            } 
+
+          }
+        })      
+      })
+
+      setAcolites(acolites);
+      setKnights(knights);
+    }
+
+    
+
+  }, [globalState.userList, globalState.initiative]);
 
   useEffect(() => {
 
@@ -70,7 +93,7 @@ const BattleField = ({ }) => {
             <Progress.Bar 
               color={'rgba(100, 255, 100, 1)'}
               style={styles.AcolyteProgressBar} 
-              progress={acolite.characterMaxStats.maxHp / acolite.characterStats.hp} 
+              progress={acolite.characterStats.hp/acolite.characterMaxStats.maxHp } 
               
             />
 
@@ -97,7 +120,6 @@ const BattleField = ({ }) => {
 
       <EnemiesContainer>
         {knights.map( knight => 
-        <>
           <EnemyContainer key={knight._id}>
 
             <EnemyImageContainer>
@@ -107,10 +129,10 @@ const BattleField = ({ }) => {
             <Progress.Bar 
               color={'rgba(255, 0, 0, 1)'}
               style={styles.KnightProgressBar} 
-              progress={ knight.characterMaxStats.maxHp / knight.characterStats.hp }
+              progress={knight.characterStats.hp / knight.characterMaxStats.maxHp }
             />
+
           </EnemyContainer >
-        </>
         )}
 
       </EnemiesContainer>
