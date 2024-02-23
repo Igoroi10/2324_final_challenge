@@ -13,6 +13,7 @@ import UserListModal from '../UserListModal';
 import VillanoUserListModal from '../VillanoComponents/VillanoUserListModal';
 import ProfileVillano from './ProfileVillano';
 import VillanoButtons from '../VillanoComponents/ViillanoButtons';
+import ApplyEthazium from './ApplyEthazium'
 import socket from '../../../helpers/socket';
 
 const ProfileManager = () => {
@@ -115,7 +116,7 @@ const ProfileManager = () => {
 
   return (
     <MainContainer>
-      {globalState.user.rol === "mortimer" ? (
+      {globalState.user.rol === "mortimer" && ( (
         <MortimerProfile />
       ) : globalState.user.rol === "villain" ? (
         <>
@@ -148,8 +149,9 @@ const ProfileManager = () => {
 
 
           {globalState.user.isReady && !globalState.battleStart && (<ReadyModal />)}
+
         </>
-      )}
+      }
       {showAllUsersReadyModal && !globalState.battleStart && <AllUsersReadyModal />}
     </MainContainer>
 

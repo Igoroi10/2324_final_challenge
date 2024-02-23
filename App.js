@@ -9,7 +9,6 @@ import ProfileManager from './src/components/ProfileCompontents/ProfileManager';
 import { getAllUsers } from './src/helpers/axiosPetitions';
 import SocketListener from './src/components/SocketListener';
 
-
 const MainContainer = styled.View`
   display: flex;
   flex: 1;

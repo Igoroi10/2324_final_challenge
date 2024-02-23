@@ -16,6 +16,8 @@ const BattleField = ({ }) => {
 
   const [acolites, setAcolites] = useState(null);
   const [knights, setKnights] = useState(null);
+  const [villains, setVillains] = useState(null);
+
   const [currentTurnPlayer, setCurrentTurnPlayer] = useState("")
 
   
@@ -25,19 +27,26 @@ const BattleField = ({ }) => {
       
         const acolites = [];
         const knights = [];
+        const villains = [];
 
         globalState.initiative.forEach((intiativeId)=>{
 
         globalState.userList.forEach((userObject)=>{
+          // console.log("userlist*****************")
+          // console.log(userObject.rol)
 
           if(intiativeId === userObject._id){
 
             if(userObject.rol === "acolyte"){
 
               acolites.push(userObject);
-            }else{
-              knights.push(userObject);
+            }else if(userObject.rol !== "knight"){
+              villains.push(userObject);
             } 
+            else{
+              knights.push(userObject);
+
+            }
 
           }
         })      
@@ -45,6 +54,8 @@ const BattleField = ({ }) => {
 
       setAcolites(acolites);
       setKnights(knights);
+      setVillains(villains)
+
     }
 
     
@@ -73,7 +84,7 @@ const BattleField = ({ }) => {
     }, 4000);
   },[globalState.currentMessage])
   
-  if(acolites === null || knights === null){
+  if(acolites === null || knights === null || villains === null){
     return null
   }
 
@@ -143,6 +154,24 @@ const BattleField = ({ }) => {
               color={'rgba(255, 0, 0, 1)'}
               style={styles.KnightProgressBar} 
               progress={knight.characterStats.hp / knight.characterMaxStats.maxHp }
+            />
+
+          </EnemyContainer >
+        )}
+
+      </EnemiesContainer>
+      <EnemiesContainer>
+        {villains.map( villain => 
+          <EnemyContainer key={villain._id}>
+
+            <EnemyImageContainer>
+              <EnemyImage source={{ uri: villain.imgURL }} />
+            </EnemyImageContainer>
+
+            <Progress.Bar 
+              color={'rgba(255, 0, 0, 1)'}
+              style={styles.KnightProgressBar} 
+              progress={villain.characterStats.hp / villain.characterMaxStats.maxHp }
             />
 
           </EnemyContainer >
@@ -224,7 +253,7 @@ const EnemiesContainer = styled.View`
   display: flex; 
   flex-direction: row;
   width: 70%;
-  height: 28%;
+  height: 10%;
   justify-content: space-around; 
   align-items: top;
 `
