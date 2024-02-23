@@ -42,7 +42,7 @@ const ProfileManager = () => {
     <MainContainer>
       {globalState.user.rol === "mortimer" ? (
         <MortimerProfile />
-      ) : globalState.user.rol === "villano" ? (
+      ) : globalState.user.rol === "villain" ? (
         <>
           <ProfileVillano />
           <VillanoButtons />

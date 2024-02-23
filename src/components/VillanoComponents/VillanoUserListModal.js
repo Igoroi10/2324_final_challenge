@@ -12,7 +12,7 @@ const showVillanoEnemyList = ({ setOpenEnemyList, illnessToSend }) => {
     const user = globalState.user;
     let isGood;
 
-    if(user.rol === "villano" || user.rol === "mortimer" || user.rol === "acolyte")
+    if(user.rol === "villain" || user.rol === "mortimer" || user.rol === "acolyte")
         isGood = true
     else    
         isGood = false 
@@ -22,11 +22,11 @@ const showVillanoEnemyList = ({ setOpenEnemyList, illnessToSend }) => {
       const posibleTargetsList = globalState.userList.filter((el) => {
         
         if(isGood){
-          if(el.rol !== "villano" )
+          if(el.rol !== "villain" )
             return el;
         }
         else{
-          if(el.rol !== "villano")
+          if(el.rol !== "villain")
             return el;
         }
       })    
