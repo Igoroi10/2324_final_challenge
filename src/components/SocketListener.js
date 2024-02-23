@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { Context } from '../helpers/Context';
 import socket from '../../helpers/socket';
+import calculateIcon from '../helpers/calculateIcon';
 
 function SocketListener(props) {
 	// console.log(props)
@@ -120,16 +121,21 @@ function SocketListener(props) {
 		}
 
 		const handleAttack = (data) => {
-			globalState.userList.forEach ((element) => {
-				if (element._id === data.id)
+			globalState.userList.forEach ((el) => {
+				if (el._id === data.id)
 				{
-					let saveName = element.name;
+					let saveName = el.name;
+					const iconPic = calculateIcon(el)
+					globalStateHandler({icon: {imgURL:iconPic}})
+					globalStateHandler({attacker: el})
 					globalState.userList.forEach ( (element) => {
 						if(element._id === data.targId)
 						{
 							// console.log(`${saveName} ha infligido daño a ${element.name} de un total de: ${data.damage}`);
 							const message = `${saveName} ha infligido daño a ${element.name} de un total de: ${data.damage}`;
+							globalStateHandler({defender: element})
 							globalStateHandler({currentMessage: message});
+
 						}
 					})
 				}
