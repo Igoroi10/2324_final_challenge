@@ -13,9 +13,10 @@ import UserListModal from '../UserListModal';
 import VillanoUserListModal from '../VillanoComponents/VillanoUserListModal';
 import ProfileVillano from './ProfileVillano';
 import VillanoButtons from '../VillanoComponents/ViillanoButtons';
+import socket from '../../../helpers/socket';
 
 const ProfileManager = () => {
-  const { globalState } = useContext(Context);
+  const { globalState, globalStateHandler } = useContext(Context);
   const [openEnemyList, setOpenEnemyList] = useState(false);
   const [showAllUsersReadyModal, setShowAllUsersReadyModal] = useState(false);
 
@@ -37,6 +38,80 @@ const ProfileManager = () => {
       }
     }
   }, [globalState.userList, globalState.user.rol]);
+
+  useEffect(() => {
+    console.log("_____________________________")
+
+    console.log("_____________________________")
+
+    console.log("USEEFFECT CURRENTURN")
+    console.log("_____________________________")
+    console.log("_____________________________")
+
+
+    if (globalState.currentTurn !== "" && globalState.user.rol === "mortimer" && (globalState.currentMessage === "" || globalState.turnCounter === 0)) {
+
+
+
+      let user;
+
+      globalState.userList.forEach((el) => {
+        if (globalState.currentTurn === el._id)
+          user = el;
+
+      })
+
+      let turnNumber;
+      globalState.userList.forEach((el, index) => {
+
+        if (el.name === user.name) {
+          turnNumber = index
+        }
+      })
+
+
+      console.log("_____________________________")
+      console.log("TURNO DE ")
+      console.log(globalState.userList[turnNumber].name);
+
+      if (globalState.userList[turnNumber].rol === "knight") {
+        let acolyteArray = [];
+        for (let i = 0; i < globalState.userList.length; i++) {
+
+          for (let j = 0; j < globalState.initiative.length; j++) {
+
+            if (globalState.initiative[j] === globalState.userList[i]._id && globalState.userList[i].rol === "acolyte") {
+              acolyteArray.push(globalState.userList[i]);
+            }
+          }
+        }
+
+        setTimeout(() => {
+          const randomAcolyte = Math.floor(Math.random() * acolyteArray.length);
+          const dataToSend = {
+            id: globalState.userList[turnNumber]._id,
+            targId: acolyteArray[randomAcolyte]._id,
+            stat: "strength"
+          }
+          socket.emit('attack_try', dataToSend);
+        }, 4000);
+      }
+
+    }
+
+  }, [globalState.currentMessage, globalState.currentTurn])
+
+  useEffect(() => {
+
+    if(globalState.currentMessage !== ""){
+      setTimeout(() => {
+     
+        globalStateHandler({ currentMessage: "" });
+      }, 4000);
+    }
+    
+  }, [globalState.currentMessage])
+
 
   return (
     <MainContainer>

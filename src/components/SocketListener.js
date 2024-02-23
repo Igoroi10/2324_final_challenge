@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { Context } from '../helpers/Context';
 import socket from '../../helpers/socket';
+import calculateIcon from '../helpers/calculateIcon';
 
 function SocketListener(props) {
 	// console.log(props)
@@ -63,7 +64,7 @@ function SocketListener(props) {
 			globalStateHandler({
 				currentTurn: globalState.initiative[data.index],
 			});
-
+			
 			
 			let turnNumber = 0
 
@@ -120,8 +121,26 @@ function SocketListener(props) {
 		}
 
 		const handleAttack = (data) => {
+			globalState.userList.forEach ((el) => {
+				if (el._id === data.id)
+				{
+					let saveName = el.name;
+					const iconPic = calculateIcon(el)
+					globalStateHandler({icon: {imgURL:iconPic}})
+					globalStateHandler({attacker: el})
+					globalState.userList.forEach ( (element) => {
+						if(element._id === data.targId)
+						{
+							// console.log(`${saveName} ha infligido daño a ${element.name} de un total de: ${data.damage}`);
+							const message = `${saveName} ha infligido daño a ${element.name} de un total de: ${data.damage}`;
+							globalStateHandler({defender: element})
+							globalStateHandler({currentMessage: message});
 
-
+						}
+					})
+				}
+			})
+			
 			let turnNumber = 0
 			
 
@@ -135,6 +154,7 @@ function SocketListener(props) {
 			globalState.userList.forEach((el) => {
 				for(let i = 0; i < globalState.initiative.length; i++){
 					if(globalState.initiative[i]._id === el._id){
+
 
 						console.log("TURNO DE")
 						console.log(el.name)
@@ -169,6 +189,7 @@ function SocketListener(props) {
 					length: globalState.initiative.length
 				}
 				socket.emit("change_turn", dataToSend);
+				globalStateHandler({turnCounter: globalState.turnCounter + 1})
 			}
 		}
 
