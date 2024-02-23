@@ -4,6 +4,11 @@ import { Context } from '../../helpers/Context';
 import { Image, StyleSheet, Text, View} from 'react-native';
 import * as Progress from 'react-native-progress';
 
+import MagicIcon from '../../../assets/MagicIcon2.png';
+import PotionIcon from '../../../assets/PotionIcon.png';
+import swordSlashIcon from '../../../assets/swordSlashIcon.png';
+
+
 
 const BattleField = ({ }) => {
 
@@ -70,7 +75,7 @@ const BattleField = ({ }) => {
             <Progress.Bar 
               color={'rgba(100, 255, 100, 1)'}
               style={styles.AcolyteProgressBar} 
-              progress={acolite.characterMaxStats.maxHp / acolite.characterStats.hp} 
+              progress={ acolite.characterMaxStats.maxHp / acolite.characterStats.hp } 
               
             />
 
@@ -78,7 +83,7 @@ const BattleField = ({ }) => {
         )
       }
       </AcolytesContainer>
-
+    <Spacer></Spacer>
       <Interface>
         <TurnContainer>
           <Text style={{color: 'white'}}>TURNO DE: </Text>
@@ -86,12 +91,20 @@ const BattleField = ({ }) => {
             <TurnImage source={{uri: currentTurnPlayer.imgURL }} alt='currentTurn'/>
           </TurnImageContainer>
         </TurnContainer>
-
         <MessagesContainer>
           {globalState.currentMessage !== "" &&
-           <Text style={{color: 'white'}}t>{globalState.currentMessage}</Text>
+            <>
+            <InterfaceMessage>
+              <TurnImage source={{ uri: globalState.attacker.imgURL }} alt='attackerImg'/>
+              <TurnImage source={{ uri: globalState.icon.imgURL }} alt='pruebar'/>
+              <TurnImage source={{uri: globalState.defender.imgURL }} alt='defenderImg'/>
+            </InterfaceMessage>
+            <InterfaceMessage>
+              
+              <Text style={{color: 'white'}}t> {globalState.currentMessage} </Text>
+            </InterfaceMessage>
+            </>
           }
-         
         </MessagesContainer>
       </Interface>
 
@@ -120,6 +133,7 @@ const BattleField = ({ }) => {
   )
 }
 
+
 const styles = StyleSheet.create({
   AcolyteProgressBar: {
     width: 50,
@@ -143,13 +157,29 @@ const MainContainer = styled.View`
   flex: 1;
 `
 
+const Spacer = styled.View`
+  height: 40%;
+`
+
 const Interface = styled.View`
   display: flex; 
   flex-direction: row;
   width: 95%;
-  height: 30%;
+  height: 80%;
   justify-content: space-between; 
   align-items: center;
+  position: absolute;
+  z-index: 3;
+`
+
+const InterfaceMessage = styled.View`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 50%;
+  background-color: blue;
+  align-items:center;
+  justify-content: center;
 `
 
 const TurnImageContainer = styled.View`
@@ -233,8 +263,15 @@ const TurnContainer = styled.View`
 `
 
 const MessagesContainer = styled.View`
-  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   height: 100%;
+  background-color: rgba(100,100,100, 0.4);
+  z-index: 4;
+  position: absolute;
 `
 
 export default BattleField

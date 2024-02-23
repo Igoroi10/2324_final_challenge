@@ -37,6 +37,16 @@ export const globalStateSchema = {
 
     turnCounter: 0,
 
-    
+    attacker: {
+        imgURL: "../../../assets/Icon_attack_v1.png"
+    },
+
+    defender: {
+        imgURL: "../../../assets/Icon_shield_v1.png"
+    },
+
+    icon: {
+        imgURL: "../../../assets/Icon_shield_v1.png"
+    }
 
 }
