@@ -35,4 +35,8 @@ export const globalStateSchema = {
     
     currentTurn: "",
 
+    turnCounter: 0,
+
+    
+
 }

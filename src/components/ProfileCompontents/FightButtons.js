@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components/native';
 import { Context } from '../../helpers/Context';
-import { Image, StyleSheet, Text } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 
 // Assets
 import iconAtack from '../../../assets/Icon_attack_v1.png'
@@ -45,19 +45,24 @@ const FightButtons = ({setOpenEnemyList} ) => {
   }
 
   return (
+    globalState.user._id === globalState.currentTurn ? (
+      <ButtonsContainer>
+        {/* este boton */}
+        <Square onPress={openEnemyList}>
+          <Image source={iconAtack} style={styles.image}  />
+        </Square>
+        <Square onPress={attackTest}>
+          <Image source={iconShield} style={styles.image} />
+        </Square>
 
-    <ButtonsContainer>
-      {/* este boton */}
-      <Square onPress={openEnemyList}>
-        <Image source={iconAtack} style={styles.image}  />
-      </Square>
-      <Square onPress={attackTest}>
-        <Image source={iconShield} style={styles.image} />
-      </Square>
+      </ButtonsContainer>
+    ):(
+     <>
+             <Text> No es tu turno </Text>
+      </>
 
-    </ButtonsContainer>
 
-  )
+  ))
 }
 
 const styles = StyleSheet.create({
@@ -91,6 +96,11 @@ const Square = styled.TouchableOpacity`
   width: 100px;
   height: 100px;
 `;
+
+const Text = styled.Text`
+  font-size: 40px;
+  color: white;
+`
 
 
 
