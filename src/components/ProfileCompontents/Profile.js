@@ -13,7 +13,7 @@ const Profile = ({ }) => {
         <ProfileContainer>
           <Image source={{ uri: globalState.user.imgURL }} style={styles.image} />
           <ProfileText>{globalState.user.name}</ProfileText>
-          {!globalState.user.rol == "guest" && (<Stats />)}
+          <Stats />
         </ProfileContainer> 
     </>
   );
