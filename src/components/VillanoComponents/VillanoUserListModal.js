@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 import { Context } from '../../helpers/Context';
 import socket from '../../../helpers/socket';
 
-const showVillanoEnemyList = ({setOpenEnemyList}) => {
+const showVillanoEnemyList = ({ setOpenEnemyList, illnessToSend }) => {
     const [target, setTarget] = useState([]);
     const {globalState, globalStateHandler} = useContext(Context);
     const [posibleTargets, setPosibleTargets] = useState([]);
@@ -32,49 +32,51 @@ const showVillanoEnemyList = ({setOpenEnemyList}) => {
       })    
       setPosibleTargets(posibleTargetsList)
     }, [globalState.userList]);
-
-    const selectedtarget = (item) => {
-      setTarget(item)
-       console.log("selected user", item.name);
-      epicWeaknessTarget(item);
-    };
-
-    const epicWeaknessTarget = (item) => {
-        const data = {
-            id: user._id,
-            illness: "epic_weakness",
-            targId: item._id,
-            active: true
-          }
-          console.log(data);
-          socket.emit('disease', data);
-      setOpenEnemyList(false)
+   
+    // Función para manejar la enfermedad correspondiente según el contexto
+    const handleDisease = (item) => {
+      console.log
+        
+            const data = {
+                id: user._id,
+                illness: illnessToSend, // Se usa la enfermedad proporcionada
+                targId: item._id,
+                active: true
+            }
+            console.log(data);
+            socket.emit('disease_try', data);
+            setOpenEnemyList(false);
+        
     }
 
+    const selectedTarget = (item) => {
+      setTarget(item);
+      console.log("selected user", item.name);
+      handleDisease(item); 
+      setOpenEnemyList(false);
+  };
+
   return (
-    <ModalContainer transparent={true} visible={true}>
-      <ContentContainer>
-        <IngredientList
-          data={posibleTargets}
-          renderItem={({ item, index }) => (
-            <IngredientItem
-              onPress={() => selectedtarget(item)}
-              selected={item}
-            >
-              {item.imgURL && (
-                <Image source={{ uri: item.imgURL }} style={styles.image} />
-
-              )}
-                <IngredientName>{item.name}</IngredientName>
-
-            </IngredientItem>
-          )}
-          keyExtractor={(item, index) => index+1}
-          horizontal
-        />
-
-      </ContentContainer>
-    </ModalContainer>
+      <ModalContainer transparent={true} visible={true}>
+          <ContentContainer>
+              <IngredientList
+                  data={posibleTargets}
+                  renderItem={({ item, index }) => (
+                      <IngredientItem
+                          onPress={() => selectedTarget(item)}
+                          selected={item}
+                      >
+                          {item.imgURL && (
+                              <Image source={{ uri: item.imgURL }} style={styles.image} />
+                          )}
+                          <IngredientName>{item.name}</IngredientName>
+                      </IngredientItem>
+                  )}
+                  keyExtractor={(item, index) => index + 1}
+                  horizontal
+              />
+          </ContentContainer>
+      </ModalContainer>
   );
 };
 

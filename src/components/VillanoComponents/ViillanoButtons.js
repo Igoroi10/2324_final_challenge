@@ -13,65 +13,33 @@ const VillanoButtons = ({} ) => {
 
   const { globalState, globalStateHandler } = useContext(Context);
   const [openEnemyList, setOpenEnemyList] = useState(false);
+  const [illnessToSend, setIllnessToSend] = useState(""); // Estado para almacenar la enfermedad a enviar
 
-  const rottingPlague = () =>{
-    
-    const data = {
-      id: user._id,
-      illness: "rotting_plague",
-      active: true
-    }
-    socket.emit('disease', data);
-  }
-
-  const epicWeakness = () =>{
-    
-    const data = {
-      id: user._id,
-      illness: "epic_weakness",
-      active: true
-    }
-    socket.emit('disease', data);
-  }
-
-  const marrowApocalypse = () =>{
-    
-    const data = {
-      id: user._id,
-      illness: "marrow_apocalypse",
-      active: true
-    }
-    socket.emit('disease', data);
-  }
+  // Función para abrir el modal y establecer la enfermedad a enviar
+  const handleButtonPress = (illness) => {
+    setOpenEnemyList(true); 
+    setIllnessToSend(illness); 
+  };
 
   return (
     globalState.user._id ? (
       <ButtonsContainer>
-        <Square onPress={setOpenEnemyList}>
-          <Image source={iconAtack} style={styles.image}  />
-          {(openEnemyList && globalState.userList.length > 0) && (
-              <VillanoUserListModal setOpenEnemyList={setOpenEnemyList} />
-            )}
+        <Square onPress={() => handleButtonPress('epic_weakness')}>
+          <Image source={iconAtack} style={{ width: 60, height: 60 }} />
         </Square>
-        <Square onPress={setOpenEnemyList}>
-          <Image source={iconShield} style={styles.image} />
-          {(openEnemyList && globalState.userList.length > 0) && (
-              <VillanoUserListModal setOpenEnemyList={setOpenEnemyList} />
-            )}
+        <Square onPress={() => handleButtonPress('rotting_plague')}>
+          <Image source={iconShield} style={{ width: 60, height: 60 }} />
         </Square>
-        <Square onPress={setOpenEnemyList}>
-          <Image source={iconAtack} style={styles.image} />
-          {(openEnemyList && globalState.userList.length > 0) && (
-              <VillanoUserListModal setOpenEnemyList={setOpenEnemyList} />
-            )}
+        <Square onPress={() => handleButtonPress('marrow_apocalypse')}>
+          <Image source={iconAtack} style={{ width: 60, height: 60 }} />
         </Square>
+        {openEnemyList && <VillanoUserListModal setOpenEnemyList={setOpenEnemyList} illnessToSend={illnessToSend} />}
       </ButtonsContainer>
-    ):(
-     <>
-        <Text> No ES TU TURNO </Text>
-        </>
-  ))
-}
+    ) : (
+      <Text>No es tu turno</Text>
+    )
+  );
+};
 
 const styles = StyleSheet.create({
   image: {
