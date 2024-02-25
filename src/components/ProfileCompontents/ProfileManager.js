@@ -11,11 +11,14 @@ import ReadyModal from '../ReadyModal';
 import MortimerProfile from './MortimerProfile';
 import UserListModal from '../UserListModal'
 import socket from '../../../helpers/socket';
+import SickModal from '../SickModal';
 
 const ProfileManager = () => {
   const { globalState, globalStateHandler } = useContext(Context);
   const [openEnemyList, setOpenEnemyList] = useState(false);
   const [showAllUsersReadyModal, setShowAllUsersReadyModal] = useState(false);
+  const [isSick, setIsSick] = useState(false);
+
 
   useEffect(() => {
     // console.log("ENEMY LIST:") 
@@ -109,9 +112,19 @@ const ProfileManager = () => {
     
   }, [globalState.currentMessage])
 
+  useEffect(() => {
+    setIsSick(false);
+    Object.keys(globalState.user.diseases).forEach((disease) => {
+      if(globalState.user.diseases[disease] === true){
+        setIsSick(true)
+      }
+    });
+    
+  }, [globalState.user])
 
   return (
     <MainContainer>
+
       {globalState.user.rol === "mortimer" ?
         <MortimerProfile />
         :
@@ -123,13 +136,21 @@ const ProfileManager = () => {
             </>
           )}
           {globalState.battleStart && (
-            <>
-              <Profile />
-              <FightButtons setOpenEnemyList={setOpenEnemyList} />
-              {(openEnemyList && globalState.userList.length > 0) && (
-                <UserListModal setOpenEnemyList={setOpenEnemyList} />
-              )}
-            </>
+            
+            isSick? (
+              <>
+                <Profile />
+                <FightButtons setOpenEnemyList={setOpenEnemyList} />
+                {(openEnemyList && globalState.userList.length > 0) && (
+                  <UserListModal setOpenEnemyList={setOpenEnemyList} />
+                )}
+              </>
+            ):(
+              <>
+                <SickModal />
+              </>
+            )
+            
           )}
 
           {globalState.user.isReady && !globalState.battleStart && (<ReadyModal />)}
