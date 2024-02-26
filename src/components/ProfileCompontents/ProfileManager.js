@@ -15,11 +15,13 @@ import ProfileVillano from './ProfileVillano';
 import VillanoButtons from '../VillanoComponents/ViillanoButtons';
 import ApplyEthazium from './ApplyEthazium'
 import socket from '../../../helpers/socket';
+import SpecialAttackListModal from '../SpecialAttackListModal'
 
 const ProfileManager = () => {
   const { globalState, globalStateHandler } = useContext(Context);
   const [openEnemyList, setOpenEnemyList] = useState(false);
   const [showAllUsersReadyModal, setShowAllUsersReadyModal] = useState(false);
+  const [openSpecialEnemyList, setOpenSpecialEnemyList] = useState(false);
 
   useEffect(() => {
     // console.log("ENEMY LIST:") 
@@ -113,7 +115,6 @@ const ProfileManager = () => {
     
   }, [globalState.currentMessage])
 
-
   return (
     <MainContainer>
       {globalState.user.rol === "mortimer" && (
@@ -138,9 +139,12 @@ const ProfileManager = () => {
           {globalState.battleStart && (
             <>
               <Profile />
-              <FightButtons setOpenEnemyList={setOpenEnemyList} />
-              {(openEnemyList && globalState.userList.length > 0) && (
-                <UserListModal setOpenEnemyList={setOpenEnemyList} />
+              <FightButtons setOpenEnemyList={setOpenEnemyList} setOpenSpecialEnemyList={setOpenSpecialEnemyList} />
+              {openEnemyList && (
+              <UserListModal setOpenEnemyList={setOpenEnemyList} />
+              )}
+              {openSpecialEnemyList && (
+              <SpecialAttackListModal setOpenSpecialEnemyList={setOpenSpecialEnemyList} />
               )}
             </>
           )}

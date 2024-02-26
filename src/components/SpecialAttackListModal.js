@@ -5,10 +5,7 @@ import { Context } from '../helpers/Context';
 import socket from '../../helpers/socket';
 
 
-
-
-
-const showEnemyList = ({setOpenEnemyList}) => {
+const showSpecialEnemyList = ({setOpenEnemyList, setOpenSpecialEnemyList}) => {
     const [target, setTarget] = useState([]);
     const {globalState, globalStateHandler} = useContext(Context);
     const [posibleTargets, setPosibleTargets] = useState([]);
@@ -41,37 +38,27 @@ const showEnemyList = ({setOpenEnemyList}) => {
     }, [globalState.userList]);
 
     const selectedtarget = (item) => {
-      console.log('NORMAL');
+        console.log('ESPECIAL');
       setTarget(item)
       // console.log("selected user");
-      attackTarget(item);
+      specialAttackTarget(item);
     };
-
-    const attackTarget = (item) => {
-      if(globalState.user.rol !== "guest"){
-        const dataToSend = {
-          id: user._id,
-          targId: item._id,
-          stat: "strength"
+    const specialAttackTarget = (item) => {
+        if(globalState.user.rol !== "guest"){
+            const dataToSend = {
+                id: user._id,
+                targId: item._id,
+                stat: {
+                    strength: user.characterStats.strength,
+                    intelligence: user.characterStats.intelligence,
+                    agility: user.characterStats.agility,
+                    hp: user.characterStats.hp
+                }
+            };
+            socket.emit('specialAttack_try', dataToSend);
         }
-  
-        socket.emit('attack_try', dataToSend);
-      }
-      else{
-        const dataToSend = {
-          id: item._id,
-          illness: "ethazium",
-          active: true
-        }
-  console.log("disease applyed")
-  console.log(item)
-        socket.emit('disease_try', dataToSend);
-
-      }
-
-      setOpenEnemyList(false)
+        setOpenSpecialEnemyList(false)
     }
-
 
   return (
     <ModalContainer transparent={true} visible={true}>
@@ -141,5 +128,5 @@ const styles = {
   },
 };
 
-export default showEnemyList;
+export default showSpecialEnemyList;
 
