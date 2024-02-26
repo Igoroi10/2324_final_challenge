@@ -117,27 +117,44 @@ const ProfileManager = () => {
   }, [globalState.currentMessage])
 
   useEffect(() => {
-    setIsSick(false);
+    // setIsSick(false);
     Object.keys(globalState.user.diseases).forEach((disease) => {
       if(globalState.user.diseases[disease] === true){
-        setIsSick(true);
+        // setIsSick(true);
 
         //change turn
         if (globalState.user._id === globalState.currentTurn){
+          console.log("current turn *******************************s")
           let index;
           for(let i = 0; i < globalState.initiative.length; i++){
   
             if(globalState.initiative[i] === globalState.currentTurn){
-  
+              
               index = i;
             }
           }
   
-          const dataToSend = {
-            index: index,
-            length: globalState.initiative.length
-          }
-          setInterval(socket.emit("change_turn", dataToSend), 10000);
+          const initiativeUsers = [];
+
+				  globalState.initiative.forEach((id) => {
+					globalState.userList.forEach((user) => {
+
+						if (id === user._id) {
+							initiativeUsers.push(user);
+						}
+					})
+				})
+
+
+				const dataToSend = {
+					index: index,
+					length: globalState.initiative.length,
+					initiativeUsers: initiativeUsers
+				}
+
+          setTimeout(() => {  
+            socket.emit("change_turn", dataToSend)
+          }, 4000);
           globalStateHandler({turnCounter: globalState.turnCounter + 1})
   
         }
@@ -145,7 +162,7 @@ const ProfileManager = () => {
       }
     });
     
-  }, [globalState.user])
+  }, [globalState.user, globalState.currentTurn])
 
   return (
     <MainContainer>
@@ -171,8 +188,9 @@ const ProfileManager = () => {
             </>
             )}
           {globalState.battleStart && (
-            
-            isSick? (
+            <>
+
+            {((!globalState.user.diseases["rotting_plague"]) && (!globalState.user.diseases["epic_weakness"]) && (!globalState.user.diseases["marrow_apocalypse"]) && (!globalState.user.diseases["ethazium"]))&& (
               <>
               <Profile />
               <FightButtons setOpenEnemyList={setOpenEnemyList} />
@@ -180,11 +198,14 @@ const ProfileManager = () => {
                 <UserListModal setOpenEnemyList={setOpenEnemyList} />
                 )}
                 </>
-            ):(
+            )}
+            {((globalState.user.diseases["rotting_plague"]) || (globalState.user.diseases["epic_weakness"]) || (globalState.user.diseases["marrow_apocalypse"]) || (globalState.user.diseases["ethazium"]))&& (
+
               <>
                 <SickModal />
               </>
-            )
+            )}
+            </>
             
               )}
           {globalState.user.isReady && !globalState.battleStart && (

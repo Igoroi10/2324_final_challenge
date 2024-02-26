@@ -18,7 +18,7 @@ const SickModal = ({ }) => {
     });
     setUserDisease(filteredDiseases);
     
-  }, [globalState.user])
+  }, [globalState])
 
 
 
@@ -26,8 +26,10 @@ const SickModal = ({ }) => {
     userDisease.length > 0  && (
       // <ImageBackground source={require("../../assets/wallpaper_login.jpeg")} style={styles.imageBackground}>
 
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white', marginLeft: '-40%', marginBottom: '7%'}}>Diseases:</Text>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop:'-100%'}}>
+          <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white', marginLeft: '-40%', marginBottom: '7%'}}>Your sick.</Text>
+          <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white', marginLeft: '0%', marginBottom: '7%'}}>This are your diseases:</Text>
+
 
           {userDisease.map((disease, index) => (
             <Text key={index} style={{ fontSize: 24, fontWeight: 'bold', color: 'white' }}>{disease}</Text>
