@@ -27,17 +27,15 @@ const ReadyButton = ({ }) => {
   )
 }
 
-
-
 const Readybtn = styled.TouchableOpacity`
   background-color: rgba(0, 0, 232, 0.6);
   align-items: center;
   justify-content: center;
   height: 7%;
+  margin-bottom: 3%;
   width: 80%;
   border: rgba(255, 255, 255, 0.6);
   border-radius: 60px;
-  margin-top: 10%;
 `
 
 const ButtonText = styled.Text`

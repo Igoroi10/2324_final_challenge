@@ -13,33 +13,46 @@ const Stats = ({ }) => {
 
     <StatsContainer>
 
+    <StatContainerRow>
+    <StatContainerblock>
       <ProfileText>HP: {globalState.user.characterStats.hp}</ProfileText>
       <Progress.Bar 
-        color={'rgba(255, 255, 255, 1)'}
+        color={'rgba(255, 0, 0, 1)'}
         style={styles.progressBar} 
         progress={globalState.user.characterStats.hp / globalState.user.characterMaxStats.maxHp} 
       />
+      </StatContainerblock>
 
-      <ProfileText>agility: {globalState.user.characterStats.agility}</ProfileText>
-      <Progress.Bar 
-        color={'rgba(255, 255, 255, 1)'}
-        style={styles.progressBar} 
-        progress={globalState.user.characterStats.agility / globalState.user.characterMaxStats.maxAgility} 
-      />
+      <StatContainerblock>
+        <ProfileText>agility: {globalState.user.characterStats.agility}</ProfileText>
+        <Progress.Bar 
+          color={'rgba(255, 255, 255, 1)'}
+          style={styles.progressBar} 
+          progress={globalState.user.characterStats.agility / globalState.user.characterMaxStats.maxAgility} 
+        />
+      </StatContainerblock>
 
-      <ProfileText>strength: {globalState.user.characterStats.strength}</ProfileText>
-      <Progress.Bar 
-        color={'rgba(255, 255, 255, 1)'}
-        style={styles.progressBar} 
-        progress={globalState.user.characterStats.strength / globalState.user.characterMaxStats.maxStrength} 
-      />
-
-      <ProfileText>intelligence: {globalState.user.characterStats.intelligence}</ProfileText>
-      <Progress.Bar 
-        color={'rgba(255, 255, 255, 1)'}
-        style={styles.progressBar} 
-        progress={globalState.user.characterStats.intelligence / globalState.user.characterMaxStats.maxIntelligence} 
-      />
+    </StatContainerRow>
+      
+    <StatContainerRow>
+      <StatContainerblock>
+        <ProfileText>strength: {globalState.user.characterStats.strength}</ProfileText>
+        <Progress.Bar 
+          color={'rgba(255, 255, 255, 1)'}
+          style={styles.progressBar} 
+          progress={globalState.user.characterStats.strength / globalState.user.characterMaxStats.maxStrength} 
+        />
+      </StatContainerblock>
+     
+      <StatContainerblock>
+        <ProfileText>intelligence: {globalState.user.characterStats.intelligence}</ProfileText>
+        <Progress.Bar 
+          color={'rgba(255, 255, 255, 1)'}
+          style={styles.progressBar} 
+          progress={globalState.user.characterStats.intelligence / globalState.user.characterMaxStats.maxIntelligence} 
+        />
+      </StatContainerblock>
+    </StatContainerRow>
 
     </StatsContainer>
 
@@ -48,25 +61,36 @@ const Stats = ({ }) => {
 
 const styles = StyleSheet.create({
   progressBar: {
-    width: 200,
-    color: 'red',
-    marginBottom: 20,
+    width: '88%',
   }
 });
 
 const StatsContainer = styled.View`
-  top: 10%;
-  padding: 10px;
+  top: 5%;
   justify-content: center;
   align-items: center;
-  border: rgba(255, 0, 255, 0.6);
-  width: 90%;
+  width: 100%;
+`
+
+const StatContainerRow = styled.View`
+  display: flex;
+  flex-direction: row;
+  width:80%;
+  margin-bottom: 2%;
+`
+const StatContainerblock = styled.View`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
 `
 
 const ProfileText = styled.Text`
  color: white;
  font-size: 20px;
  text-align: center;
+ font-family: 'Breathe Fire IV';
+ letter-spacing: 4px;
 `
 
 
