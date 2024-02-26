@@ -20,12 +20,6 @@ const SickModal = ({ }) => {
     
   }, [globalState.user])
 
-  useEffect(() => {
-    if(globalState.user._id === globalState.currentTurn){
-      socket.emit("start_battle", dataToSend);
-    }
-  
-  }, [globalState.currentTurn]);
 
 
   return (
