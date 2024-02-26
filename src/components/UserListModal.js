@@ -60,7 +60,8 @@ const showEnemyList = ({setOpenEnemyList}) => {
         const dataToSend = {
           id: item._id,
           illness: "ethazium",
-          active: true
+          active: true,
+          name: globalState.user.name
         }
   console.log("disease applyed")
   console.log(item)

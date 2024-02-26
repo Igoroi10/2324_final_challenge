@@ -35,7 +35,7 @@ const FightButtons = ({setOpenEnemyList} ) => {
     const dataToSend = {
       id: user._id,
       targId: globalState.userList[1]._id,
-      stat: "strength"
+      stat: "strength",
     }
     socket.emit('attack_try', dataToSend);
   }

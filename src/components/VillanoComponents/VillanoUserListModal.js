@@ -40,7 +40,9 @@ const showVillanoEnemyList = ({ setOpenEnemyList, illnessToSend }) => {
         const data = {
             illness: illnessToSend, // Se usa la enfermedad proporcionada
             id: item._id,
-            active: true
+            active: true,
+            name: globalState.user.name
+
         }
         console.log(data);
         socket.emit('disease_try', data);
