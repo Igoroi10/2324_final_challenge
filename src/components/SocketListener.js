@@ -124,20 +124,10 @@ function SocketListener(props) {
 			globalState.userList.forEach ((el) => {
 				if (el._id === data.id)
 				{
-					let saveName = el.name;
 					const iconPic = calculateIcon(el)
 					globalStateHandler({icon: {imgURL:iconPic}})
 					globalStateHandler({attacker: el})
-					globalState.userList.forEach ( (element) => {
-						if(element._id === data.targId)
-						{
-							// console.log(`${saveName} ha infligido daño a ${element.name} de un total de: ${data.damage}`);
-							const message = `${saveName} ha infligido daño a ${element.name} de un total de: ${data.damage}`;
-							globalStateHandler({defender: element})
-							globalStateHandler({currentMessage: message});
-
-						}
-					})
+					globalStateHandler({message:data.message});
 				}
 			})
 			
