@@ -116,7 +116,28 @@ const ProfileManager = () => {
     setIsSick(false);
     Object.keys(globalState.user.diseases).forEach((disease) => {
       if(globalState.user.diseases[disease] === true){
-        setIsSick(true)
+        setIsSick(true);
+
+        //change turn
+        if (globalState.user._id === globalState.currentTurn){
+          let index;
+          for(let i = 0; i < globalState.initiative.length; i++){
+  
+            if(globalState.initiative[i] === globalState.currentTurn){
+  
+              index = i;
+            }
+          }
+  
+          const dataToSend = {
+            index: index,
+            length: globalState.initiative.length
+          }
+          setInterval(socket.emit("change_turn", dataToSend), 10000);
+          globalStateHandler({turnCounter: globalState.turnCounter + 1})
+  
+        }
+
       }
     });
     

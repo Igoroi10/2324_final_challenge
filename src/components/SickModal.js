@@ -30,15 +30,16 @@ const SickModal = ({ }) => {
 
   return (
     userDisease.length > 0  && (
-      <ImageBackground source={require("../../assets/wallpaper_login.jpeg")} style={styles.imageBackground}>
+      // <ImageBackground source={require("../../assets/wallpaper_login.jpeg")} style={styles.imageBackground}>
 
-          <View style={{  alignItems: 'center'}}>
-              {userDisease.map((disease, index) => (
-                <Text key={index} style={{ fontSize: 24, fontWeight: 'bold', color: 'white' }}>{disease}</Text>
-              ))}
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white', marginLeft: '-40%', marginBottom: '7%'}}>Diseases:</Text>
 
-        </ View>
-      </ImageBackground>
+          {userDisease.map((disease, index) => (
+            <Text key={index} style={{ fontSize: 24, fontWeight: 'bold', color: 'white' }}>{disease}</Text>
+          ))}
+        </View>
+      // </ImageBackground>
 
     )
 
