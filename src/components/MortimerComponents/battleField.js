@@ -4,9 +4,6 @@ import { Context } from '../../helpers/Context';
 import { Image, StyleSheet, Text, View} from 'react-native';
 import * as Progress from 'react-native-progress';
 
-import MagicIcon from '../../../assets/MagicIcon2.png';
-import PotionIcon from '../../../assets/PotionIcon.png';
-import swordSlashIcon from '../../../assets/swordSlashIcon.png';
 
 
 const BattleField = ({ }) => {
