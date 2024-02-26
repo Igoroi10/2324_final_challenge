@@ -100,7 +100,7 @@ const BattleField = ({ }) => {
       {
         acolites.map((acolite, idx) => 
 
-          <AcolyteContainer key={acolite._id} isPair={idx % 2 == 0 ? true : false } >
+          <AcolyteContainer key={acolite._id} isAlive={acolite.isAlive} >
 
             <AcolyteImageContainer >
               <AcolyteImage source={{ uri: acolite.imgURL }} />
@@ -294,7 +294,7 @@ const AcolyteContainer = styled.View`
   margin-left: 1%;
   align-items: center;
   justify-content: center;
-  padding-top: ${(prop => prop.isPair ? '0': '10%')};
+  opacity: ${(prop => prop.isAlive ? '1': '0.4')};
 `
   
 const AcolyteImageContainer = styled.View`
