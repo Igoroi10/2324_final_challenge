@@ -106,7 +106,7 @@ const ProfileManager = () => {
 				socket.emit("change_turn", dataToSend);
       }
 
-      if (globalState.userList[turnNumber].rol === "knight") {
+      if (globalState.userList[turnNumber].rol === "knight" && globalState.userList[turnNumber].isAlive) {
         let acolyteArray = [];
         for (let i = 0; i < globalState.userList.length; i++) {
 
