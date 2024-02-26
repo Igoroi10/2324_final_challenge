@@ -93,8 +93,8 @@ const App = () => {
       <MainContainer>
 
         {!isLogged && <Login setIsLogged={setIsLogged} />}
-        {(isLogged && globalState.user.name !== "" && globalState.battleEnd === "")&& <ProfileManager/>}
-        {globalState.battleEnd !== "" && <FinalResults/>}
+        {(isLogged && globalState.user.name !== "")&& <ProfileManager/>}
+        {/* {globalState.battleEnd !== "" && <FinalResults/>} */}
       </MainContainer>
     </Context.Provider>
   );

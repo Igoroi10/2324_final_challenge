@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import { Context } from '../../helpers/Context';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import * as Progress from 'react-native-progress';
-
+import socket from '../../../helpers/socket';
 
 
 const BattleField = ({ }) => {
@@ -77,39 +77,41 @@ const BattleField = ({ }) => {
   const healUser = (acoliteId) => {
     let disease = "";
     let name;
-    globalState.userList.forEach((element) => {
-      if (element._id === acoliteId)
-      {
-        name = element.name;
-        if (element.diseases.rotting_plague === true ){
-          disease = "rotting_plague";
-        }
-        else if(element.diseases.epic_weakness === true ){
-          disease = "epic_weakness";
+    if (acoliteId != null) {
 
-        }
-        else if(element.diseases.marrow_apocalypse === true ){
-          disease = "marrow_apocalypse";
+      globalState.userList.forEach((element) => {
+        if (element._id === acoliteId) {
+          name = element.name;
+          if (element.diseases.rotting_plague === true) {
+            disease = "rotting_plague";
+          }
+          else if (element.diseases.epic_weakness === true) {
+            disease = "epic_weakness";
 
+          }
+          else if (element.diseases.marrow_apocalypse === true) {
+            disease = "marrow_apocalypse";
+
+          }
+          else if (element.diseases.ethazium === true) {
+            disease = "ethazium";
+          }
+          else {
+            const message = "Este jugador no esta enfermo";
+            globalStateHandler({ currentMessage: message });
+          }
         }
-        else if(element.diseases.ethazium === true) {
-          disease = "ethazium";
-        }
-        else{
-          const message = "Este jugador no esta enfermo";
-          globalStateHandler({currentMessage: message});
-        }
+      })
+
+      const dataToSend = {
+        id: acoliteId,
+        illness: disease,
+        active: false,
+        name: name,
       }
-    })
 
-    const dataToSend = {
-      id: acoliteId,
-      illness: disease,
-      active: false,
-      name: name,
+      socket.emit('disease_try', dataToSend);
     }
-
-    socket.emit('disease_try', sendData);
 
   }
 
@@ -138,10 +140,16 @@ const BattleField = ({ }) => {
               <AcolyteContainer key={acolite._id} isAlive={acolite.isAlive} >
 
                 <AcolyteImageContainer >
-                  <AcolyteImage source={{ uri: acolite.imgURL }} />
                   {globalState.user._id === globalState.currentTurn && acolite.isAlive && (
-                    <MortimerHeal onPress={healUser(acolite._id) } />
+                <MortimerHeal onPress={() => healUser(acolite._id)}>
+                  <AcolyteImage source={{ uri: acolite.imgURL }} />
+                  </MortimerHeal>
                   )}
+
+
+
+
+
                 </AcolyteImageContainer>
 
                 <Progress.Bar
@@ -163,7 +171,9 @@ const BattleField = ({ }) => {
               <TurnImage source={{ uri: currentTurnPlayer.imgURL }} alt='currentTurn' />
             </TurnImageContainer>
           </TurnContainer>
-          <MessagesContainer>
+
+          {/* {globalState.user != globalState.currentTurn && (
+            <MessagesContainer>
             {globalState.currentMessage !== "" &&
               <>
                 <InterfaceMessage>
@@ -178,6 +188,7 @@ const BattleField = ({ }) => {
               </>
             }
           </MessagesContainer>
+            )} */}
         </Interface>
 
         <EnemiesContainer>
@@ -246,10 +257,23 @@ const MainContainer = styled.View`
   flex: 1;
 `
 
+// const MortimerHeal = styled.TouchableOpacity`
+//   width: 300px;
+//   border-radius: 40px;
+//   background-color: #3498db; 
+
+// `;
+
 const MortimerHeal = styled.TouchableOpacity`
-  width: 80%;
-  border-radius: 40px;
-`;
+  align-items: center;
+  justify-content: center;
+  height: 7%;
+  margin-bottom: 3%;
+  width: 100%;
+  height:100%;
+  border: rgba(255, 255, 255, 0.6);
+  border-radius: 60px;
+`
 
 const Spacer = styled.View`
   height: 40%;
@@ -364,7 +388,7 @@ const MessagesContainer = styled.View`
   width: 100%;
   height: 100%;
   background-color: rgba(100,100,100, 0.4);
-  z-index: 4;
+  z-index: -1;
   position: absolute;
 `
 

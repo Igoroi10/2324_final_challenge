@@ -192,6 +192,10 @@ const MortimerProfile = () => {
     socket.emit("start_battle", dataToSend);
   }
 
+
+
+
+
   const checkAllUsersHP = () => {
     const userList = globalState.userList;
     const acolyteUsers = userList.filter(user => user.rol === 'acolyte');
