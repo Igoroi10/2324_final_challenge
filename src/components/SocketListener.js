@@ -183,15 +183,20 @@ function SocketListener(props) {
 				}
 			});
 
-			globalState.userList.forEach(el => {
+			globalState.userList.forEach((el) => {
 				if (el.rol === data.user.rol) {
-					const iconPic = calculateIcon(data.user);
+					const iconPic = calculateIcon(data.user)
 					globalStateHandler({ icon: { imgURL: iconPic }, attacker: el });
-					const defender = globalState.userList.find(element => element._id === data.id);
-					defender && globalStateHandler({ defender, currentMessage: data.message });
+
+					globalState.userList.forEach((element) => {
+						if (element._id === data.id) {
+							globalStateHandler({ defender: element })
+							globalStateHandler({ currentMessage: data.message });
+
+						}
+					})
 				}
-			});
-			
+			})
 
 			if (globalState.user.rol === "mortimer") {
 
