@@ -52,7 +52,7 @@ function SocketListener(props) {
 
 			for (let i = 0; i < globalState.userList.length; i++) {
 
-				if (globalState.userList[i]._id === globalState.initiative[data.index]) {
+				if (globalState.userList[i]._id === globalState.initiative[data.index] && globalState.userList[i].isAlive ) {
 					console.log("TURNO DE EN HANDLER CHANGE_TURN")
 					console.log(globalState.userList[i].name)
 

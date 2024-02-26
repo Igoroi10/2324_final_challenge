@@ -15,14 +15,11 @@ import ProfileVillano from './ProfileVillano';
 import VillanoButtons from '../VillanoComponents/ViillanoButtons';
 import ApplyEthazium from './ApplyEthazium'
 import socket from '../../../helpers/socket';
-import SickModal from '../SickModal';
 
 const ProfileManager = () => {
   const { globalState, globalStateHandler } = useContext(Context);
   const [openEnemyList, setOpenEnemyList] = useState(false);
   const [showAllUsersReadyModal, setShowAllUsersReadyModal] = useState(false);
-  const [isSick, setIsSick] = useState(false);
-
 
   useEffect(() => {
     // console.log("ENEMY LIST:") 
@@ -78,66 +75,20 @@ const ProfileManager = () => {
       console.log("TURNO DE ")
       console.log(globalState.userList[turnNumber].name);
 
-      if (globalState.userList[turnNumber].rol === "knight") {
-        let acolyteArray = [];
-        for (let i = 0; i < globalState.userList.length; i++) {
+      if(!globalState.userList[turnNumber].isAlive){
 
-          for (let j = 0; j < globalState.initiative.length; j++) {
+        let index;
+				for (let i = 0; i < globalState.initiative.length; i++) {
 
-            if (globalState.initiative[j] === globalState.userList[i]._id && globalState.userList[i].rol === "acolyte" && globalState.userList[i].characterStats.hp > 0) {
-              acolyteArray.push(globalState.userList[i]);
-            }
-          }
-        }
+					if (globalState.initiative[i] === globalState.currentTurn) {
 
-        if(acolyteArray.length !== 0){
+						index = i;
+					}
+				}
 
-          setTimeout(() => {
-            const randomAcolyte = Math.floor(Math.random() * acolyteArray.length);
-            const dataToSend = {
-              id: globalState.userList[turnNumber]._id,
-              targId: acolyteArray[randomAcolyte]._id,
-              stat: "strength"
-            }
-            socket.emit('attack_try', dataToSend);
-          }, 4000);
-        }
-      }
-    }
-  }, [globalState.currentMessage, globalState.currentTurn])
+				const initiativeUsers = [];
 
-  useEffect(() => {
-
-    if(globalState.currentMessage !== ""){
-      setTimeout(() => {
-     
-        globalStateHandler({ currentMessage: "" });
-      }, 4000);
-    }
-    
-  }, [globalState.currentMessage])
-
-  useEffect(() => {
-    // setIsSick(false);
-    Object.keys(globalState.user.diseases).forEach((disease) => {
-      if(globalState.user.diseases[disease] === true){
-        // setIsSick(true);
-
-        //change turn
-        if (globalState.user._id === globalState.currentTurn){
-          console.log("current turn *******************************s")
-          let index;
-          for(let i = 0; i < globalState.initiative.length; i++){
-  
-            if(globalState.initiative[i] === globalState.currentTurn){
-              
-              index = i;
-            }
-          }
-  
-          const initiativeUsers = [];
-
-				  globalState.initiative.forEach((id) => {
+				globalState.initiative.forEach((id) => {
 					globalState.userList.forEach((user) => {
 
 						if (id === user._id) {
@@ -152,18 +103,47 @@ const ProfileManager = () => {
 					length: globalState.initiative.length,
 					initiativeUsers: initiativeUsers
 				}
+				socket.emit("change_turn", dataToSend);
+      }
 
-          setTimeout(() => {  
-            socket.emit("change_turn", dataToSend)
-          }, 4000);
-          globalStateHandler({turnCounter: globalState.turnCounter + 1})
-  
+      if (globalState.userList[turnNumber].rol === "knight") {
+        let acolyteArray = [];
+        for (let i = 0; i < globalState.userList.length; i++) {
+
+          for (let j = 0; j < globalState.initiative.length; j++) {
+
+            if (globalState.initiative[j] === globalState.userList[i]._id && globalState.userList[i].rol === "acolyte") {
+              acolyteArray.push(globalState.userList[i]);
+            }
+          }
         }
 
+        setTimeout(() => {
+          const randomAcolyte = Math.floor(Math.random() * acolyteArray.length);
+          const dataToSend = {
+            id: globalState.userList[turnNumber]._id,
+            targId: acolyteArray[randomAcolyte]._id,
+            stat: "strength"
+          }
+          socket.emit('attack_try', dataToSend);
+        }, 4000);
       }
-    });
+
+    }
+
+  }, [globalState.currentMessage, globalState.currentTurn])
+
+  useEffect(() => {
+
+    if(globalState.currentMessage !== ""){
+      setTimeout(() => {
+     
+        globalStateHandler({ currentMessage: "" });
+      }, 4000);
+    }
     
-  }, [globalState.user, globalState.currentTurn])
+  }, [globalState.currentMessage])
+
 
   return (
     <MainContainer>
@@ -190,24 +170,12 @@ const ProfileManager = () => {
             )}
           {globalState.battleStart && (
             <>
-
-            {((!globalState.user.diseases["rotting_plague"]) && (!globalState.user.diseases["epic_weakness"]) && (!globalState.user.diseases["marrow_apocalypse"]) && (!globalState.user.diseases["ethazium"]))&& (
-              <>
-              <Profile />
-              <FightButtons setOpenEnemyList={setOpenEnemyList} />
-              {(openEnemyList && globalState.userList.length > 0) && (
-                <UserListModal setOpenEnemyList={setOpenEnemyList} />
-                )}
-                </>
-            )}
-            {((globalState.user.diseases["rotting_plague"]) || (globalState.user.diseases["epic_weakness"]) || (globalState.user.diseases["marrow_apocalypse"]) || (globalState.user.diseases["ethazium"]))&& (
-
-              <>
-                <SickModal />
+            <Profile />
+            <FightButtons setOpenEnemyList={setOpenEnemyList} />
+            {(openEnemyList && globalState.userList.length > 0) && (
+              <UserListModal setOpenEnemyList={setOpenEnemyList} />
+              )}
               </>
-            )}
-            </>
-            
               )}
           {globalState.user.isReady && !globalState.battleStart && (
             <ReadyModal />
