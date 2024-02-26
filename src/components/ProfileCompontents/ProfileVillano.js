@@ -1,4 +1,4 @@
-import React, { useContext , useState} from 'react';
+import React, { useContext , useEffect} from 'react';
 import styled from 'styled-components/native';
 import { Context } from '../../helpers/Context';
 import { Image, StyleSheet } from 'react-native';
@@ -7,7 +7,12 @@ import * as Progress from 'react-native-progress';
 const ProfileVillano = ({ }) => {
 
   const { globalState, globalStateHandler } = useContext(Context);
-  globalState.user.isReady = true;
+
+  useEffect(() => {
+    globalState.user.isReady = true;
+    console.log(globalState.user)
+  }, []);
+  
   
   return (
     <> 
