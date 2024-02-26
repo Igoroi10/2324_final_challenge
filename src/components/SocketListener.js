@@ -76,7 +76,7 @@ function SocketListener(props) {
 
 		const handleAttack = (data) => {
 			globalState.userList.forEach(el => el._id === data.id && globalStateHandler({
-				icon: { imgURL: calculateIcon(el) }, attacker: el, message: data.message
+				icon: { imgURL: calculateIcon(el) }, attacker: el, currentMessage: data.message
 			}
 			));
 
