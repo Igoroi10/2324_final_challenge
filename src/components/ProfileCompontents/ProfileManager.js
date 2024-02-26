@@ -81,25 +81,26 @@ const ProfileManager = () => {
 
           for (let j = 0; j < globalState.initiative.length; j++) {
 
-            if (globalState.initiative[j] === globalState.userList[i]._id && globalState.userList[i].rol === "acolyte") {
+            if (globalState.initiative[j] === globalState.userList[i]._id && globalState.userList[i].rol === "acolyte" && globalState.userList[i].characterStats.hp > 0) {
               acolyteArray.push(globalState.userList[i]);
             }
           }
         }
 
-        setTimeout(() => {
-          const randomAcolyte = Math.floor(Math.random() * acolyteArray.length);
-          const dataToSend = {
-            id: globalState.userList[turnNumber]._id,
-            targId: acolyteArray[randomAcolyte]._id,
-            stat: "strength"
-          }
-          socket.emit('attack_try', dataToSend);
-        }, 4000);
+        if(acolyteArray.length !== 0){
+
+          setTimeout(() => {
+            const randomAcolyte = Math.floor(Math.random() * acolyteArray.length);
+            const dataToSend = {
+              id: globalState.userList[turnNumber]._id,
+              targId: acolyteArray[randomAcolyte]._id,
+              stat: "strength"
+            }
+            socket.emit('attack_try', dataToSend);
+          }, 4000);
+        }
       }
-
     }
-
   }, [globalState.currentMessage, globalState.currentTurn])
 
   useEffect(() => {
