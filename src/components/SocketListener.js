@@ -50,16 +50,13 @@ function SocketListener(props) {
 
 		const handleChangeTurn = (data) => {
 			
-			let user;
 			for(let i = 0; i < globalState.userList.length; i++){
 
-			
 				if(globalState.userList[i]._id === globalState.initiative[data.index]){
 					console.log("TURNO DE EN HANDLER CHANGE_TURN")
 					console.log(globalState.userList[i].name)
 					
 				}
-			
 			}
 			globalStateHandler({
 				currentTurn: globalState.initiative[data.index],
@@ -74,50 +71,7 @@ function SocketListener(props) {
 
 			})
 
-			globalState.userList.forEach((el) => {
-				for(let i = 0; i < globalState.initiative.length; i++){
-					if(globalState.initiative[i]._id === el._id){
-
-						// console.log("TURNO DE")
-						// console.log(el.name)
-
-					}
-					
-				}
-			})	
-
-			// console.log("//////////////// FIN USERS EN COMBATE /////////////")
-
-			const userIndex = globalState.userList.findIndex(user => user._id.toString() === globalState.userList[data.index]);
-			// console.log("//////// USER INDEX //////")
-			// console.log(turnNumber)
-			// console.log("///////////////////////////")
-			// console.log("//////////// Current turn user ////////")
-			// console.log(globalState.userList[turnNumber].name)
-			
-			// if(globalState.userList[turnNumber].rol === "knight"){
-				
-				
-			// 	let acolyteArray = [];
-			// 	for(let i = 0; i< globalState.userList.length; i++){
-
-			// 		for(let j = 0; j< globalState.initiative.length; j++){
-
-			// 			if(globalState.initiative[j] === globalState.userList[i]._id && globalState.userList[i].rol === "acolyte"){
-			// 				acolyteArray.push(globalState.userList[i]);
-			// 			}
-			// 		}
-			// 	}
-
-			// 	const randomAcolyte = Math.floor(Math.random() * acolyteArray.length);  
-
-			// 	const dataToSend = {
-			// 		id: globalState.userList[turnNumber]._id,
-			// 		targId: acolyteArray[randomAcolyte]._id,
-			// 		stat: "strength"
-			// 	}
-			// 	socket.emit('attack_try', dataToSend);
-			// }
+			globalStateHandler({battleEnd: data.battleEnd})
 		}
 
 		const handleAttack = (data) => {
@@ -181,13 +135,27 @@ function SocketListener(props) {
 					if(globalState.initiative[i] === globalState.currentTurn){
 
 						index = i;
-					}
+					}	
 				}
+
+				const initiativeUsers = [];
+
+				globalState.initiative.forEach((id)=>{
+					globalState.userList.forEach((user)=>{
+
+						if(id === user._id){
+							initiativeUsers.push(user);
+						}
+					})
+				})
+
 
 				const dataToSend = {
 					index: index,
-					length: globalState.initiative.length
+					length: globalState.initiative.length,
+					initiativeUsers: initiativeUsers
 				}
+
 				socket.emit("change_turn", dataToSend);
 				globalStateHandler({turnCounter: globalState.turnCounter + 1})
 			}

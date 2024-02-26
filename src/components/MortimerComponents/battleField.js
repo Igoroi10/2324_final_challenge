@@ -9,7 +9,6 @@ import PotionIcon from '../../../assets/PotionIcon.png';
 import swordSlashIcon from '../../../assets/swordSlashIcon.png';
 
 
-
 const BattleField = ({ }) => {
 
   const { globalState, globalStateHandler } = useContext(Context);
@@ -18,7 +17,6 @@ const BattleField = ({ }) => {
   const [knights, setKnights] = useState(null);
   const [currentTurnPlayer, setCurrentTurnPlayer] = useState("")
 
-  
   useEffect(() => {
 
     if(globalState.initiative.length !== 0){

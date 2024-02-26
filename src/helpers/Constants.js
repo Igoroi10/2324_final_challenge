@@ -47,6 +47,7 @@ export const globalStateSchema = {
 
     icon: {
         imgURL: "../../../assets/Icon_shield_v1.png"
-    }
+    },
 
+    battleEnd: "",
 }
