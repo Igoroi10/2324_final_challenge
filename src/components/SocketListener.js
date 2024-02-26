@@ -163,6 +163,76 @@ function SocketListener(props) {
 
 		const handleTry = (data) => {}
 
+		const handleDisease = (data) => {
+
+
+			let turnNumber = 0
+			
+
+			for (let i=0; i< globalState.userList; i++){
+
+				if(globalState.userList[i]._id === globalState.currentTurn){
+					turnNumber = i;
+				}
+			}
+
+			globalState.userList.forEach((el) => {
+				for(let i = 0; i < globalState.initiative.length; i++){
+					if(globalState.initiative[i]._id === el._id){
+
+						console.log("TURNO DE")
+						console.log(el.name)
+
+					}
+			}})
+
+			globalStateHandler({userList: data.userList});   
+
+			data.userList.forEach((userFromList) => {
+				if(userFromList.email === globalState.user.email){
+					globalStateHandler({user: userFromList});
+
+				}
+			}); 
+
+			globalState.userList.forEach ((el) => {
+				if (el.rol === data.user.rol)
+				{
+					let saveName = el.name;
+					const iconPic = calculateIcon(data.user)
+					globalStateHandler({icon: {imgURL:iconPic}})
+					globalStateHandler({attacker: el})
+					globalState.userList.forEach ( (element) => {
+						if(element._id === data.id)
+						{
+							const message = `${saveName} ha infligido  ${data.disease} a ${element.name}`;
+							globalStateHandler({defender: element})
+							globalStateHandler({currentMessage: message});
+
+						}
+					})
+				}
+			})
+
+			if(globalState.user.rol === "mortimer"){
+
+				let index;
+				for(let i = 0; i < globalState.initiative.length; i++){
+
+					if(globalState.initiative[i] === globalState.currentTurn){
+
+						index = i;
+					}
+				}
+
+				const dataToSend = {
+					index: index,
+					length: globalState.initiative.length
+				}
+				socket.emit("change_turn", dataToSend);
+			}
+		}
+
 		const handlers = {
 			test_broadcast_response: handleTest,
 			new_user: handleNewUser,
@@ -171,6 +241,9 @@ function SocketListener(props) {
 			switch_turn: handleChangeTurn,
 			attack: handleAttack,
 			attack_try: handleTry,
+			disease_try: handleTry,
+			disease: handleDisease,
+
 		}
 	}
 	return null;

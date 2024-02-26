@@ -47,13 +47,27 @@ const showEnemyList = ({setOpenEnemyList}) => {
     };
 
     const attackTarget = (item) => {
-      const dataToSend = {
-        id: user._id,
-        targId: item._id,
-        stat: "strength"
+      if(globalState.user.rol !== "guest"){
+        const dataToSend = {
+          id: user._id,
+          targId: item._id,
+          stat: "strength"
+        }
+  
+        socket.emit('attack_try', dataToSend);
+      }
+      else{
+        const dataToSend = {
+          id: item._id,
+          illness: "ethazium",
+          active: true
+        }
+  console.log("disease applyed")
+  console.log(item)
+        socket.emit('disease_try', dataToSend);
+
       }
 
-      socket.emit('attack_try', dataToSend);
       setOpenEnemyList(false)
     }
 

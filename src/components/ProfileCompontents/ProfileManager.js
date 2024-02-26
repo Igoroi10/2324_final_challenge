@@ -9,7 +9,11 @@ import FightButtons from './FightButtons';
 import Profile from './Profile';
 import ReadyModal from '../ReadyModal';
 import MortimerProfile from './MortimerProfile';
-import UserListModal from '../UserListModal'
+import UserListModal from '../UserListModal';
+import VillanoUserListModal from '../VillanoComponents/VillanoUserListModal';
+import ProfileVillano from './ProfileVillano';
+import VillanoButtons from '../VillanoComponents/ViillanoButtons';
+import ApplyEthazium from './ApplyEthazium'
 import socket from '../../../helpers/socket';
 
 const ProfileManager = () => {
@@ -112,9 +116,18 @@ const ProfileManager = () => {
 
   return (
     <MainContainer>
-      {globalState.user.rol === "mortimer" ?
+      {globalState.user.rol === "mortimer" && (
         <MortimerProfile />
-        :
+      )}
+      {globalState.user.rol === "villain" ? (
+        <>
+          <ProfileVillano />
+          <VillanoButtons />
+          {(openEnemyList && globalState.userList.length > 0) && (
+            <VillanoUserListModal setOpenEnemyList={setOpenEnemyList} />
+          )}
+        </>
+      ) : (
         <>
           {!globalState.user.isReady && (
             <>
@@ -131,15 +144,17 @@ const ProfileManager = () => {
               )}
             </>
           )}
-
-          {globalState.user.isReady && !globalState.battleStart && (<ReadyModal />)}
-
+          {globalState.user.isReady && !globalState.battleStart && (
+            <ReadyModal />
+          )}
         </>
-      }
-      {showAllUsersReadyModal && !globalState.battleStart && <AllUsersReadyModal />}
+      )}
+      {showAllUsersReadyModal && !globalState.battleStart && (
+        <AllUsersReadyModal />
+      )}
     </MainContainer>
   );
-};
+      }  
 
 const MainContainer = styled.View`
   width: 100%;
