@@ -116,9 +116,6 @@ const ProfileManager = () => {
 
   return (
     <MainContainer>
-      {globalState.user.rol === "mortimer" && (
-        <MortimerProfile />
-      )}
       {globalState.user.rol === "villain" ? (
         <>
           <ProfileVillano />
@@ -129,23 +126,30 @@ const ProfileManager = () => {
         </>
       ) : (
         <>
-          {!globalState.user.isReady && (
+
+          {globalState.user.rol === "mortimer" && ( <MortimerProfile /> )}
+        
+          {globalState.user.rol !== "mortimer" && (
             <>
-              <Profile />
-              <ReadyButton />
+              {!globalState.user.isReady && (
+            <>
+            <Profile />
+            <ReadyButton />
             </>
-          )}
+            )}
           {globalState.battleStart && (
             <>
-              <Profile />
-              <FightButtons setOpenEnemyList={setOpenEnemyList} />
-              {(openEnemyList && globalState.userList.length > 0) && (
-                <UserListModal setOpenEnemyList={setOpenEnemyList} />
+            <Profile />
+            <FightButtons setOpenEnemyList={setOpenEnemyList} />
+            {(openEnemyList && globalState.userList.length > 0) && (
+              <UserListModal setOpenEnemyList={setOpenEnemyList} />
               )}
-            </>
-          )}
+              </>
+              )}
           {globalState.user.isReady && !globalState.battleStart && (
             <ReadyModal />
+            )}
+            </>
           )}
         </>
       )}
