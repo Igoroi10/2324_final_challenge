@@ -27,6 +27,11 @@ const App = () => {
     }));
   }
 
+  // useEffect(() => {
+  //   console.log("BATLE END");
+  //   console.log(globalState.battleEnd)
+  // },[globalState.battleEnd]);
+
   useEffect(() => {
 
     const checkIfLogged = async () => {
@@ -93,7 +98,8 @@ const App = () => {
       <MainContainer>
 
         {!isLogged && <Login setIsLogged={setIsLogged} />}
-        {(isLogged && globalState.user.name !== "" )&& <ProfileManager/>}
+        {(isLogged && globalState.user.name !== "" && globalState.battleEnd === "")&& <ProfileManager/>}
+        {(globalState.battleEnd === "villainsWin" || globalState.battleEnd === "acolyteWin" ) && <FinalResults/>}
       </MainContainer>
     </Context.Provider>
   );
