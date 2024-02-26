@@ -8,7 +8,7 @@ import styled from 'styled-components/native';
 import ProfileManager from './src/components/ProfileCompontents/ProfileManager';
 import { getAllUsers } from './src/helpers/axiosPetitions';
 import SocketListener from './src/components/SocketListener';
-
+import FinalResults from './src/components/FinalResult'
 
 const MainContainer = styled.View`
   display: flex;
@@ -93,7 +93,8 @@ const App = () => {
       <MainContainer>
 
         {!isLogged && <Login setIsLogged={setIsLogged} />}
-        {(isLogged && globalState.user.name !== "")&& <ProfileManager/>}
+        {(isLogged && globalState.user.name !== "" && globalState.battleEnd === "")&& <ProfileManager/>}
+        {globalState.battleEnd !== "" && <FinalResults/>}
       </MainContainer>
     </Context.Provider>
   );
