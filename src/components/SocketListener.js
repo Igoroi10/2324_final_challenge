@@ -80,29 +80,6 @@ function SocketListener(props) {
 			}
 			));
 
-
-			let turnNumber = 0
-
-
-			for (let i = 0; i < globalState.userList; i++) {
-
-				if (globalState.userList[i]._id === globalState.currentTurn) {
-					turnNumber = i;
-				}
-			}
-
-			globalState.userList.forEach((el) => {
-				for (let i = 0; i < globalState.initiative.length; i++) {
-					if (globalState.initiative[i]._id === el._id) {
-
-
-						console.log("TURNO DE")
-						console.log(el.name)
-
-					}
-				}
-			})
-
 			globalStateHandler({ userList: data.userList });
 
 			data.userList.forEach((userFromList) => {
@@ -111,8 +88,6 @@ function SocketListener(props) {
 
 				}
 			});
-
-			//if target (data.targId) y origen (data.id)
 
 			if (globalState.user.rol === "mortimer") {
 
@@ -152,28 +127,6 @@ function SocketListener(props) {
 
 		const handleDisease = (data) => {
 
-
-			let turnNumber = 0
-
-
-			for (let i = 0; i < globalState.userList; i++) {
-
-				if (globalState.userList[i]._id === globalState.currentTurn) {
-					turnNumber = i;
-				}
-			}
-
-			globalState.userList.forEach((el) => {
-				for (let i = 0; i < globalState.initiative.length; i++) {
-					if (globalState.initiative[i]._id === el._id) {
-
-						console.log("TURNO DE")
-						console.log(el.name)
-
-					}
-				}
-			})
-
 			globalStateHandler({ userList: data.userList });
 
 			data.userList.forEach((userFromList) => {
@@ -209,11 +162,24 @@ function SocketListener(props) {
 					}
 				}
 
+				const initiativeUsers = [];
+
+				globalState.initiative.forEach((id) => {
+					globalState.userList.forEach((user) => {
+
+						if (id === user._id) {
+							initiativeUsers.push(user);
+						}
+					})
+				})
+
 				const dataToSend = {
 					index: index,
-					length: globalState.initiative.length
+					length: globalState.initiative.length,
+					initiativeUsers: initiativeUsers
 				}
 				socket.emit("change_turn", dataToSend);
+				globalStateHandler({ turnCounter: globalState.turnCounter + 1 })
 			}
 		}
 
