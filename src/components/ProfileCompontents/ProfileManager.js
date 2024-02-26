@@ -9,7 +9,11 @@ import FightButtons from './FightButtons';
 import Profile from './Profile';
 import ReadyModal from '../ReadyModal';
 import MortimerProfile from './MortimerProfile';
-import UserListModal from '../UserListModal'
+import UserListModal from '../UserListModal';
+import VillanoUserListModal from '../VillanoComponents/VillanoUserListModal';
+import ProfileVillano from './ProfileVillano';
+import VillanoButtons from '../VillanoComponents/ViillanoButtons';
+import ApplyEthazium from './ApplyEthazium'
 import socket from '../../../helpers/socket';
 import SickModal from '../SickModal';
 
@@ -145,51 +149,63 @@ const ProfileManager = () => {
 
   return (
     <MainContainer>
-
-      {globalState.user.rol === "mortimer" ?
-        <MortimerProfile />
-        :
+      {globalState.user.rol === "villain" ? (
         <>
-          {!globalState.user.isReady && (
-            <>
-              <Profile />
-              <ReadyButton />
-            </>
+          <ProfileVillano />
+          <VillanoButtons />
+          {(openEnemyList && globalState.userList.length > 0) && (
+            <VillanoUserListModal setOpenEnemyList={setOpenEnemyList} />
           )}
+        </>
+      ) : (
+        <>
+
+          {globalState.user.rol === "mortimer" && ( <MortimerProfile /> )}
+        
+          {globalState.user.rol !== "mortimer" && (
+            <>
+              {!globalState.user.isReady && (
+            <>
+            <Profile />
+            <ReadyButton />
+            </>
+            )}
           {globalState.battleStart && (
             
             isSick? (
               <>
-                <Profile />
-                <FightButtons setOpenEnemyList={setOpenEnemyList} />
-                {(openEnemyList && globalState.userList.length > 0) && (
-                  <UserListModal setOpenEnemyList={setOpenEnemyList} />
+              <Profile />
+              <FightButtons setOpenEnemyList={setOpenEnemyList} />
+              {(openEnemyList && globalState.userList.length > 0) && (
+                <UserListModal setOpenEnemyList={setOpenEnemyList} />
                 )}
-              </>
+                </>
             ):(
               <>
                 <SickModal />
               </>
             )
             
+              )}
+          {globalState.user.isReady && !globalState.battleStart && (
+            <ReadyModal />
+            )}
+            </>
           )}
-
-          {globalState.user.isReady && !globalState.battleStart && (<ReadyModal />)}
-
         </>
-      }
-      {showAllUsersReadyModal && !globalState.battleStart && <AllUsersReadyModal />}
+      )}
+      {showAllUsersReadyModal && !globalState.battleStart && (
+        <AllUsersReadyModal />
+      )}
     </MainContainer>
   );
-};
+      }  
 
 const MainContainer = styled.View`
-  width: 100%;
-  height: 100%; 
-  flex-direction: column;
+  flex: 1;
+  display: flex;
   align-items: center;
   justify-content: center;
-  border: rgba(255, 255, 255, 0.6);
-  background-color: black;
+  background-color: #171717;
 `
 export default ProfileManager;

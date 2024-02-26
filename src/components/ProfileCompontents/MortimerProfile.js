@@ -109,7 +109,7 @@ const MortimerProfile = () => {
   const [isTESTStartFight, setIsTESTStartFight] = useState(true);
 
   useEffect(() => {
-    const connectedUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isConnected);
+    const connectedUsers = globalState.userList.filter(user => (user.rol === "acolyte" || user.rol === "guest" || user.rol === "villain") && user.isConnected);
 
     setUsersList(connectedUsers);
 

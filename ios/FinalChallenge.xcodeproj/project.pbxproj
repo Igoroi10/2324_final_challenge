@@ -13,6 +13,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		27124DCF2B7CBA0800DE8F26 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27124DCE2B7CBA0800DE8F26 /* GoogleService-Info.plist */; };
+		388098992B8B8F3F00044A82 /* Breathe Fire IV.otf in Resources */ = {isa = PBXBuildFile; fileRef = 388098982B8B8F3F00044A82 /* Breathe Fire IV.otf */; };
 		7699B88040F8A987B510C191 /* libPods-FinalChallenge-FinalChallengeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-FinalChallenge-FinalChallengeTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -39,6 +40,8 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = FinalChallenge/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-FinalChallenge-FinalChallengeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FinalChallenge-FinalChallengeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27124DCE2B7CBA0800DE8F26 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		388098982B8B8F3F00044A82 /* Breathe Fire IV.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Breathe Fire IV.otf"; path = "../../../../Downloads/breathe_fire_iv/Breathe Fire IV.otf"; sourceTree = "<group>"; };
+		3880989B2B8B8F5600044A82 /* Breathe Fire IV.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Breathe Fire IV.otf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-FinalChallenge.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinalChallenge.debug.xcconfig"; path = "Target Support Files/Pods-FinalChallenge/Pods-FinalChallenge.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-FinalChallenge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinalChallenge.release.xcconfig"; path = "Target Support Files/Pods-FinalChallenge/Pods-FinalChallenge.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-FinalChallenge-FinalChallengeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinalChallenge-FinalChallengeTests.debug.xcconfig"; path = "Target Support Files/Pods-FinalChallenge-FinalChallengeTests/Pods-FinalChallenge-FinalChallengeTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -88,6 +91,7 @@
 		13B07FAE1A68108700A75B9A /* FinalChallenge */ = {
 			isa = PBXGroup;
 			children = (
+				3880989A2B8B8F4C00044A82 /* Fonts */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -95,6 +99,7 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				27124DCE2B7CBA0800DE8F26 /* GoogleService-Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				388098982B8B8F3F00044A82 /* Breathe Fire IV.otf */,
 			);
 			name = FinalChallenge;
 			sourceTree = "<group>";
@@ -107,6 +112,14 @@
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-FinalChallenge-FinalChallengeTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3880989A2B8B8F4C00044A82 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				3880989B2B8B8F5600044A82 /* Breathe Fire IV.otf */,
+			);
+			name = Fonts;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -248,6 +261,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				27124DCF2B7CBA0800DE8F26 /* GoogleService-Info.plist in Resources */,
+				388098992B8B8F3F00044A82 /* Breathe Fire IV.otf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -606,11 +620,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-Wl",
-					"-ld_classic",
-				);
+				OTHER_LDFLAGS = "$(inherited)";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -679,11 +689,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-Wl",
-					"-ld_classic",
-				);
+				OTHER_LDFLAGS = "$(inherited)";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
