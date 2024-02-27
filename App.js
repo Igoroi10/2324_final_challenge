@@ -64,7 +64,7 @@ const App = () => {
     const socketConnection = (user)=>{
       
 
-      socket.emit("store_socket_id", user.email);
+      socket.emit("store_socket_id", user);
       
       socket.onAny((eventName, ...data) => {
         setSocketEvent({event: eventName, value: data[0]})
