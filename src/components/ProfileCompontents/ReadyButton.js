@@ -21,29 +21,39 @@ const ReadyButton = ({ }) => {
   return (
 
     <Readybtn onPress={userReady}>
-      <ButtonText> READY </ButtonText>
+      <ButtonImage source={require('../../../assets/ReadyButton.png')} />
+      <ButtonText> Ready for the battle </ButtonText>
     </Readybtn>
 
   )
 }
 
 const Readybtn = styled.TouchableOpacity`
-  background-color: rgba(0, 0, 232, 0.6);
   align-items: center;
   justify-content: center;
-  height: 7%;
-  margin-bottom: 6%;
-  width: 80%;
-  border: rgba(255, 255, 255, 0.6);
+  height: 25%;
+  width: 100%;
   border-radius: 60px;
+  position: absolute;
+  bottom: 5%;
+`
+
+const ButtonImage = styled.Image`
+  width: 80%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+  border-radius: 30px;
+  z-index: -1;
+  position: absolute;
+  border-radius: 20px;
 `
 
 const ButtonText = styled.Text`
-  color: rgba(255, 255, 255, 1);
-  font-size: 20px;
+  color: white;
   text-align: center;
   font-family: 'Breathe Fire IV';
-  font-size: 25px;
+  font-size: 20px;
   letter-spacing: 4px;
 `
 

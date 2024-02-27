@@ -165,8 +165,8 @@ const ProfileManager = () => {
             <>
               {!globalState.user.isReady && (
             <>
-            <Profile />
-            <ReadyButton />
+              <Profile />
+              <ReadyButton />
             </>
             )}
           {globalState.battleStart && (
@@ -196,7 +196,6 @@ const MainContainer = styled.View`
   flex: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
   background-color: #171717;
 `
 export default ProfileManager;

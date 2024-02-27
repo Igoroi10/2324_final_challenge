@@ -113,7 +113,7 @@ const NotTurnContainer = styled.View`
 `
 
 const Text = styled.Text`
-  font-size: 40px;
+  font-size: 30px;
   color: white;
   font-family: 'Breathe Fire IV';
   letter-spacing: 4px;

@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
 
 const ProfileText = styled.Text`
  color: white;
- font-size: 30px;
+ font-size: 20px;
  text-align: center;
  font-family: 'Breathe Fire IV';
  letter-spacing: 4px;
