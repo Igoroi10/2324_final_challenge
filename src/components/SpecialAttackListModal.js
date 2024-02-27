@@ -10,39 +10,73 @@ const showSpecialEnemyList = ({setOpenEnemyList, setOpenSpecialEnemyList}) => {
     const {globalState, globalStateHandler} = useContext(Context);
     const [posibleTargets, setPosibleTargets] = useState([]);
 
-    const user = globalState.user;
-    let isGood;
+    useEffect(() => {
 
-    if(user.rol === "acolyte" || user.rol === "mortimer")
-        isGood = true
-    else    
-        isGood = false
-
-        // console.log("globalSatte user list " + globalState.userList.length)
+      if(globalState.user.rol === "mortimer"){
+  
+        const initiativeUsers = [];
+        globalState.initiative.forEach((id)=>{
     
-
-    useEffect(() => { 
-      const posibleTargetsList = globalState.userList.filter((el) => {
+          globalState.userList.forEach((userObject)=>{
+    
+            if(userObject._id === id){
+    
+              initiativeUsers.push(userObject);
+            }
+          })
+        })
+  
+        const acolytes = initiativeUsers.filter((userObject)=>{
+  
+          if(userObject.isAlive && userObject.rol === "acolyte" && (userObject.characterStats.hp < userObject.characterMaxStats.maxHp ||checkDisseases(userObject))){
+            return userObject;
+          }
+        })
         
-        if(isGood){
-          if(el.rol !== "acolyte" && el.rol !== "mortimer")
-            return el;
-        }
-        else{
-          if(el.rol === "acolyte" || el.rol === "mortimer")
-            return el;
-        }
-      })    
-      // console.log(posibleTargetsList)
-      setPosibleTargets(posibleTargetsList)
-    }, [globalState.userList]);
-
+        setPosibleTargets(acolytes);
+      }else if(globalState.user.rol === "villain"){
+  
+  
+  
+      }else if(globalState.user.rol === "guest"){
+  
+  
+      }else if(globalState.user.rol === "acolyte"){
+        const initiativeUsers = [];
+        globalState.initiative.forEach((id)=>{
+    
+          globalState.userList.forEach((userObject)=>{
+    
+            if(userObject._id === id){
+    
+              initiativeUsers.push(userObject);
+            }
+          })
+        })
+    
+        const villains = initiativeUsers.filter((userObject)=>{
+          if(userObject.isAlive && (userObject.rol === "knight" || userObject.rol === "villain" || userObject.rol === "guest") ){
+            return userObject;
+          }
+        })
+        setPosibleTargets(villains);
+      }
+    }, [globalState.user]);
+  
+  
+    const checkDisseases = (user) => {
+  
+      if(user.diseases.rotting_plague === true || user.diseases.epic_weakness === true  || user.diseases.marrow_apocalypse === true || user.diseases.ethazium === true ){
+        return true
+      } else {
+        return false;
+      }
+    } 
+  
     const selectedtarget = (item) => {
-    //console.log('ESPECIAL');
-      setTarget(item)
-      //console.log("selected user");
       specialAttackTarget(item);
     };
+    
     const specialAttackTarget = (item) => {
       if(globalState.user.rol !== "guest"){
           const dataToSend = {

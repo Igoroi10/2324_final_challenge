@@ -16,6 +16,7 @@ import VillanoButtons from '../VillanoComponents/ViillanoButtons';
 import ApplyEthazium from './ApplyEthazium'
 import socket from '../../../helpers/socket';
 import SpecialAttackListModal from '../SpecialAttackListModal'
+import ProfileAngelo from './ProfileAngelo';
 
 const ProfileManager = () => {
   const { globalState, globalStateHandler } = useContext(Context);
@@ -44,18 +45,11 @@ const ProfileManager = () => {
 
 
   useEffect(() => {
-    console.log("_____________________________")
 
     console.log("_____________________________")
-
     console.log("USEEFFECT CURRENTURN")
-    console.log("_____________________________")
-    console.log("_____________________________")
-
 
     if (globalState.currentTurn !== "" && globalState.user.rol === "mortimer" && (globalState.currentMessage === "" || globalState.turnCounter === 0)) {
-
-
 
       let user;
 
@@ -74,9 +68,48 @@ const ProfileManager = () => {
       })
 
 
-      console.log("_____________________________")
-      console.log("TURNO DE ")
-      console.log(globalState.userList[turnNumber].name);
+      console.log(`Turno de ${globalState.userList[turnNumber].name}`);
+      
+      if(globalState.userList[turnNumber].rol === "mortimer"){
+
+        const initiativeUsersProfile = [];
+        globalState.initiative.forEach((id)=>{
+  
+          globalState.userList.forEach((userObject)=>{
+    
+            if(userObject._id === id){
+    
+              initiativeUsersProfile.push(userObject);
+            }
+          })
+        })
+
+      const acolytes = initiativeUsersProfile.filter((userObject)=>{
+
+          if(userObject.isAlive && userObject.rol === "acolyte" && (userObject.characterStats.hp < userObject.characterMaxStats.maxHp ||checkDisseases(userObject))){
+            return userObject;
+          }
+        });
+
+        if(acolytes.length === 0){
+
+          let index;
+          for (let i = 0; i < globalState.initiative.length; i++) {
+
+            if (globalState.initiative[i] === globalState.currentTurn) {
+
+              index = i;
+            }
+          }
+
+          const dataToSend = {
+            index: index,
+            length: globalState.initiative.length,
+            initiative: globalState.initiative
+          }
+          socket.emit("change_turn", dataToSend);
+        }
+      }
 
       if(!globalState.userList[turnNumber].isAlive){
 
@@ -89,22 +122,10 @@ const ProfileManager = () => {
 					}
 				}
 
-				const initiativeUsers = [];
-
-				globalState.initiative.forEach((id) => {
-					globalState.userList.forEach((user) => {
-
-						if (id === user._id) {
-							initiativeUsers.push(user);
-						}
-					})
-				})
-
-
 				const dataToSend = {
 					index: index,
 					length: globalState.initiative.length,
-					initiativeUsers: initiativeUsers
+					initiative: globalState.initiative
 				}
 				socket.emit("change_turn", dataToSend);
       }
@@ -146,7 +167,16 @@ const ProfileManager = () => {
       }, 4000);
     }
     
-  }, [globalState.currentMessage])
+  }, [globalState.currentMessage]);
+
+  const checkDisseases = (user) => {
+
+    if(user.diseases.rotting_plague === true || user.diseases.epic_weakness === true  || user.diseases.marrow_apocalypse === true || user.diseases.ethazium === true ){
+      return true
+    } else {
+      return false;
+    }
+  } 
 
   return (
     <MainContainer>
@@ -158,44 +188,48 @@ const ProfileManager = () => {
             <VillanoUserListModal setOpenEnemyList={setOpenEnemyList} />
           )}
         </>
-      ) : (
+      ) : globalState.user.rol === "mortimer" ? (
+        <MortimerProfile />
+      ) : globalState.user.rol === "acolyte" || globalState.user.rol === "acolyteInterface" ? (
         <>
-
-          {globalState.user.rol === "mortimer" && ( <MortimerProfile /> )}
-        
-          {globalState.user.rol !== "mortimer" && (
-            <>
-              {!globalState.user.isReady && (
+          {!globalState.user.isReady && (
             <>
               <Profile />
               <ReadyButton />
             </>
-            )}
+          )}
           {globalState.battleStart && (
             <>
               <Profile />
               <FightButtons setOpenEnemyList={setOpenEnemyList} setOpenSpecialEnemyList={setOpenSpecialEnemyList} />
               {openEnemyList && (
-              <UserListModal setOpenEnemyList={setOpenEnemyList} />
+                <UserListModal setOpenEnemyList={setOpenEnemyList} />
               )}
               {openSpecialEnemyList && (
-              <SpecialAttackListModal setOpenSpecialEnemyList={setOpenSpecialEnemyList} />
+                <SpecialAttackListModal setOpenSpecialEnemyList={setOpenSpecialEnemyList} />
               )}
             </>
           )}
-          {(globalState.user.isReady && !globalState.battleStart && globalState.user.rol === "acolyteInterface") && (
+          {(globalState.user.isReady && !globalState.battleStart && globalState.user.rol === "acolyte") && (
             <ReadyModal />
-            )}
-            </>
           )}
         </>
-      )}
+      ) : globalState.user.rol === "guest" ? (
+        <>
+          <ProfileAngelo />
+          <ApplyEthazium setOpenEnemyList={setOpenEnemyList}/>
+          {openEnemyList && (
+            <UserListModal setOpenEnemyList={setOpenEnemyList} />
+          )}
+        </>
+      ) : null}
       {showAllUsersReadyModal && !globalState.battleStart && (
         <AllUsersReadyModal />
       )}
     </MainContainer>
   );
-      }  
+      
+}  
 
 const MainContainer = styled.View`
   flex: 1;

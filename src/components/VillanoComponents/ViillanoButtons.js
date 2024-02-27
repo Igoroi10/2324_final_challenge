@@ -22,7 +22,7 @@ const VillanoButtons = ({} ) => {
   };
 
   return (
-    globalState.user._id === globalState.currentTurn ? (
+    (globalState.user._id === globalState.currentTurn && globalState.currentMessage === "") ? (
       <ButtonsContainer>
         <Square onPress={() => handleButtonPress('epic_weakness')}>
           <IconImage source={iconEpic} style={{ width: 100, height: 100 }} />

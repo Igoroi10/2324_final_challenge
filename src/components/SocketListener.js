@@ -183,6 +183,38 @@ function SocketListener(props) {
 			}
 		}
 
+		const handleMortimerCure = (data) => {
+
+			handleUserList(data.userList);
+
+			globalStateHandler({
+				icon: { imgURL: "https://firebasestorage.googleapis.com/v0/b/the-final-battle-287a4.appspot.com/o/icons%2FMagicIcon2.png?alt=media&token=12bbdaaf-cc33-4e40-b268-e8b4c4e5fdc9" }, 
+				attacker: {imgURL: "https://firebasestorage.googleapis.com/v0/b/the-final-battle-287a4.appspot.com/o/Avatare%2Fmorti.png?alt=media&token=d67439c7-9975-4fb4-b146-d9e1939be69e"}, 
+				currentMessage: data.message,
+				defender: data.target
+			});
+
+			if (globalState.user.rol === "mortimer") {
+
+				let index;
+				for (let i = 0; i < globalState.initiative.length; i++) {
+
+					if (globalState.initiative[i] === globalState.currentTurn) {
+
+						index = i;
+					}
+				}
+
+				const dataToSend = {
+					index: index,
+					length: globalState.initiative.length,
+					initiative: globalState.initiative
+				}
+				socket.emit("change_turn", dataToSend);
+				globalStateHandler({ turnCounter: globalState.turnCounter + 1 })
+			}
+		}
+
 		const handlers = {
 			test_broadcast_response: handleTest,
 			new_user: handleNewUser,
@@ -195,7 +227,7 @@ function SocketListener(props) {
 			specialAttack_response: handleAttack,
 			disease_try: handleTry,
 			disease: handleDisease,
-
+			mortimer_cure_response: handleMortimerCure
 		}
 	}
 	return null;
