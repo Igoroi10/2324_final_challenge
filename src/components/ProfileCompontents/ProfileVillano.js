@@ -9,7 +9,8 @@ const ProfileVillano = ({ }) => {
   const { globalState, globalStateHandler } = useContext(Context);
 
   useEffect(() => {
-    globalState.user.isReady = true;
+    //globalState.user.isReady = true;
+    console.log(globalState.user);
   }, []);
   
   return (
