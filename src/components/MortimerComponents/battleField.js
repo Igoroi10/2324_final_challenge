@@ -156,7 +156,7 @@ const BattleField = ({ }) => {
 
       <EnemiesContainer>
         {knights.map( knight => 
-          <EnemyContainer key={knight._id}>
+          <EnemyContainer key={knight._id} isAlive={knight.isAlive}>
 
             <EnemyImageContainer>
               <EnemyImage source={{ uri: knight.imgURL }} />
@@ -280,6 +280,7 @@ const EnemyContainer = styled.View`
   align-items: center;
   justify-content: center;
   width: 20%;
+  opacity: ${(prop => prop.isAlive ? '1': '0.4')};
 `
 
 const EnemyImageContainer = styled.View`
