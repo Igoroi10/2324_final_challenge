@@ -15,12 +15,18 @@ const ApplyEthazium = ({setOpenEnemyList} ) => {
   }
 
   return (
-    
+    (globalState.user._id === globalState.currentTurn  && globalState.currentMessage === "") ? (
       <ButtonsContainer>
         <Square onPress={openEnemyList}>
           <Image source={iconEthazium} style={styles.image}  />
         </Square>
       </ButtonsContainer>
+      ):(
+        <NotTurnContainer>
+        <NotTurnImage  source={require("../../../assets/NotTurn.png")} />
+         <Text> Wait, it is not your time to attack </Text>
+       </NotTurnContainer>
+      )
     )
 }
 
