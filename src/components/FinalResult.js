@@ -15,7 +15,9 @@ const FinalResults = ({ }) => {
     {globalState.battleEnd === "villainsWin" && (
       <VillainContainer>
         <EpicPicture source={require('../../assets/DefeatImage.png')} />
-        <Text> </Text>
+        <BlackFilter>
+        <TextResult> OH NO ZARATE AND ANGELO WON THIS TIME</TextResult>
+        </BlackFilter>
       </VillainContainer>
     )}
       
@@ -23,7 +25,10 @@ const FinalResults = ({ }) => {
     {globalState.battleEnd === "acolyteWin" && (
       <VillainContainer>
         <EpicPicture source={require('../../assets/VictoryImage.png')} />
-        <Text>GANADOR ACOLITOS</Text>
+        <BlackFilter>
+        <TextResult> CONGRATULATIONS YOU WON THE BATTLE! </TextResult>
+        <TextResult>AND DEFEATED THE VILLAINS ZARATE AND ANGELO</TextResult>
+        </BlackFilter>
     </VillainContainer>
     )}
 
@@ -42,18 +47,39 @@ const MainContainer = styled.View`
 `
 
 const VillainContainer = styled.View`
+  width: 100%;
+  height: 100%;
   display: flex;
-  flex: 1;
+  align-items: center;
+  justify-content: center;
+`
+
+const BlackFilter = styled.View`
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0,0,0, 0.4);
+  padding: 3%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 const EpicPicture = styled.Image`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  position: absolute;
+  z-index: -1;
 `
 
-const ButtonText = styled.Text`
+const TextResult = styled.Text`
+  font-size: 40px;
+  letter-spacing: 4px;
+  font-family: 'Breathe Fire IV';
+  color: white;
+  text-align: center;
 
+  margin-bottom: 3%;
 `
 
 export default FinalResults
