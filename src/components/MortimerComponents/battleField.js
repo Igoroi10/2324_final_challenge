@@ -98,7 +98,13 @@ const BattleField = ({ }) => {
 
           <AcolyteContainer key={acolite._id} isAlive={acolite.isAlive} >
 
-            <AcolyteImageContainer >
+            <AcolyteImageContainer isSick={
+              acolite.diseases.rotting_plague ||
+              acolite.diseases.epic_weakness ||
+              acolite.diseases.marrow_apocalypse ||
+              acolite.diseases.ethazium
+              }
+            >
               <AcolyteImage source={{ uri: acolite.imgURL }} />
             </AcolyteImageContainer>
 
@@ -318,7 +324,7 @@ const AcolyteContainer = styled.View`
 `
   
 const AcolyteImageContainer = styled.View`
-  border: 2px solid white;
+  border: ${(props) => (props.isSick ? '2px solid orange' : '2px solid white')};
   border-radius: 100px;
 `
 
