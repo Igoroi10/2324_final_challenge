@@ -164,8 +164,13 @@ const ProfileManager = () => {
         
           {globalState.user.rol !== "mortimer" && (
             <>
-             
-          {!globalState.battleStart && (
+              {!globalState.user.isReady && (
+            <>
+            <Profile />
+            <ReadyButton />
+            </>
+            )}
+          {globalState.battleStart && (
             <>
               <Profile />
               <FightButtons setOpenEnemyList={setOpenEnemyList} setOpenSpecialEnemyList={setOpenSpecialEnemyList} />
@@ -177,12 +182,16 @@ const ProfileManager = () => {
               )}
             </>
           )}
-         
+          {globalState.user.isReady && !globalState.battleStart && (
+            <ReadyModal />
+            )}
             </>
           )}
         </>
       )}
-     
+      {showAllUsersReadyModal && !globalState.battleStart && (
+        <AllUsersReadyModal />
+      )}
     </MainContainer>
   );
       }  
