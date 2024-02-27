@@ -5,7 +5,7 @@ import { Image, StyleSheet } from 'react-native';
 
 // Assets
 import iconAtack from '../../../assets/Icon_attack_v1.png'
-import iconShield from '../../../assets/Icon_shield_v1.png'
+import iconFire from '../../../assets/fireIcon.png'
 import socket from '../../../helpers/socket';
 
 const FightButtons = ({setOpenEnemyList, setOpenSpecialEnemyList} ) => {
@@ -28,7 +28,7 @@ const FightButtons = ({setOpenEnemyList, setOpenSpecialEnemyList} ) => {
           <Image source={iconAtack} style={styles.image}  />
         </Square>
         <Square onPress={openSpecialEnemyList}>
-          <Image source={iconShield} style={styles.image} />
+          <Image source={iconFire} style={styles.image} />
         </Square>
 
       </ButtonsContainer>
@@ -37,10 +37,10 @@ const FightButtons = ({setOpenEnemyList, setOpenSpecialEnemyList} ) => {
 
 const styles = StyleSheet.create({
   image: {
-    width: '100%',
+    width: '110%',
     height: '100%',
     resizeMode: 'cover',
-    borderRadius: 10
+    borderRadius: 100
   },
 });
 

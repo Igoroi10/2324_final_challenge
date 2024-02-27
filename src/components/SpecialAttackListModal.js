@@ -38,9 +38,9 @@ const showSpecialEnemyList = ({setOpenEnemyList, setOpenSpecialEnemyList}) => {
     }, [globalState.userList]);
 
     const selectedtarget = (item) => {
-        console.log('ESPECIAL');
+    //console.log('ESPECIAL');
       setTarget(item)
-      // console.log("selected user");
+      //console.log("selected user");
       specialAttackTarget(item);
     };
     const specialAttackTarget = (item) => {
@@ -56,6 +56,7 @@ const showSpecialEnemyList = ({setOpenEnemyList, setOpenSpecialEnemyList}) => {
                 }
             };
             socket.emit('specialAttack_try', dataToSend);
+            //console.log('emitir socket', dataToSend)
         }
         setOpenSpecialEnemyList(false)
     }

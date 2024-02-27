@@ -41,7 +41,7 @@ const showEnemyList = ({setOpenEnemyList}) => {
     }, [globalState.userList]);
 
     const selectedtarget = (item) => {
-      console.log('NORMAL');
+      //console.log('NORMAL');
       setTarget(item)
       // console.log("selected user");
       attackTarget(item);
@@ -56,6 +56,7 @@ const showEnemyList = ({setOpenEnemyList}) => {
         }
   
         socket.emit('attack_try', dataToSend);
+        //console.log('emitir socket', dataToSend)
       }
       else{
         const dataToSend = {
