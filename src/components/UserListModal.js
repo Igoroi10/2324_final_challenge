@@ -42,35 +42,6 @@ const ShowEnemyList = ({ setOpenEnemyList, openEnemyList, illnessToSend }) => {
       setPosibleTargets(acolytes);
     } else if (globalState.user.rol === "villain") {
 
-<<<<<<< HEAD
-
-
-    }else if(globalState.user.rol === "guest"){
-
-      const initiativeUsers = [];
-      globalState.initiative.forEach((id)=>{
-  
-        globalState.userList.forEach((userObject)=>{
-  
-          if(userObject._id === id){
-  
-            initiativeUsers.push(userObject);
-          }
-        })
-      })
-
-      const acolytes = initiativeUsers.filter((userObject)=>{
-
-        if(userObject.isAlive && userObject.rol === "acolyte" && !userObject.diseases.ethazium){
-          return userObject;
-        }
-      })
-      
-      setPosibleTargets(acolytes);
-
-    }else if(globalState.user.rol === "acolyte"){
-=======
->>>>>>> fixNextTurnVillain
       const initiativeUsers = [];
       globalState.initiative.forEach((id) => {
 
