@@ -13,6 +13,8 @@ const SickModal = ({ }) => {
   useEffect(() => {
     const filteredDiseases = Object.keys(globalState.user.diseases).filter((disease) => {
       if(globalState.user.diseases[disease] === true){
+        console.log(disease)
+        console.log(globalState.user.diseases)
         return disease
       }
     });
@@ -23,24 +25,34 @@ const SickModal = ({ }) => {
 
 
   return (
-    userDisease.length > 0  && (
-      // <ImageBackground source={require("../../assets/wallpaper_login.jpeg")} style={styles.imageBackground}>
-
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop:'-100%'}}>
-          <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white', marginLeft: '-40%', marginBottom: '7%'}}>Your sick.</Text>
-          <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white', marginLeft: '0%', marginBottom: '7%'}}>This are your diseases:</Text>
-
-
-          {userDisease.map((disease, index) => (
-            <Text key={index} style={{ fontSize: 24, fontWeight: 'bold', color: 'white' }}>{disease}</Text>
-          ))}
-        </View>
-      // </ImageBackground>
-
-    )
+    <ModalContainer  transparent={true} visible={globalState.user.diseases.ethazium}>
+      <ContentContainer>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop:'0%'}}>
+              <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white', marginTop: '0%' }}>You have been cursed with ethazium</Text>
+            </View>
+      </ContentContainer>
+    </ModalContainer>
+    
 
   )
 }
+
+const ModalContainer = styled.Modal`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ContentContainer = styled.View`
+  top: 0%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+`;
 
 
 const styles = StyleSheet.create({

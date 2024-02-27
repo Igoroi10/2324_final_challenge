@@ -17,6 +17,7 @@ import ApplyEthazium from './ApplyEthazium'
 import socket from '../../../helpers/socket';
 import SpecialAttackListModal from '../SpecialAttackListModal'
 import ProfileAngelo from './ProfileAngelo';
+import SickModal from '../SickModal';
 
 const ProfileManager = () => {
   const { globalState, globalStateHandler } = useContext(Context);
@@ -169,6 +170,7 @@ const ProfileManager = () => {
     
   }, [globalState.currentMessage]);
 
+  
   const checkDisseases = (user) => {
 
     if(user.diseases.rotting_plague === true || user.diseases.epic_weakness === true  || user.diseases.marrow_apocalypse === true || user.diseases.ethazium === true ){
@@ -177,6 +179,8 @@ const ProfileManager = () => {
       return false;
     }
   } 
+
+
 
   return (
     <MainContainer>
@@ -194,12 +198,14 @@ const ProfileManager = () => {
         <>
           {!globalState.user.isReady && (
             <>
+
               <Profile />
               <ReadyButton />
             </>
           )}
           {globalState.battleStart && (
             <>
+              <SickModal />
               <Profile />
               <FightButtons setOpenEnemyList={setOpenEnemyList} setOpenSpecialEnemyList={setOpenSpecialEnemyList} />
               {openEnemyList && (
