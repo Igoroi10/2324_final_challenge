@@ -12,12 +12,13 @@ import * as Progress from 'react-native-progress';
 
 const ShowEnemyList = ({ setOpenEnemyList, openEnemyList}) => {
 
-  const { globalState, globalStateHandler } = useContext(Context);
+  const { globalState } = useContext(Context);
   const [posibleTargets, setPosibleTargets] = useState([]);
 
   useEffect(() => {
 
-    if(globalState.user.rol === "mortimer" || globalState.user.rol === "villain" || globalState.user.rol === "guest"){
+    
+if(globalState.user.rol === "mortimer"){
 
       const initiativeUsers = [];
       globalState.initiative.forEach((id)=>{
@@ -30,16 +31,24 @@ const ShowEnemyList = ({ setOpenEnemyList, openEnemyList}) => {
           }
         })
       })
-  
+
       const acolytes = initiativeUsers.filter((userObject)=>{
-        if(userObject.isAlive && userObject.rol === "acoltyte"){
+
+        if(userObject.isAlive && userObject.rol === "acolyte" && (userObject.characterStats.hp < userObject.characterMaxStats.maxHp ||checkDisseases(userObject))){
           return userObject;
         }
       })
       
       setPosibleTargets(acolytes);
-    }else if(globalState.user.rol === "acolyte"){
+    }else if(globalState.user.rol === "villain"){
 
+
+
+    }else if(globalState.user.rol === "guest"){
+
+
+
+    }else if(globalState.user.rol === "acolyte"){
       const initiativeUsers = [];
       globalState.initiative.forEach((id)=>{
   
@@ -59,36 +68,28 @@ const ShowEnemyList = ({ setOpenEnemyList, openEnemyList}) => {
       })
       setPosibleTargets(villains);
     }
-  }, [])
+  }, [globalState.user]);
 
-  // useEffect(() => {
-  //   const posibleTargetsList = globalState.userList.filter((el) => {
 
-  //     if (isGood) {
-  //       if (el.rol !== "acolyte" && el.rol !== "mortimer")
-  //         return el; 
-  //     }
-  //     else {
-  //       if (el.rol === "acolyte" || el.rol === "mortimer")
-  //         return el;
-  //     }
-  //   })
-  //   // console.log(posibleTargetsList)
-  //   setPosibleTargets(posibleTargetsList)
-  // }, [globalState.userList]);
+  const checkDisseases = (user) => {
+
+    if(user.diseases.rotting_plague === true || user.diseases.epic_weakness === true  || user.diseases.marrow_apocalypse === true || user.diseases.ethazium === true ){
+      return true
+    } else {
+      return false;
+    }
+  } 
 
   const selectedtarget = (item) => {
-    console.log("ATAQUE")
-    console.log(item)
     attackTarget(item);
   };
 
 
-  const attackTarget = (item) => {
+  const attackTarget = (target) => {
     if (globalState.user.rol === "acolyte" || globalState.user.rol === "knight") {
       const dataToSend = {
         id: globalState.user._id,
-        targId: item._id,
+        targId: target._id,
         stat: "strength"
       }
 
@@ -96,27 +97,35 @@ const ShowEnemyList = ({ setOpenEnemyList, openEnemyList}) => {
     }
     else if(globalState.user.rol === "guest") {
       const dataToSend = {
-        id: item._id,
+        id: target._id,
         illness: "ethazium",
         active: true,
         name: globalState.user.name
       }
       console.log("disease applyed")
-      console.log(item)
+      console.log(target)
       socket.emit('disease_try', dataToSend);
 
     }
-    else{
-      console.log("mortimer cures")
+    else if (globalState.user.rol === "villain"){
+      console.log("villain")
+    }else if(globalState.user.rol === "mortimer"){
+      console.log("mortimer")
+      
+      const dataToSend = {
+        target: target,
+      }
+      socket.emit('mortimer_cure', dataToSend);
     }
 
     setOpenEnemyList(false)
   }
 
   return (
-    <ModalContainer transparent={false} visible={openEnemyList}>
+    <ModalContainer  transparent={true} visible={openEnemyList}>
       <ContentContainer>
         <TitleText> Choose an enemy to attack: </TitleText>
+
         <EnemiesList
           showsHorizontalScrollIndicator={false}
           data={posibleTargets}
@@ -150,6 +159,10 @@ const ShowEnemyList = ({ setOpenEnemyList, openEnemyList}) => {
           horizontal
         />
 
+      <CloseButton onPress={() => setOpenEnemyList(false)}> 
+        <Text> X </Text>
+        </CloseButton>
+
       </ContentContainer>
     </ModalContainer>
   );
@@ -159,17 +172,20 @@ const ShowEnemyList = ({ setOpenEnemyList, openEnemyList}) => {
 
 
 const ModalContainer = styled.Modal`
-display: flex;
-align-items: center;
-justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ContentContainer = styled.View`
+  top: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 20px;
-  margin-top: 30%;
-  background-color: #fff;
-  padding: 20px;
+  width: 100%;
   height: 70%;
+  background-color: rgba(255, 255, 255, 0.5);
 `;
 
 const TitleText = styled.Text`
@@ -198,10 +214,21 @@ const StatTexts = styled.Text`
 const EnemyItem = styled.TouchableOpacity`
   display: flex;
   align-items: center;
-  background-color: #0B1215;
+  background-color: rgba(23, 23, 23, 1);
   padding: 15px;
   border-radius: 15px;
   margin-right: 15px;
+  margin-bottom: 25px;
+`;
+
+const CloseButton = styled.TouchableOpacity`
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  background-color: rgba(255, 0, 255, 1);
+  border-radius: 25px;
+  width: 10%;
+  height: 10%;
 `;
 
 
@@ -218,8 +245,8 @@ const EnemyName = styled.Text`
 
 const styles = {
   image: {
-    width: 300,
-    height: '60%',
+    width: 280,
+    height: '45%',
     borderRadius: 30,
     objectFit: 'cover',
     marginBottom: 15

@@ -119,7 +119,6 @@ const MortimerProfile = () => {
     const onlyAcolyteList = connectedUsers.filter(user => user.rol === "acolyte")
     setAcolyteList(onlyAcolyteList);
 
-    checkLife();
     checkAllUsersHP();
 
   }, [globalState.userList]);
@@ -129,28 +128,16 @@ const MortimerProfile = () => {
 
     if (usersList) {
 
-        const readyUsers = usersList.filter(user => user.isReady);
-        
-        if(readyUsers.length === usersList.length && readyUsers.length !== 0){
-          setIsStartFight(true);
-          setReadyUserList(readyUsers);
-        }else{
-            setIsStartFight(false)
-        }
-
-
-
+      const readyUsers = usersList.filter(user => user.isReady);
+      
+      if(readyUsers.length === usersList.length && readyUsers.length !== 0){
+        setIsStartFight(true);
+        setReadyUserList(readyUsers);
+      }else{
+          setIsStartFight(false)
+      }
     }
   }, [usersList]);
-
-  useEffect(()=>{
-
-    if(globalState.battleStart === true){
-        // console.log("Battle Started")
-    }
-  },[globalState.battleStart])
-
-  
 
 
   const calculateAcolytesPosition = (index) => {
@@ -175,18 +162,6 @@ const MortimerProfile = () => {
       return { left: `${x}%`, top: `${y}%` };
     }
   };
-  
-
-  const checkLife = () => {
-    globalState.userList.forEach(element => {
-    if(element.rol === "acolyte" || element.rol === "knight"){
-      if(element.characterStats.hp <= 0 && element.isReady){
-          // console.log(`${element.name} ha muerto!!`);
-          // console.log(element.characterStats);
-        }
-      }
-    });
-  }
 
   const battleStart = ()=>{
 
@@ -194,16 +169,13 @@ const MortimerProfile = () => {
     setIsBattleField(true);
 
     const userIDs = readyUserList.map(({_id})=>_id);
+    userIDs.push(globalState.user._id);
+    
     const dataToSend ={
-
-        userIDs: userIDs
+      userIDs: userIDs
     }
     socket.emit("start_battle", dataToSend);
   }
-
-
-
-
 
   const checkAllUsersHP = () => {
     const userList = globalState.userList;

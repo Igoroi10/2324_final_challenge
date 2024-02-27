@@ -44,18 +44,11 @@ const ProfileManager = () => {
 
 
   useEffect(() => {
-    console.log("_____________________________")
 
     console.log("_____________________________")
-
     console.log("USEEFFECT CURRENTURN")
-    console.log("_____________________________")
-    console.log("_____________________________")
-
 
     if (globalState.currentTurn !== "" && globalState.user.rol === "mortimer" && (globalState.currentMessage === "" || globalState.turnCounter === 0)) {
-
-
 
       let user;
 
@@ -74,9 +67,48 @@ const ProfileManager = () => {
       })
 
 
-      console.log("_____________________________")
-      console.log("TURNO DE ")
-      console.log(globalState.userList[turnNumber].name);
+      console.log(`Turno de ${globalState.userList[turnNumber].name}`);
+      
+      if(globalState.userList[turnNumber].rol === "mortimer"){
+
+        const initiativeUsersProfile = [];
+        globalState.initiative.forEach((id)=>{
+  
+          globalState.userList.forEach((userObject)=>{
+    
+            if(userObject._id === id){
+    
+              initiativeUsersProfile.push(userObject);
+            }
+          })
+        })
+
+      const acolytes = initiativeUsersProfile.filter((userObject)=>{
+
+          if(userObject.isAlive && userObject.rol === "acolyte" && (userObject.characterStats.hp < userObject.characterMaxStats.maxHp ||checkDisseases(userObject))){
+            return userObject;
+          }
+        });
+
+        if(acolytes.length === 0){
+
+          let index;
+          for (let i = 0; i < globalState.initiative.length; i++) {
+
+            if (globalState.initiative[i] === globalState.currentTurn) {
+
+              index = i;
+            }
+          }
+
+          const dataToSend = {
+            index: index,
+            length: globalState.initiative.length,
+            initiative: globalState.initiative
+          }
+          socket.emit("change_turn", dataToSend);
+        }
+      }
 
       if(!globalState.userList[turnNumber].isAlive){
 
@@ -89,22 +121,10 @@ const ProfileManager = () => {
 					}
 				}
 
-				const initiativeUsers = [];
-
-				globalState.initiative.forEach((id) => {
-					globalState.userList.forEach((user) => {
-
-						if (id === user._id) {
-							initiativeUsers.push(user);
-						}
-					})
-				})
-
-
 				const dataToSend = {
 					index: index,
 					length: globalState.initiative.length,
-					initiativeUsers: initiativeUsers
+					initiative: globalState.initiative
 				}
 				socket.emit("change_turn", dataToSend);
       }
@@ -146,7 +166,16 @@ const ProfileManager = () => {
       }, 4000);
     }
     
-  }, [globalState.currentMessage])
+  }, [globalState.currentMessage]);
+
+  const checkDisseases = (user) => {
+
+    if(user.diseases.rotting_plague === true || user.diseases.epic_weakness === true  || user.diseases.marrow_apocalypse === true || user.diseases.ethazium === true ){
+      return true
+    } else {
+      return false;
+    }
+  } 
 
   return (
     <MainContainer>

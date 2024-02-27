@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import { Context } from '../../helpers/Context';
 import { Image, StyleSheet, Text, View} from 'react-native';
 import * as Progress from 'react-native-progress';
-
+import UserListModal from "../UserListModal";
 
 const BattleField = ({ }) => {
 
@@ -12,9 +12,10 @@ const BattleField = ({ }) => {
   const [acolites, setAcolites] = useState(null);
   const [knights, setKnights] = useState(null);
   const [villains, setVillains] = useState(null);
-
   const [currentTurnPlayer, setCurrentTurnPlayer] = useState("")
-
+  const [openEnemyList, setOpenEnemyList] = useState(false);
+  const [isMortimerTurn, setMortimerTurn] = useState(false);
+  
   useEffect(() => {
 
     if(globalState.initiative.length !== 0){
@@ -26,22 +27,21 @@ const BattleField = ({ }) => {
         globalState.initiative.forEach((intiativeId)=>{
 
         globalState.userList.forEach((userObject)=>{
-          // console.log("userlist*****************")
-          // console.log(userObject.rol)
 
           if(intiativeId === userObject._id){
 
-            if(userObject.rol === "acolyte"){
+            if(userObject.rol !== "mortimer"){
 
-              acolites.push(userObject);
-            }else if(userObject.rol !== "knight"){
-              villains.push(userObject);
-            } 
-            else{
-              knights.push(userObject);
+              if(userObject.rol === "acolyte"){
 
+                acolites.push(userObject);
+              }else if(userObject.rol !== "knight"){
+                villains.push(userObject);
+              } 
+              else{
+                knights.push(userObject);
+              }
             }
-
           }
         })      
       })
@@ -49,13 +49,10 @@ const BattleField = ({ }) => {
       setAcolites(acolites);
       setKnights(knights);
       setVillains(villains)
-
     }
-
-    
-
   }, [globalState.userList, globalState.initiative]);
 
+  // Set del current Player
   useEffect(() => {
 
     if(globalState.currentTurn != ""){
@@ -65,12 +62,15 @@ const BattleField = ({ }) => {
       // Se muestra en pantalla a que jugador le toca
       const currentTurnPlayer = globalState.userList.filter(user => user._id === currentTurnId)
       setCurrentTurnPlayer(currentTurnPlayer[0])
-    }else{
-      
-    }
-    
 
-  }, [globalState]);
+      if(currentTurnPlayer[0].rol === "mortimer"){
+
+        setMortimerTurn(true);
+      }else{
+        setMortimerTurn(false);
+      }
+    }
+  }, [globalState.currentTurn]);
 
   useEffect(()=>{
     setTimeout(() => {  
@@ -89,6 +89,8 @@ const BattleField = ({ }) => {
 
     
     <MainContainer>
+
+    <UserListModal setOpenEnemyList={setOpenEnemyList}  openEnemyList={openEnemyList} />
       
       <AcolytesContainer>
       {
@@ -124,23 +126,32 @@ const BattleField = ({ }) => {
           }
          
         </TurnContainer>
-        <MessagesContainer>
+
+        {isMortimerTurn && 
+          <View style={{ backgroundColor: 'red', width: '20%' }}>
+            <MortimerHeal style={{ backgroundColor: 'pink' }} onPress={() => setOpenEnemyList(false)}/>
+            <MortimerHealDisease style={{ backgroundColor: 'yellow' }}onPress={ () => setOpenEnemyList(true)}  />
+          </View>
+        }
+       
+
+        
           {globalState.currentMessage !== "" &&
-            <>
-            <BattleActionPicture source={require('../../../assets/BattleAction.png')} /> 
-            <BlackFilter></BlackFilter>
-            <InterfaceMessage>
-              <TurnMessageImage source={{ uri: globalState.attacker.imgURL }} alt='attackerImg'/>
-              <TurnMessageImage source={{ uri: globalState.icon.imgURL }} alt='pruebar'/>
-              <TurnMessageImage source={{uri: globalState.defender.imgURL }} alt='defenderImg'/>
-            </InterfaceMessage>
-            <InterfaceMessage>
-              
-              <MessageText > {globalState.currentMessage} </MessageText>
-            </InterfaceMessage>
-            </>
+            <MessagesContainer>
+              <BattleActionPicture source={require('../../../assets/BattleAction.png')} /> 
+              <BlackFilter></BlackFilter>
+              <InterfaceMessage>
+                <TurnMessageImage source={{ uri: globalState.attacker.imgURL }} alt='attackerImg'/>
+                <TurnMessageImage source={{ uri: globalState.icon.imgURL }} alt='pruebar'/>
+                <TurnMessageImage source={{uri: globalState.defender.imgURL }} alt='defenderImg'/>
+              </InterfaceMessage>
+              <InterfaceMessage>
+                
+                <MessageText > {globalState.currentMessage} </MessageText>
+              </InterfaceMessage>
+            </MessagesContainer>
           }
-        </MessagesContainer>
+        
       </Interface>
 
       <EnemiesContainer>
@@ -351,6 +362,30 @@ const MessageText = styled.Text`
   color: white;
   letter-spacing: 3px;
   font-size: 25px;
+`
+
+
+
+const MortimerHeal = styled.TouchableOpacity`
+  align-items: center;
+  justify-content: center;
+  height: 7%;
+  margin-bottom: 3%;
+  width: 40%;
+  height:22%;
+  border: rgba(255, 255, 255, 1);
+  border-radius: 60px;
+`
+
+const MortimerHealDisease = styled.TouchableOpacity`
+  align-items: center;
+  justify-content: center;
+  height: 7%;
+  margin-bottom: 3%;
+  width: 40%;
+  height:22%;
+  border: rgba(255, 255, 255, 1);
+  border-radius: 60px;
 `
 
 export default BattleField
