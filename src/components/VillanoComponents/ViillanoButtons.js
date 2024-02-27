@@ -26,22 +26,22 @@ const VillanoButtons = ({} ) => {
       <ButtonsContainer>
         <Square onPress={() => handleButtonPress('epic_weakness')}>
           <IconImage source={iconEpic} style={{ width: 100, height: 100 }} />
-          <IconText>EPIC_WEAKNESS</IconText>
+          <IconText>EPIC WEAKNESS</IconText>
         </Square>
         <Square onPress={() => handleButtonPress('rotting_plague')}>
           <IconImage source={iconRotting} style={{ width: 100, height: 100 }} />
-          <IconText>ROTTING_PLAGUE</IconText>
+          <IconText>ROTTING PLAGUE</IconText>
         </Square>
         <Square onPress={() => handleButtonPress('marrow_apocalypse')}>
           <IconImage source={iconMarrow} style={{ width: 100, height: 100 }} />
-          <IconText>MARROW_APOCALY</IconText>
+          <IconText>MARROW APOCALYPSE</IconText>
         </Square>
         {openEnemyList && <VillanoUserListModal setOpenEnemyList={setOpenEnemyList} illnessToSend={illnessToSend} />}
       </ButtonsContainer>
     ) : (
       <NotTurnContainer>
-      <NotTurnImage  source={require("../../../assets/NotTurn.png")} />
-       <Text> Wait, it is not your time to attack </Text>
+        <NotTurnImage  source={require("../../../assets/NotTurn.png")} />
+        <Text> Wait, it is not your time to attack </Text>
      </NotTurnContainer>
     )
   );
@@ -59,30 +59,31 @@ const ButtonsContainer = styled.View`
 `
 const Square = styled.TouchableOpacity`
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  margin: -4%;
-  opacity: ${(props) => (props.disabled ? 0.8 : 1)};
-  background-color: ${(props) => (props.disabled ? 'rgba(0, 0, 0, 0)' : 'transparent')}; 
-  height: 75%;
-  width: 50%;
-  border: 1px;
-  border-color: white;
-  border-radius: 1000px;
-  width: 100px;
-  height: 100px;
+  width: 30%;
+  height: 60%;
 `;
 
 const Text = styled.Text`
   font-size: 40px;
   color: white;
+  font-family: 'Breathe Fire IV';
+  letter-spacing: 4px;
 `
 const IconText = styled.Text`
-  font-size: 10px;
+  font-size: 15px;
   color: white;
-  top: 15%
+  font-family: 'Breathe Fire IV';
+  letter-spacing: 2px;
+  margin-top: 5%;
+  text-align: center;
 `
 const IconImage = styled.Image`
-  top: 5%
+  border:  1px solid white;
+  border-radius: 500px;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 20%;
 `
 export default VillanoButtons;
