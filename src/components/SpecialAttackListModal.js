@@ -211,4 +211,3 @@ const EnemyName = styled.Text`
 
 
 export default showSpecialEnemyList;
-
