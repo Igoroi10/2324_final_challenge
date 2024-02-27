@@ -113,24 +113,11 @@ function SocketListener(props) {
 					}
 				}
 
-				const initiativeUsers = [];
-
-				globalState.initiative.forEach((id) => {
-					globalState.userList.forEach((user) => {
-
-						if (id === user._id) {
-							initiativeUsers.push(user);
-						}
-					})
-				})
-
-
 				const dataToSend = {
 					index: index,
 					length: globalState.initiative.length,
-					initiativeUsers: initiativeUsers
+					initiative: globalState.initiative
 				}
-
 				socket.emit("change_turn", dataToSend);
 				globalStateHandler({ turnCounter: globalState.turnCounter + 1 })
 			}

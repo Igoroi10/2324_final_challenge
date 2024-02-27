@@ -10,75 +10,111 @@ import * as Progress from 'react-native-progress';
 
 
 
-const showEnemyList = ({setOpenEnemyList}) => {
-    const [target, setTarget] = useState([]);
-    const {globalState, globalStateHandler} = useContext(Context);
-    const [posibleTargets, setPosibleTargets] = useState([]);
+const ShowEnemyList = ({ setOpenEnemyList, openEnemyList}) => {
 
-    const user = globalState.user;
-    let isGood;
+  const { globalState, globalStateHandler } = useContext(Context);
+  const [posibleTargets, setPosibleTargets] = useState([]);
 
-    if(user.rol === "acolyte" || user.rol === "mortimer")
-        isGood = true
-    else    
-        isGood = false
+  useEffect(() => {
 
-        // console.log("globalSatte user list " + globalState.userList.length)
-    
+    if(globalState.user.rol === "mortimer" || globalState.user.rol === "villain" || globalState.user.rol === "guest"){
 
-    useEffect(() => { 
-      const posibleTargetsList = globalState.userList.filter((el) => {
-        
-        if(isGood){
-          if(el.rol !== "acolyte" && el.rol !== "mortimer")
-            return el;
-        }
-        else{
-          if(el.rol === "acolyte" || el.rol === "mortimer")
-            return el;
-        }
-      })    
-      // console.log(posibleTargetsList)
-      setPosibleTargets(posibleTargetsList)
-    }, [globalState.userList]);
-
-    const selectedtarget = (item) => {
-      //console.log('NORMAL');
-      setTarget(item)
-      // console.log("selected user");
-      attackTarget(item);
-    };
-
-    const attackTarget = (item) => {
-      if(globalState.user.rol !== "guest"){
-        const dataToSend = {
-          id: user._id,
-          targId: item._id,
-          stat: "strength"
-        }
+      const initiativeUsers = [];
+      globalState.initiative.forEach((id)=>{
   
-        socket.emit('attack_try', dataToSend);
-        //console.log('emitir socket', dataToSend)
-      }
-      else{
-        const dataToSend = {
-          id: item._id,
-          illness: "ethazium",
-          active: true,
-          name: globalState.user.name
+        globalState.userList.forEach((userObject)=>{
+  
+          if(userObject._id === id){
+  
+            initiativeUsers.push(userObject);
+          }
+        })
+      })
+  
+      const acolytes = initiativeUsers.filter((userObject)=>{
+        if(userObject.isAlive && userObject.rol === "acoltyte"){
+          return userObject;
         }
-  console.log("disease applyed")
-  console.log(item)
-        socket.emit('disease_try', dataToSend);
+      })
+      
+      setPosibleTargets(acolytes);
+    }else if(globalState.user.rol === "acolyte"){
 
+      const initiativeUsers = [];
+      globalState.initiative.forEach((id)=>{
+  
+        globalState.userList.forEach((userObject)=>{
+  
+          if(userObject._id === id){
+  
+            initiativeUsers.push(userObject);
+          }
+        })
+      })
+  
+      const villains = initiativeUsers.filter((userObject)=>{
+        if(userObject.isAlive && (userObject.rol === "knight" || userObject.rol === "villain" || userObject.rol === "guest") ){
+          return userObject;
+        }
+      })
+      setPosibleTargets(villains);
+    }
+  }, [])
+
+  // useEffect(() => {
+  //   const posibleTargetsList = globalState.userList.filter((el) => {
+
+  //     if (isGood) {
+  //       if (el.rol !== "acolyte" && el.rol !== "mortimer")
+  //         return el; 
+  //     }
+  //     else {
+  //       if (el.rol === "acolyte" || el.rol === "mortimer")
+  //         return el;
+  //     }
+  //   })
+  //   // console.log(posibleTargetsList)
+  //   setPosibleTargets(posibleTargetsList)
+  // }, [globalState.userList]);
+
+  const selectedtarget = (item) => {
+    console.log("ATAQUE")
+    console.log(item)
+    attackTarget(item);
+  };
+
+
+  const attackTarget = (item) => {
+    if (globalState.user.rol === "acolyte" || globalState.user.rol === "knight") {
+      const dataToSend = {
+        id: globalState.user._id,
+        targId: item._id,
+        stat: "strength"
       }
 
-      setOpenEnemyList(false)
+      socket.emit('attack_try', dataToSend);
+    }
+    else if(globalState.user.rol === "guest") {
+      const dataToSend = {
+        id: item._id,
+        illness: "ethazium",
+        active: true,
+        name: globalState.user.name
+      }
+      console.log("disease applyed")
+      console.log(item)
+      socket.emit('disease_try', dataToSend);
+
+    }
+    else{
+      console.log("mortimer cures")
     }
 
+    setOpenEnemyList(false)
+  }
 
   return (
-    <ModalContainer transparent={true} visible={true}>
+    <ModalContainer transparent={false} visible={openEnemyList}>
       <ContentContainer>
         <TitleText> Choose an enemy to attack: </TitleText>
         <EnemiesList
@@ -93,7 +129,7 @@ const showEnemyList = ({setOpenEnemyList}) => {
               <EnemyName>{item.name}</EnemyName>
               {item.imgURL && (
                 <Image source={{ uri: item.imgURL }} style={styles.image} />
-
+                
               )}
                 <StatsRow>
                   <StatTexts>Health: {item.characterStats.hp}</StatTexts>
@@ -110,7 +146,7 @@ const showEnemyList = ({setOpenEnemyList}) => {
 
             </EnemyItem>
           )}
-          keyExtractor={(item, index) => index+1}
+          keyExtractor={(item, index) => index + 1}
           horizontal
         />
 
@@ -190,5 +226,5 @@ const styles = {
   },
 };
 
-export default showEnemyList;
+export default ShowEnemyList;
 
