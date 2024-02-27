@@ -194,9 +194,9 @@ const MortimerProfile = () => {
     setIsBattleField(true);
 
     const userIDs = readyUserList.map(({_id})=>_id);
+    userIDs.push(globalState.user._id);
     const dataToSend ={
-
-        userIDs: userIDs
+      userIDs: userIDs
     }
     socket.emit("start_battle", dataToSend);
   }
@@ -237,7 +237,7 @@ const MortimerProfile = () => {
               >
 
               <RowContainer>
-                <ProfilePicture source={require('../../../assets/mortimer.jpg' )} style={styles.image} />
+                <ProfilePicture source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/the-final-battle-287a4.appspot.com/o/Avatare%2Fmorti.png?alt=media&token=d67439c7-9975-4fb4-b146-d9e1939be69e' }} style={styles.image} />
                 <ProfileVariblesTitle> MORTIMER </ProfileVariblesTitle>
               </RowContainer>
 
