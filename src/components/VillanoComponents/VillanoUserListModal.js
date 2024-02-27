@@ -1,161 +1,150 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { FlatList, Image, View, Text } from 'react-native';
+import { FlatList, Image, View } from 'react-native';
 import styled from 'styled-components/native';
 import { Context } from '../../helpers/Context';
 import socket from '../../../helpers/socket';
 
 const showVillanoEnemyList = ({ setOpenEnemyList, illnessToSend }) => {
-    const [target, setTarget] = useState([]);
-    const {globalState, globalStateHandler} = useContext(Context);
-    const [posibleTargets, setPosibleTargets] = useState([]);
+  const [target, setTarget] = useState([]);
+  const { globalState, globalStateHandler } = useContext(Context);
+  const [posibleTargets, setPosibleTargets] = useState([]);
 
-    const user = globalState.user;
-    let isGood;
 
-    if (user.rol === "acolyte")
-        isGood = true;
-    else
-        isGood = false;
+  useEffect(() => {
 
-    useEffect(() => {
+    if (globalState.user.rol === "mortimer") {
 
-        const posibleTargetsList = globalState.userList.filter((el) => {
+      const initiativeUsers = [];
+      globalState.initiative.forEach((id) => {
 
-            if (isGood) {
-                return el.rol === "acolyte" && el.isReady === true && el.isAlive === true ;
-            } else {
-                return el.rol === "acolyte" && el.isReady === true && el.isAlive === true;
-            }
+        globalState.userList.forEach((userObject) => {
+
+          if (userObject._id === id) {
+
+            initiativeUsers.push(userObject);
+          }
         })
-        setPosibleTargets(posibleTargetsList);
-    }, [globalState.userList, isGood]);
+      })
 
-   
-    // Función para manejar la enfermedad correspondiente según el contexto
-    const handleDisease = (item) => {
-      console.log
-        
-        const data = {
-            illness: illnessToSend, 
-            id: item._id,
-            active: true,
-            name: globalState.user.name
+      const acolytes = initiativeUsers.filter((userObject) => {
 
+        if (userObject.isAlive && userObject.rol === "acolyte" && (userObject.characterStats.hp < userObject.characterMaxStats.maxHp || checkDisseases(userObject))) {
+          return userObject;
         }
-        console.log(data);
-        socket.emit('disease_try', data);
-        setOpenEnemyList(false);  
-    }
+      })
 
-    const selectedTarget = (item) => {
-      setTarget(item);
-      console.log("selected user", item.name);
-      handleDisease(item);
-      setOpenEnemyList(false);
+      setPosibleTargets(acolytes);
+    } else if (globalState.user.rol === "villain") {
+
+
+
+    } else if (globalState.user.rol === "guest") {
+
+
+
+    } else if (globalState.user.rol === "acolyte") {
+      const initiativeUsers = [];
+      globalState.initiative.forEach((id) => {
+
+        globalState.userList.forEach((userObject) => {
+
+          if (userObject._id === id) {
+
+            initiativeUsers.push(userObject);
+          }
+        })
+      })
+
+      const villains = initiativeUsers.filter((userObject) => {
+        if (userObject.isAlive && (userObject.rol === "knight" || userObject.rol === "villain" || userObject.rol === "guest")) {
+          return userObject;
+        }
+      })
+      setPosibleTargets(villains);
+    }
+  }, [globalState.user]);
+
+  // Función para manejar la enfermedad correspondiente según el contexto
+  const handleDisease = (item) => {
+    console.log
+
+    const data = {
+      illness: illnessToSend,
+      id: item._id,
+      active: true,
+      name: globalState.user.name
+
+    }
+    console.log(data);
+    socket.emit('disease_try', data);
+    setOpenEnemyList(false);
+  }
+
+  const selectedTarget = (item) => {
+    setTarget(item);
+    console.log("selected user", item.name);
+    handleDisease(item);
+    setOpenEnemyList(false);
   };
 
   return (
-      <ModalContainer transparent={true} visible={true}>
-          <ContentContainer>
-            <TitleText> Choose the acolyte to attack: </TitleText>
-              <EnemiesList
-                  data={posibleTargets}
-                  renderItem={({ item, index }) => (
-                      <EnemyItem
-                          onPress={() => selectedTarget(item)}
-                          selected={item}
-                      >
-                        <EnemyName>{item.name}</EnemyName>
-                          {item.imgURL && (
-                              <Image source={{ uri: item.imgURL }} style={styles.image} />
-                          )}
-                          <StatsRow>
-                            <StatTexts>Health: {item.characterStats.hp}</StatTexts>
-                          </StatsRow>
-                          <StatsRow>
-                            <StatTexts>Strength: {item.characterStats.strength}</StatTexts>
-                          </StatsRow>
-                          <StatsRow>
-                            <StatTexts>Agility: {item.characterStats.agility}</StatTexts>
-                          </StatsRow>
-                          <StatsRow>
-                            <StatTexts>intelligece: {item.characterStats.intelligence}</StatTexts>
-                          </StatsRow>
-                      </EnemyItem>
-                  )}
-                  keyExtractor={(item, index) => index + 1}
-                  horizontal
-              />
-          </ContentContainer>
-      </ModalContainer>
+    <ModalContainer transparent={true} visible={true}>
+      <ContentContainer>
+        <IngredientList
+          data={posibleTargets}
+          renderItem={({ item, index }) => (
+            <IngredientItem
+              onPress={() => selectedTarget(item)}
+              selected={item}
+            >
+              {item.imgURL && (
+                <Image source={{ uri: item.imgURL }} style={styles.image} />
+              )}
+              <IngredientName>{item.name}</IngredientName>
+            </IngredientItem>
+          )}
+          keyExtractor={(item, index) => index + 1}
+          horizontal
+        />
+      </ContentContainer>
+    </ModalContainer>
   );
 };
+
 const ModalContainer = styled.Modal`
-display: flex;
-align-items: center;
-justify-content: center;
 `;
 
 const ContentContainer = styled.View`
   border-radius: 20px;
-  margin-top: 30%;
+  margin-top: 50%;
   background-color: #fff;
   padding: 20px;
-  height: 70%;
 `;
 
-const TitleText = styled.Text`
-font-family: 'Breathe Fire IV';
-font-size: 20px;
-color: black;
-letter-spacing: 4px;
-`
-
-const EnemiesList = styled(FlatList)`
+const IngredientList = styled(FlatList)`
   margin-top: 20px;
-`
+`;
 
-const StatsRow = styled.View`
-  display: flex;
-  flex-direction: row;
-`
-
-const StatTexts = styled.Text`
-  margin-top: 5px;
-  font-family: 'Breathe Fire IV';
-  letter-spacing: 4px;
-  color: white;
-  font-size: 20px;
-`
-
-const EnemyItem = styled.TouchableOpacity`
-  display: flex;
-  align-items: center;
-  background-color: #0B1215;
+const IngredientItem = styled.TouchableOpacity`
+background-color: ${(props) => (props.selected ? '#95a5a6' : '#3498db')};
   padding: 15px;
   border-radius: 15px;
   margin-right: 15px;
 `;
 
 
-const EnemyName = styled.Text`
+const IngredientName = styled.Text`
   color: #fff;
   font-size: 14px;
   text-align: center;
   margin-top: 10px;
-  margin-bottom: 10px;
-  font-family: 'Breathe Fire IV';
-  letter-spacing: 5px;
-  font-size: 30px;
 `;
 
 const styles = {
   image: {
-    width: 280,
-    height: '45%',
-    borderRadius: 30,
-    objectFit: 'cover',
-    marginBottom: 15
+    width: 70,
+    height: 70,
+    borderRadius: 35,
   },
 };
 

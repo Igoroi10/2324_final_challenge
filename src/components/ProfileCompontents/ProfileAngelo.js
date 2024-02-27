@@ -28,7 +28,7 @@ const ProfileAngelo = ({ }) => {
       </StatContainerblock>
 
       <StatContainerblock>
-        <ProfileText>agility: {globalState.user.characterStats.agility}</ProfileText>
+        <ProfileText>agi: {globalState.user.characterStats.agility}</ProfileText>
         <Progress.Bar 
           color={'rgba(255, 255, 255, 1)'}
           style={styles.progressBar} 
@@ -40,7 +40,7 @@ const ProfileAngelo = ({ }) => {
       
     <StatContainerRow>
       <StatContainerblock>
-        <ProfileText>strength: {globalState.user.characterStats.strength}</ProfileText>
+        <ProfileText>str: {globalState.user.characterStats.strength}</ProfileText>
         <Progress.Bar 
           color={'rgba(255, 255, 255, 1)'}
           style={styles.progressBar} 
@@ -49,7 +49,7 @@ const ProfileAngelo = ({ }) => {
       </StatContainerblock>
      
       <StatContainerblock>
-        <ProfileText>intelligence: {globalState.user.characterStats.intelligence}</ProfileText>
+        <ProfileText>int: {globalState.user.characterStats.intelligence}</ProfileText>
         <Progress.Bar 
           color={'rgba(255, 255, 255, 1)'}
           style={styles.progressBar} 
