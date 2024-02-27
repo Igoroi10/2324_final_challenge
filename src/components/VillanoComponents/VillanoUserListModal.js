@@ -38,7 +38,7 @@ const showVillanoEnemyList = ({ setOpenEnemyList, illnessToSend }) => {
       console.log
         
         const data = {
-            illness: illnessToSend, // Se usa la enfermedad proporcionada
+            illness: illnessToSend, 
             id: item._id,
             active: true,
             name: globalState.user.name
@@ -52,7 +52,7 @@ const showVillanoEnemyList = ({ setOpenEnemyList, illnessToSend }) => {
     const selectedTarget = (item) => {
       setTarget(item);
       console.log("selected user", item.name);
-      handleDisease(item); // Llama a la función de enfermedad correspondiente pasando el objetivo seleccionado
+      handleDisease(item);
       setOpenEnemyList(false);
   };
 

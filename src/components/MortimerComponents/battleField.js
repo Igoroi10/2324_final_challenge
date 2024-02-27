@@ -4,7 +4,7 @@ import { Context } from '../../helpers/Context';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import * as Progress from 'react-native-progress';
 import socket from '../../../helpers/socket';
-
+import ShowEnemyList from '../UserListModal';
 
 const BattleField = ({ }) => {
 
@@ -14,7 +14,9 @@ const BattleField = ({ }) => {
   const [knights, setKnights] = useState(null);
   const [villains, setVillains] = useState(null);
 
-  const [currentTurnPlayer, setCurrentTurnPlayer] = useState("")
+  const [currentTurnPlayer, setCurrentTurnPlayer] = useState("");
+  const [openEnemyList, setOpenEnemyList] = useState(false);
+
 
   useEffect(() => {
 
@@ -73,6 +75,11 @@ const BattleField = ({ }) => {
 
   }, [globalState]);
 
+  useEffect(() => {
+    console.log(openEnemyList);
+
+  }, [openEnemyList]);
+
 
   const healUser = (acoliteId) => {
     let disease = "";
@@ -109,11 +116,12 @@ const BattleField = ({ }) => {
         active: false,
         name: name,
       }
-
-      socket.emit('disease_try', dataToSend);
+      console.log(dataToSend);
+      // socket.emit('disease_try', dataToSend);
     }
 
   }
+
 
   useEffect(() => {
     setTimeout(() => {
@@ -132,23 +140,14 @@ const BattleField = ({ }) => {
 
 
       <MainContainer>
-
         <AcolytesContainer>
           {
             acolites.map((acolite, idx) =>
 
-              <AcolyteContainer key={acolite._id} isAlive={acolite.isAlive} >
+            <AcolyteContainer key={acolite._id} isAlive={acolite.isAlive} >
 
                 <AcolyteImageContainer >
-                  {globalState.user._id === globalState.currentTurn && acolite.isAlive && (
-                <MortimerHeal onPress={() => healUser(acolite._id)}>
                   <AcolyteImage source={{ uri: acolite.imgURL }} />
-                  </MortimerHeal>
-                  )}
-
-
-
-
 
                 </AcolyteImageContainer>
 
@@ -156,8 +155,8 @@ const BattleField = ({ }) => {
                   color={'rgba(100, 255, 100, 1)'}
                   style={styles.AcolyteProgressBar}
                   progress={acolite.characterStats.hp / acolite.characterMaxStats.maxHp}
-
-                />
+                  
+                  />
 
               </AcolyteContainer >
             )
@@ -172,23 +171,31 @@ const BattleField = ({ }) => {
             </TurnImageContainer>
           </TurnContainer>
 
-          {/* {globalState.user != globalState.currentTurn && (
-            <MessagesContainer>
-            {globalState.currentMessage !== "" &&
-              <>
-                <InterfaceMessage>
-                  <TurnImage source={{ uri: globalState.attacker.imgURL }} alt='attackerImg' />
-                  <TurnImage source={{ uri: globalState.icon.imgURL }} alt='pruebar' />
-                  <TurnImage source={{ uri: globalState.defender.imgURL }} alt='defenderImg' />
-                </InterfaceMessage>
-                <InterfaceMessage>
+          <View style={{ width: '20%' }}>
+            <MortimerHeal onPress={() => setOpenEnemyList(false)}/>
+            <MortimerHealDisease onPress={() => setOpenEnemyList(true)}  />
+          </View>
 
-                  <Text style={{ color: 'white' }} t> {globalState.currentMessage} </Text>
-                </InterfaceMessage>
-              </>
-            }
-          </MessagesContainer>
-            )} */}
+
+          {globalState.user != globalState.currentTurn && (
+            <MessagesContainer>
+              {globalState.currentMessage !== "" &&
+                <>
+                  <InterfaceMessage>
+                    <TurnImage source={{ uri: globalState.attacker.imgURL }} alt='attackerImg' />
+                    <TurnImage source={{ uri: globalState.icon.imgURL }} alt='pruebar' />
+                    <TurnImage source={{ uri: globalState.defender.imgURL }} alt='defenderImg' />
+                  </InterfaceMessage>
+                  <InterfaceMessage>
+
+                    <Text style={{ color: 'white' }} t> {globalState.currentMessage} </Text>
+                  </InterfaceMessage>
+                </>
+              }
+            </MessagesContainer>
+          )}
+              <ShowEnemyList setOpenEnemyList={setOpenEnemyList}  openEnemyList={openEnemyList} />
+            
         </Interface>
 
         <EnemiesContainer>
@@ -225,14 +232,13 @@ const BattleField = ({ }) => {
 
             </EnemyContainer >
           )}
-
         </EnemiesContainer>
       </MainContainer>
-
+      
+      
     </>
   )
 }
-
 
 const styles = StyleSheet.create({
   AcolyteProgressBar: {
@@ -269,9 +275,20 @@ const MortimerHeal = styled.TouchableOpacity`
   justify-content: center;
   height: 7%;
   margin-bottom: 3%;
-  width: 100%;
-  height:100%;
-  border: rgba(255, 255, 255, 0.6);
+  width: 40%;
+  height:22%;
+  border: rgba(255, 255, 255, 1);
+  border-radius: 60px;
+`
+
+const MortimerHealDisease = styled.TouchableOpacity`
+  align-items: center;
+  justify-content: center;
+  height: 7%;
+  margin-bottom: 3%;
+  width: 40%;
+  height:22%;
+  border: rgba(255, 255, 255, 1);
   border-radius: 60px;
 `
 
