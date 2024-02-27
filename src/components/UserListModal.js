@@ -103,10 +103,10 @@ if(globalState.user.rol === "mortimer"){
     attackTarget(item);
   };
 
-  useEffect(() => {
-    console.log("posibleTargets")
-    console.log(posibleTargets)
-  }, [posibleTargets])
+  // useEffect(() => {
+  //   console.log("posibleTargets")
+  //   console.log(posibleTargets)
+  // }, [posibleTargets])
 
 
   const attackTarget = (target) => {
