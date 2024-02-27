@@ -14,18 +14,16 @@ const FinalResults = ({ }) => {
    <MainContainer>
     {globalState.battleEnd === "villainsWin" && (
       <VillainContainer>
-        <Text>
-          GANADOR VILLANOS
-        </Text>
+        <EpicPicture source={require('../../assets/DefeatImage.png')} />
+        <Text> </Text>
       </VillainContainer>
     )}
       
 
     {globalState.battleEnd === "acolyteWin" && (
       <VillainContainer>
-        <Text>
-          GANADOR ACOLITOS
-        </Text>
+        <EpicPicture source={require('../../assets/VictoryImage.png')} />
+        <Text>GANADOR ACOLITOS</Text>
     </VillainContainer>
     )}
 
@@ -44,7 +42,14 @@ const MainContainer = styled.View`
 `
 
 const VillainContainer = styled.View`
+  display: flex;
+  flex: 1;
+`
 
+const EpicPicture = styled.Image`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `
 
 const ButtonText = styled.Text`
