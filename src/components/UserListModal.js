@@ -46,7 +46,26 @@ if(globalState.user.rol === "mortimer"){
 
     }else if(globalState.user.rol === "guest"){
 
+      const initiativeUsers = [];
+      globalState.initiative.forEach((id)=>{
+  
+        globalState.userList.forEach((userObject)=>{
+  
+          if(userObject._id === id){
+  
+            initiativeUsers.push(userObject);
+          }
+        })
+      })
 
+      const acolytes = initiativeUsers.filter((userObject)=>{
+
+        if(userObject.isAlive && userObject.rol === "acolyte" && !userObject.diseases.ethazium){
+          return userObject;
+        }
+      })
+      
+      setPosibleTargets(acolytes);
 
     }else if(globalState.user.rol === "acolyte"){
       const initiativeUsers = [];
@@ -83,6 +102,11 @@ if(globalState.user.rol === "mortimer"){
   const selectedtarget = (item) => {
     attackTarget(item);
   };
+
+  useEffect(() => {
+    console.log("posibleTargets")
+    console.log(posibleTargets)
+  }, [posibleTargets])
 
 
   const attackTarget = (target) => {
@@ -125,7 +149,6 @@ if(globalState.user.rol === "mortimer"){
     <ModalContainer  transparent={true} visible={openEnemyList}>
       <ContentContainer>
         <TitleText> Choose an enemy to attack: </TitleText>
-
         <EnemiesList
           showsHorizontalScrollIndicator={false}
           data={posibleTargets}
