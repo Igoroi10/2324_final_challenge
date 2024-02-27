@@ -10,14 +10,12 @@ const ProfileVillano = ({ }) => {
 
   useEffect(() => {
     globalState.user.isReady = true;
-    console.log(globalState.user)
   }, []);
-  
   
   return (
     <> 
         <ProfileContainer>
-          <Image source={{ uri: globalState.user.imgURL }} style={styles.image} />
+          <Image source={require('../../../assets/villain.jpg' )} style={styles.image} />
           <Image source={require('../../../assets/profileFrame.png')} style={styles.image2} />
           <ProfileText>VILLANO ZARATE</ProfileText>
           
@@ -73,7 +71,7 @@ const ProfileVillano = ({ }) => {
 
 const styles = StyleSheet.create({
   image: {
-    width: '60%',
+    width: '35%',
     height: '45%',
     objectFit: 'contain',
   },
@@ -85,13 +83,13 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   progressBar: {
-    width: '88%',
+    width: '85%',
   }
 });
 
 const ProfileText = styled.Text`
  color: white;
- font-size: 30px;
+ font-size: 25px;
  text-align: center;
  font-family: 'Breathe Fire IV';
  letter-spacing: 4px;
