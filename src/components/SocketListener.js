@@ -45,7 +45,14 @@ function SocketListener(props) {
 				battleStart: data.battleStart,
 				initiative: data.initiative,
 				currentTurn: data.initiative[0],
+				userList: data.usersToUpdate
 			});
+
+			data.usersToUpdate.forEach((user)=>{
+				if(user._id === globalState.user._id){
+					globalStateHandler({user:user});
+				}
+			})
 		}
 
 		const handleChangeTurn = (data) => {
