@@ -22,9 +22,9 @@ const showVillanoEnemyList = ({ setOpenEnemyList, illnessToSend }) => {
         const posibleTargetsList = globalState.userList.filter((el) => {
 
             if (isGood) {
-                return el.rol === "acolyte" ;
+                return el.rol === "acolyte" && el.isReady === true && el.isAlive === true ;
             } else {
-                return el.rol === "acolyte" ;
+                return el.rol === "acolyte" && el.isReady === true && el.isAlive === true;
             }
         })
         setPosibleTargets(posibleTargetsList);

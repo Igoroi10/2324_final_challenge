@@ -86,4 +86,23 @@ const IconImage = styled.Image`
   height: 100%;
   margin-bottom: 20%;
 `
+const NotTurnContainer = styled.View`
+  width: 100%;
+  height: 38%;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1%;
+`
+
+const NotTurnImage = styled.Image`
+  object-fit: cover;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0.4
+  `
+  
 export default VillanoButtons;
