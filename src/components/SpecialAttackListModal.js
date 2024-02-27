@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { FlatList, Image, View } from 'react-native';
+import { FlatList, Image, View, Text, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import { Context } from '../helpers/Context';
 import socket from '../../helpers/socket';
@@ -10,43 +10,77 @@ const showSpecialEnemyList = ({setOpenEnemyList, setOpenSpecialEnemyList}) => {
     const {globalState, globalStateHandler} = useContext(Context);
     const [posibleTargets, setPosibleTargets] = useState([]);
 
-    const user = globalState.user;
-    let isGood;
+    useEffect(() => {
 
-    if(user.rol === "acolyte" || user.rol === "mortimer")
-        isGood = true
-    else    
-        isGood = false
-
-        // console.log("globalSatte user list " + globalState.userList.length)
+      if(globalState.user.rol === "mortimer"){
+  
+        const initiativeUsers = [];
+        globalState.initiative.forEach((id)=>{
     
-
-    useEffect(() => { 
-      const posibleTargetsList = globalState.userList.filter((el) => {
+          globalState.userList.forEach((userObject)=>{
+    
+            if(userObject._id === id){
+    
+              initiativeUsers.push(userObject);
+            }
+          })
+        })
+  
+        const acolytes = initiativeUsers.filter((userObject)=>{
+  
+          if(userObject.isAlive && userObject.rol === "acolyte" && (userObject.characterStats.hp < userObject.characterMaxStats.maxHp ||checkDisseases(userObject))){
+            return userObject;
+          }
+        })
         
-        if(isGood){
-          if((el.rol !== "acolyte" && el.rol !== "mortimer") && el.isAlive && el.isConnected)
-            return el;
-        }
-        else{
-          if((el.rol === "acolyte" || el.rol === "mortimer") && el.isAlive && el.isConnected)
-            return el;
-        }
-      })    
-      // console.log(posibleTargetsList)
-      setPosibleTargets(posibleTargetsList)
-    }, [globalState.userList]);
-
+        setPosibleTargets(acolytes);
+      }else if(globalState.user.rol === "villain"){
+  
+  
+  
+      }else if(globalState.user.rol === "guest"){
+  
+  
+      }else if(globalState.user.rol === "acolyte"){
+        const initiativeUsers = [];
+        globalState.initiative.forEach((id)=>{
+    
+          globalState.userList.forEach((userObject)=>{
+    
+            if(userObject._id === id){
+    
+              initiativeUsers.push(userObject);
+            }
+          })
+        })
+    
+        const villains = initiativeUsers.filter((userObject)=>{
+          if(userObject.isAlive && (( userObject.rol === "villain" || userObject.rol === "guest") && userObject.isConnected === true) || userObject.rol === "knight"){
+            return userObject;
+          }
+        })
+        setPosibleTargets(villains);
+      }
+    }, [globalState.user]);
+  
+  
+    const checkDisseases = (user) => {
+  
+      if(user.diseases.rotting_plague === true || user.diseases.epic_weakness === true  || user.diseases.marrow_apocalypse === true || user.diseases.ethazium === true ){
+        return true
+      } else {
+        return false;
+      }
+    } 
+  
     const selectedTarget = (item) => {
-    //console.log('ESPECIAL');
-      setTarget(item)
-      //console.log("selected user");
       specialAttackTarget(item);
     };
+    
     const specialAttackTarget = (item) => {
       if(globalState.user.rol !== "guest"){
           const dataToSend = {
-            id: user._id,
+            id: globalState.user._id,
             targId: item._id,
             stat: "intelligence"
           };
@@ -59,7 +93,7 @@ const showSpecialEnemyList = ({setOpenEnemyList, setOpenSpecialEnemyList}) => {
   return (
     <ModalContainer transparent={true} visible={true}>
     <ContentContainer>
-      <TitleText> Choose the acolyte to attack: </TitleText>
+      <TitleText> Choose the oponent to attack: </TitleText>
         <EnemiesList
             data={posibleTargets}
             renderItem={({ item, index }) => (
@@ -94,7 +128,16 @@ const showSpecialEnemyList = ({setOpenEnemyList, setOpenSpecialEnemyList}) => {
 };
 
 
+const TitleText = styled.Text`
+font-family: 'Breathe Fire IV';
+font-size: 30px;
+color: black;
+letter-spacing: 4px;
+`
 
+const EnemiesList = styled(FlatList)`
+  margin-top: 20px;
+`;
 
 const ModalContainer = styled.Modal`
 `;
@@ -132,6 +175,40 @@ const styles = {
     borderRadius: 35,
   },
 };
+
+const StatsRow = styled.View`
+  display: flex;
+  flex-direction: row;
+`
+const StatTexts = styled.Text`
+  margin-top: 5px;
+  font-family: 'Breathe Fire IV';
+  letter-spacing: 4px;
+  color: white;
+  font-size: 25px;
+`
+
+const EnemyItem = styled.TouchableOpacity`
+  display: flex;
+  align-items: center;
+  background-color: rgba(23, 23, 23, 1);
+  padding: 15px;
+  border-radius: 15px;
+  margin-right: 15px;
+  margin-bottom: 25px;
+`;
+
+const EnemyName = styled.Text`
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: 'Breathe Fire IV';
+  letter-spacing: 5px;
+  font-size: 30px;
+`;
+
 
 export default showSpecialEnemyList;
 

@@ -16,6 +16,7 @@ import VillanoButtons from '../VillanoComponents/ViillanoButtons';
 import ApplyEthazium from './ApplyEthazium'
 import socket from '../../../helpers/socket';
 import SpecialAttackListModal from '../SpecialAttackListModal'
+import ProfileAngelo from './ProfileAngelo';
 
 const ProfileManager = () => {
   const { globalState, globalStateHandler } = useContext(Context);
@@ -187,44 +188,48 @@ const ProfileManager = () => {
             <VillanoUserListModal setOpenEnemyList={setOpenEnemyList} />
           )}
         </>
-      ) : (
+      ) : globalState.user.rol === "mortimer" ? (
+        <MortimerProfile />
+      ) : globalState.user.rol === "acolyte" || globalState.user.rol === "acolyteInterface" ? (
         <>
-
-          {globalState.user.rol === "mortimer" && ( <MortimerProfile /> )}
-        
-          {globalState.user.rol !== "mortimer" && (
-            <>
-              {!globalState.user.isReady && (
+          {!globalState.user.isReady && (
             <>
               <Profile />
               <ReadyButton />
             </>
-            )}
+          )}
           {globalState.battleStart && (
             <>
               <Profile />
               <FightButtons setOpenEnemyList={setOpenEnemyList} setOpenSpecialEnemyList={setOpenSpecialEnemyList} />
               {openEnemyList && (
-              <UserListModal setOpenEnemyList={setOpenEnemyList} />
+                <UserListModal setOpenEnemyList={setOpenEnemyList} />
               )}
               {openSpecialEnemyList && (
-              <SpecialAttackListModal setOpenSpecialEnemyList={setOpenSpecialEnemyList} />
+                <SpecialAttackListModal setOpenSpecialEnemyList={setOpenSpecialEnemyList} />
               )}
             </>
           )}
           {(globalState.user.isReady && !showAllUsersReadyModal && !globalState.battleStart && globalState.user.rol === "acolyte") && (
             <ReadyModal />
-            )}
-            </>
           )}
         </>
-      )}
+      ) : globalState.user.rol === "guest" ? (
+        <>
+          <ProfileAngelo />
+          <ApplyEthazium setOpenEnemyList={setOpenEnemyList}/>
+          {openEnemyList && (
+            <UserListModal setOpenEnemyList={setOpenEnemyList} />
+          )}
+        </>
+      ) : null}
       {showAllUsersReadyModal && !globalState.battleStart && (
         <AllUsersReadyModal />
       )}
     </MainContainer>
   );
-      }  
+      
+}  
 
 const MainContainer = styled.View`
   flex: 1;
