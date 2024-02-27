@@ -44,22 +44,17 @@ const showSpecialEnemyList = ({setOpenEnemyList, setOpenSpecialEnemyList}) => {
       specialAttackTarget(item);
     };
     const specialAttackTarget = (item) => {
-        if(globalState.user.rol !== "guest"){
-            const dataToSend = {
-                id: user._id,
-                targId: item._id,
-                stat: {
-                    strength: user.characterStats.strength,
-                    intelligence: user.characterStats.intelligence,
-                    agility: user.characterStats.agility,
-                    hp: user.characterStats.hp
-                }
-            };
-            socket.emit('specialAttack_try', dataToSend);
-            //console.log('emitir socket', dataToSend)
-        }
-        setOpenSpecialEnemyList(false)
-    }
+      if(globalState.user.rol !== "guest"){
+          const dataToSend = {
+            id: user._id,
+            targId: item._id,
+            stat: "intelligence"
+          };
+          socket.emit('attack_try', dataToSend);
+          //console.log('emitir socket', dataToSend)
+      }
+      setOpenSpecialEnemyList(false)
+  }
 
   return (
     <ModalContainer transparent={true} visible={true}>

@@ -237,7 +237,7 @@ const MortimerProfile = () => {
               >
 
               <RowContainer>
-                <ProfilePicture source={{ uri: globalState.user.imgURL }} />
+                <ProfilePicture source={require('../../../assets/mortimer.jpg' )} style={styles.image} />
                 <ProfileVariblesTitle> MORTIMER </ProfileVariblesTitle>
               </RowContainer>
 

@@ -55,7 +55,7 @@ const ButtonsContainer = styled.View`
   height: 20%;
   width: 85%;
   position: absolute;
-  bottom: 10%;
+  top: 80%;
 `
 const Square = styled.TouchableOpacity`
   display: flex;
@@ -72,11 +72,11 @@ const Text = styled.Text`
   letter-spacing: 4px;
 `
 const IconText = styled.Text`
-  font-size: 15px;
+  font-size: 12px;
   color: white;
   font-family: 'Breathe Fire IV';
   letter-spacing: 2px;
-  margin-top: 5%;
+  margin-top: 25%;
   text-align: center;
 `
 const IconImage = styled.Image`
