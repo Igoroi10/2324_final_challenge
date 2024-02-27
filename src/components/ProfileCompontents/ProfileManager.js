@@ -212,7 +212,7 @@ const ProfileManager = () => {
               )}
             </>
           )}
-          {(globalState.user.isReady && !globalState.battleStart && globalState.user.rol === "acolyte") && (
+          {(globalState.user.isReady && !showAllUsersReadyModal && !globalState.battleStart && globalState.user.rol === "acolyte") && (
             <ReadyModal />
             )}
             </>

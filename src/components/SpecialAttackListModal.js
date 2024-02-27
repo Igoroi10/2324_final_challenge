@@ -25,11 +25,11 @@ const showSpecialEnemyList = ({setOpenEnemyList, setOpenSpecialEnemyList}) => {
       const posibleTargetsList = globalState.userList.filter((el) => {
         
         if(isGood){
-          if(el.rol !== "acolyte" && el.rol !== "mortimer")
+          if((el.rol !== "acolyte" && el.rol !== "mortimer") && el.isAlive && el.isConnected)
             return el;
         }
         else{
-          if(el.rol === "acolyte" || el.rol === "mortimer")
+          if((el.rol === "acolyte" || el.rol === "mortimer") && el.isAlive && el.isConnected)
             return el;
         }
       })    
@@ -37,7 +37,7 @@ const showSpecialEnemyList = ({setOpenEnemyList, setOpenSpecialEnemyList}) => {
       setPosibleTargets(posibleTargetsList)
     }, [globalState.userList]);
 
-    const selectedtarget = (item) => {
+    const selectedTarget = (item) => {
     //console.log('ESPECIAL');
       setTarget(item)
       //console.log("selected user");
@@ -58,29 +58,38 @@ const showSpecialEnemyList = ({setOpenEnemyList, setOpenSpecialEnemyList}) => {
 
   return (
     <ModalContainer transparent={true} visible={true}>
-      <ContentContainer>
-        <IngredientList
-          data={posibleTargets}
-          renderItem={({ item, index }) => (
-            <IngredientItem
-              onPress={() => selectedtarget(item)}
-              selected={item}
-              // onLongPress={() => { openModal(item) }}
-            >
-              {item.imgURL && (
-                <Image source={{ uri: item.imgURL }} style={styles.image} />
-
-              )}
-                <IngredientName>{item.name}</IngredientName>
-
-            </IngredientItem>
-          )}
-          keyExtractor={(item, index) => index+1}
-          horizontal
+    <ContentContainer>
+      <TitleText> Choose the acolyte to attack: </TitleText>
+        <EnemiesList
+            data={posibleTargets}
+            renderItem={({ item, index }) => (
+                <EnemyItem
+                    onPress={() => selectedTarget(item)}
+                    selected={item}
+                >
+                  <EnemyName>{item.name}</EnemyName>
+                    {item.imgURL && (
+                        <Image source={{ uri: item.imgURL }} style={styles.image} />
+                    )}
+                    <StatsRow>
+                      <StatTexts>Health: {item.characterStats.hp}</StatTexts>
+                    </StatsRow>
+                    <StatsRow>
+                      <StatTexts>Strength: {item.characterStats.strength}</StatTexts>
+                    </StatsRow>
+                    <StatsRow>
+                      <StatTexts>Agility: {item.characterStats.agility}</StatTexts>
+                    </StatsRow>
+                    <StatsRow>
+                      <StatTexts>intelligece: {item.characterStats.intelligence}</StatTexts>
+                    </StatsRow>
+                </EnemyItem>
+            )}
+            keyExtractor={(item, index) => index + 1}
+            horizontal
         />
-
-      </ContentContainer>
-    </ModalContainer>
+    </ContentContainer>
+</ModalContainer>
   );
 };
 
