@@ -17,7 +17,7 @@ const ApplyEthazium = ({setOpenEnemyList} ) => {
   }
 
   return (
-    globalState.user._id === globalState.currentTurn ? (
+    (globalState.user._id === globalState.currentTurn && globalState.currentMessage === "") ? (
       <ButtonsContainer>
         <Square onPress={openEnemyList}>
           <Image source={iconAtack} style={styles.image}  />
