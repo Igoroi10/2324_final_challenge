@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { FlatList, Image, View } from 'react-native';
+import { FlatList, Image, View, Text, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import { Context } from '../helpers/Context';
 import socket from '../../helpers/socket';
@@ -55,7 +55,7 @@ const showSpecialEnemyList = ({setOpenEnemyList, setOpenSpecialEnemyList}) => {
         })
     
         const villains = initiativeUsers.filter((userObject)=>{
-          if(userObject.isAlive && (userObject.rol === "knight" || userObject.rol === "villain" || userObject.rol === "guest") ){
+          if(userObject.isAlive && (( userObject.rol === "villain" || userObject.rol === "guest") && userObject.isConnected === true) || userObject.rol === "knight"){
             return userObject;
           }
         })
@@ -73,14 +73,14 @@ const showSpecialEnemyList = ({setOpenEnemyList, setOpenSpecialEnemyList}) => {
       }
     } 
   
-    const selectedtarget = (item) => {
+    const selectedTarget = (item) => {
       specialAttackTarget(item);
     };
     
     const specialAttackTarget = (item) => {
       if(globalState.user.rol !== "guest"){
           const dataToSend = {
-            id: user._id,
+            id: globalState.user._id,
             targId: item._id,
             stat: "intelligence"
           };
@@ -92,34 +92,52 @@ const showSpecialEnemyList = ({setOpenEnemyList, setOpenSpecialEnemyList}) => {
 
   return (
     <ModalContainer transparent={true} visible={true}>
-      <ContentContainer>
-        <IngredientList
-          data={posibleTargets}
-          renderItem={({ item, index }) => (
-            <IngredientItem
-              onPress={() => selectedtarget(item)}
-              selected={item}
-              // onLongPress={() => { openModal(item) }}
-            >
-              {item.imgURL && (
-                <Image source={{ uri: item.imgURL }} style={styles.image} />
-
-              )}
-                <IngredientName>{item.name}</IngredientName>
-
-            </IngredientItem>
-          )}
-          keyExtractor={(item, index) => index+1}
-          horizontal
+    <ContentContainer>
+      <TitleText> Choose the oponent to attack: </TitleText>
+        <EnemiesList
+            data={posibleTargets}
+            renderItem={({ item, index }) => (
+                <EnemyItem
+                    onPress={() => selectedTarget(item)}
+                    selected={item}
+                >
+                  <EnemyName>{item.name}</EnemyName>
+                    {item.imgURL && (
+                        <Image source={{ uri: item.imgURL }} style={styles.image} />
+                    )}
+                    <StatsRow>
+                      <StatTexts>Health: {item.characterStats.hp}</StatTexts>
+                    </StatsRow>
+                    <StatsRow>
+                      <StatTexts>Strength: {item.characterStats.strength}</StatTexts>
+                    </StatsRow>
+                    <StatsRow>
+                      <StatTexts>Agility: {item.characterStats.agility}</StatTexts>
+                    </StatsRow>
+                    <StatsRow>
+                      <StatTexts>intelligece: {item.characterStats.intelligence}</StatTexts>
+                    </StatsRow>
+                </EnemyItem>
+            )}
+            keyExtractor={(item, index) => index + 1}
+            horizontal
         />
-
-      </ContentContainer>
-    </ModalContainer>
+    </ContentContainer>
+</ModalContainer>
   );
 };
 
 
+const TitleText = styled.Text`
+font-family: 'Breathe Fire IV';
+font-size: 30px;
+color: black;
+letter-spacing: 4px;
+`
 
+const EnemiesList = styled(FlatList)`
+  margin-top: 20px;
+`;
 
 const ModalContainer = styled.Modal`
 `;
@@ -157,6 +175,40 @@ const styles = {
     borderRadius: 35,
   },
 };
+
+const StatsRow = styled.View`
+  display: flex;
+  flex-direction: row;
+`
+const StatTexts = styled.Text`
+  margin-top: 5px;
+  font-family: 'Breathe Fire IV';
+  letter-spacing: 4px;
+  color: white;
+  font-size: 25px;
+`
+
+const EnemyItem = styled.TouchableOpacity`
+  display: flex;
+  align-items: center;
+  background-color: rgba(23, 23, 23, 1);
+  padding: 15px;
+  border-radius: 15px;
+  margin-right: 15px;
+  margin-bottom: 25px;
+`;
+
+const EnemyName = styled.Text`
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: 'Breathe Fire IV';
+  letter-spacing: 5px;
+  font-size: 30px;
+`;
+
 
 export default showSpecialEnemyList;
 
