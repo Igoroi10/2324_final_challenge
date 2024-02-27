@@ -142,7 +142,7 @@ const MortimerProfile = () => {
 
   const calculateAcolytesPosition = (index) => {
     if (usersList) {
-      const acolytes = usersList.length;
+      const acolytes = acolyteList.length;
   
       const radiusPercentage = 37; // ajusta este valor según tus necesidades
       const screenWidth = Dimensions.get('window').width * 0.7;
@@ -225,7 +225,6 @@ const MortimerProfile = () => {
           <RightContainer>
               <RosetePicture source={require('../../../assets/Rosete.png')} />
               {acolyteList && acolyteList.map((el, index) => {
-                  
                   const position = calculateAcolytesPosition(index);
                   const styles = {
                   width: 100,
