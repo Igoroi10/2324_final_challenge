@@ -112,7 +112,7 @@ const ProfileManager = () => {
         }
       }
 
-      if(!globalState.userList[turnNumber].isAlive){
+      if(!globalState.userList[turnNumber].isAlive || globalState.userList[turnNumber].diseases.ethazium){
 
         let index;
 				for (let i = 0; i < globalState.initiative.length; i++) {
