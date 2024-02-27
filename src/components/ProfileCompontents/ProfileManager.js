@@ -28,10 +28,10 @@ const ProfileManager = () => {
 
   useEffect(() => {
     if (globalState.userList && globalState.user.rol === "acolyte") {
-      const readyUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isReady);
+      const readyUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isReady && user.isConnected);
       const connectedUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isConnected);
-      // console.log('conected', connectedUsers.length);
-      // console.log('ready', readyUsers.length);
+      // console.log('conected', connectedUsers);
+      // console.log('ready', readyUsers);
       if (readyUsers.length === connectedUsers.length && readyUsers.length !== 0) {
         setShowAllUsersReadyModal(true);
       } else {
@@ -39,6 +39,7 @@ const ProfileManager = () => {
       }
     }
   }, [globalState.userList, globalState.user.rol]);
+
 
   useEffect(() => {
     console.log("_____________________________")
