@@ -80,6 +80,12 @@ function SocketListener(props) {
 			}
 			));
 
+			globalState.userList.forEach((element) => {
+				if (element._id === data.targId) {
+					globalStateHandler({ defender: element })
+				}
+			})
+
 			globalStateHandler({ userList: data.userList });
 
 			data.userList.forEach((userFromList) => {
