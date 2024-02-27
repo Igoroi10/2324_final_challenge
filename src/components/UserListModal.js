@@ -10,59 +10,78 @@ import * as Progress from 'react-native-progress';
 
 
 
-const ShowEnemyList = ({ setOpenEnemyList, openEnemyList}) => {
+const ShowEnemyList = ({ setOpenEnemyList, openEnemyList, illnessToSend }) => {
 
   const { globalState } = useContext(Context);
   const [posibleTargets, setPosibleTargets] = useState([]);
 
   useEffect(() => {
 
-    
-if(globalState.user.rol === "mortimer"){
+
+    if (globalState.user.rol === "mortimer") {
 
       const initiativeUsers = [];
-      globalState.initiative.forEach((id)=>{
-  
-        globalState.userList.forEach((userObject)=>{
-  
-          if(userObject._id === id){
-  
+      globalState.initiative.forEach((id) => {
+
+        globalState.userList.forEach((userObject) => {
+
+          if (userObject._id === id) {
+
             initiativeUsers.push(userObject);
           }
         })
       })
 
-      const acolytes = initiativeUsers.filter((userObject)=>{
+      const acolytes = initiativeUsers.filter((userObject) => {
 
-        if(userObject.isAlive && userObject.rol === "acolyte" && (userObject.characterStats.hp < userObject.characterMaxStats.maxHp ||checkDisseases(userObject))){
+        if (userObject.isAlive && userObject.rol === "acolyte" && (userObject.characterStats.hp < userObject.characterMaxStats.maxHp || checkDisseases(userObject))) {
           return userObject;
         }
       })
-      
+
       setPosibleTargets(acolytes);
-    }else if(globalState.user.rol === "villain"){
+    } else if (globalState.user.rol === "villain") {
 
-
-
-    }else if(globalState.user.rol === "guest"){
-
-
-
-    }else if(globalState.user.rol === "acolyte"){
       const initiativeUsers = [];
-      globalState.initiative.forEach((id)=>{
-  
-        globalState.userList.forEach((userObject)=>{
-  
-          if(userObject._id === id){
-  
+      globalState.initiative.forEach((id) => {
+
+        globalState.userList.forEach((userObject) => {
+
+          if (userObject._id === id) {
+
             initiativeUsers.push(userObject);
           }
         })
       })
-  
-      const villains = initiativeUsers.filter((userObject)=>{
-        if(userObject.isAlive && (userObject.rol === "knight" || userObject.rol === "villain" || userObject.rol === "guest") ){
+
+      const acolytes = initiativeUsers.filter((userObject) => {
+
+        if (userObject.isAlive && userObject.rol === "acolyte" && (!userObject.diseases.rotting_plague || !userObject.diseases.epic_weakness || !userObject.diseases.marrow_apocalypse)) {
+          return userObject;
+        }
+      })
+
+      setPosibleTargets(acolytes);
+
+    } else if (globalState.user.rol === "guest") {
+
+
+
+    } else if (globalState.user.rol === "acolyte") {
+      const initiativeUsers = [];
+      globalState.initiative.forEach((id) => {
+
+        globalState.userList.forEach((userObject) => {
+
+          if (userObject._id === id) {
+
+            initiativeUsers.push(userObject);
+          }
+        })
+      })
+
+      const villains = initiativeUsers.filter((userObject) => {
+        if (userObject.isAlive && (userObject.rol === "knight" || userObject.rol === "villain" || userObject.rol === "guest")) {
           return userObject;
         }
       })
@@ -73,12 +92,12 @@ if(globalState.user.rol === "mortimer"){
 
   const checkDisseases = (user) => {
 
-    if(user.diseases.rotting_plague === true || user.diseases.epic_weakness === true  || user.diseases.marrow_apocalypse === true || user.diseases.ethazium === true ){
+    if (user.diseases.rotting_plague === true || user.diseases.epic_weakness === true || user.diseases.marrow_apocalypse === true || user.diseases.ethazium === true) {
       return true
     } else {
       return false;
     }
-  } 
+  }
 
   const selectedtarget = (item) => {
     attackTarget(item);
@@ -95,7 +114,7 @@ if(globalState.user.rol === "mortimer"){
 
       socket.emit('attack_try', dataToSend);
     }
-    else if(globalState.user.rol === "guest") {
+    else if (globalState.user.rol === "guest") {
       const dataToSend = {
         id: target._id,
         illness: "ethazium",
@@ -105,13 +124,23 @@ if(globalState.user.rol === "mortimer"){
       console.log("disease applyed")
       console.log(target)
       socket.emit('disease_try', dataToSend);
+      setOpenEnemyList(false);
 
     }
-    else if (globalState.user.rol === "villain"){
+    else if (globalState.user.rol === "villain") {
       console.log("villain")
-    }else if(globalState.user.rol === "mortimer"){
+      const dataToSend = {
+        id: target._id,
+        illness: illnessToSend,
+        active: true,
+        name: globalState.user.name
+      }
+      console.log("DATA TO SEND");
+      console.log(dataToSend);
+      socket.emit('disease_try', dataToSend);
+    } else if (globalState.user.rol === "mortimer") {
       console.log("mortimer")
-      
+
       const dataToSend = {
         target: target,
       }
@@ -122,7 +151,7 @@ if(globalState.user.rol === "mortimer"){
   }
 
   return (
-    <ModalContainer  transparent={true} visible={openEnemyList}>
+    <ModalContainer transparent={true} visible={openEnemyList}>
       <ContentContainer>
         <TitleText> Choose an enemy to attack: </TitleText>
 
@@ -133,25 +162,25 @@ if(globalState.user.rol === "mortimer"){
             <EnemyItem
               onPress={() => selectedtarget(item)}
               selected={item}
-              // onLongPress={() => { openModal(item) }}
+            // onLongPress={() => { openModal(item) }}
             >
               <EnemyName>{item.name}</EnemyName>
               {item.imgURL && (
                 <Image source={{ uri: item.imgURL }} style={styles.image} />
-                
+
               )}
-                <StatsRow>
-                  <StatTexts>Health: {item.characterStats.hp}</StatTexts>
-                </StatsRow>
-                <StatsRow>
-                  <StatTexts>Strength: {item.characterStats.strength}</StatTexts>
-                </StatsRow>
-                <StatsRow>
-                  <StatTexts>Agility: {item.characterStats.agility}</StatTexts>
-                </StatsRow>
-                <StatsRow>
-                  <StatTexts>intelligece: {item.characterStats.intelligence}</StatTexts>
-                </StatsRow>
+              <StatsRow>
+                <StatTexts>Health: {item.characterStats.hp}</StatTexts>
+              </StatsRow>
+              <StatsRow>
+                <StatTexts>Strength: {item.characterStats.strength}</StatTexts>
+              </StatsRow>
+              <StatsRow>
+                <StatTexts>Agility: {item.characterStats.agility}</StatTexts>
+              </StatsRow>
+              <StatsRow>
+                <StatTexts>intelligece: {item.characterStats.intelligence}</StatTexts>
+              </StatsRow>
 
             </EnemyItem>
           )}
@@ -159,10 +188,7 @@ if(globalState.user.rol === "mortimer"){
           horizontal
         />
 
-      <CloseButton onPress={() => setOpenEnemyList(false)}> 
-        <Text> X </Text>
-        </CloseButton>
-
+  
       </ContentContainer>
     </ModalContainer>
   );

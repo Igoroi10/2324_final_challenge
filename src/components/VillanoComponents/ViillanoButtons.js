@@ -7,7 +7,7 @@ import { Image, StyleSheet, TurboModuleRegistry } from 'react-native';
 import iconMarrow from '../../../assets/agilityIcon.png';
 import iconEpic from '../../../assets/strenghtIcon.png'
 import iconRotting from '../../../assets/intelligenceIcon.png';
-import VillanoUserListModal from './VillanoUserListModal';
+import UserListModal from '../UserListModal';
 
 const VillanoButtons = ({} ) => {
 
@@ -20,6 +20,9 @@ const VillanoButtons = ({} ) => {
     setOpenEnemyList(true); 
     setIllnessToSend(illness); 
   };
+
+
+ 
 
   return (
     (globalState.user._id === globalState.currentTurn && globalState.currentMessage === "") ? (
@@ -35,8 +38,9 @@ const VillanoButtons = ({} ) => {
         <Square onPress={() => handleButtonPress('marrow_apocalypse')}>
           <IconImage source={iconMarrow} style={{ width: 100, height: 100 }} />
           <IconText>MARROW APOCALYPSE</IconText>
-        </Square>
-        {openEnemyList && <VillanoUserListModal setOpenEnemyList={setOpenEnemyList} illnessToSend={illnessToSend} />}
+        </Square> 
+
+        {openEnemyList && illnessToSend != "" && <UserListModal setOpenEnemyList={setOpenEnemyList} illnessToSend={illnessToSend} />}
       </ButtonsContainer>
     ) : (
       <NotTurnContainer>
