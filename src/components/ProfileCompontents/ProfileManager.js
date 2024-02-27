@@ -131,7 +131,12 @@ const ProfileManager = () => {
       ) : (
         <>
           {!globalState.user.isReady && (
-          
+            <>
+              <Profile />
+              <ReadyButton />
+            </>
+          )}
+          {globalState.battleStart && (
             <>
               <Profile />
               <FightButtons setOpenEnemyList={setOpenEnemyList} setOpenSpecialEnemyList={setOpenSpecialEnemyList} />
