@@ -191,6 +191,8 @@ function SocketListener(props) {
 			switch_turn: handleChangeTurn,
 			attack: handleAttack,
 			attack_try: handleTry,
+			specialAttack_Try: handleTry,
+			specialAttack_response: handleAttack,
 			disease_try: handleTry,
 			disease: handleDisease,
 
