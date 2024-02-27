@@ -174,7 +174,7 @@ const BattleField = ({ }) => {
       </EnemiesContainer>
       <EnemiesContainer>
         {villains.map( villain => 
-          <EnemyContainer key={villain._id}>
+          <EnemyContainer key={villain._id} isAlive={villain.isAlive}>
 
             <EnemyImageContainer>
               <EnemyImage source={{ uri: villain.imgURL }} />
