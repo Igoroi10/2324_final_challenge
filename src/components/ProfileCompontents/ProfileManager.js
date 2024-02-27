@@ -28,17 +28,24 @@ const ProfileManager = () => {
 
   useEffect(() => {
     if (globalState.userList && globalState.user.rol === "acolyte") {
-      const readyUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isReady);
+      const readyUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isReady && user.isConnected);
       const connectedUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isConnected);
-      // console.log('conected', connectedUsers.length);
-      // console.log('ready', readyUsers.length);
+      console.log(globalState.user)
+      console.log('conected', connectedUsers);
+      console.log('ready', readyUsers);
       if (readyUsers.length === connectedUsers.length && readyUsers.length !== 0) {
         setShowAllUsersReadyModal(true);
+        console.log("entra en el if")
       } else {
         setShowAllUsersReadyModal(false);
       }
     }
   }, [globalState.userList, globalState.user.rol]);
+
+  useEffect(() => {
+    console.log("showAllUsersReadyModal")
+    console.log(showAllUsersReadyModal)
+  }, [showAllUsersReadyModal])
 
   useEffect(() => {
     console.log("_____________________________")
