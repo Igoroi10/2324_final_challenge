@@ -65,6 +65,26 @@ const ShowEnemyList = ({ setOpenEnemyList, openEnemyList, illnessToSend }) => {
 
     } else if (globalState.user.rol === "guest") {
 
+      const initiativeUsers = [];
+      globalState.initiative.forEach((id)=>{
+  
+        globalState.userList.forEach((userObject)=>{
+  
+          if(userObject._id === id) {
+  
+            initiativeUsers.push(userObject);
+          }
+        })
+      })
+
+      const acolytes = initiativeUsers.filter((userObject)=>{
+
+        if(userObject.isAlive && userObject.rol === "acolyte" && !userObject.diseases.ethazium){
+          return userObject;
+        }
+      })
+      
+      setPosibleTargets(acolytes);
 
 
     } else if (globalState.user.rol === "acolyte") {
@@ -79,7 +99,7 @@ const ShowEnemyList = ({ setOpenEnemyList, openEnemyList, illnessToSend }) => {
           }
         })
       })
-
+            
       const villains = initiativeUsers.filter((userObject) => {
         if (userObject.isAlive && (userObject.rol === "knight" || userObject.rol === "villain" || userObject.rol === "guest")) {
           return userObject;
@@ -102,11 +122,6 @@ const ShowEnemyList = ({ setOpenEnemyList, openEnemyList, illnessToSend }) => {
   const selectedtarget = (item) => {
     attackTarget(item);
   };
-
-  // useEffect(() => {
-  //   console.log("posibleTargets")
-  //   console.log(posibleTargets)
-  // }, [posibleTargets])
 
 
   const attackTarget = (target) => {
