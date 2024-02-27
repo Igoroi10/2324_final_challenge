@@ -51,22 +51,22 @@ const VillanoButtons = ({} ) => {
 
 const ButtonsContainer = styled.View`
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   height: 20%;
   width: 85%;
   position: absolute;
-  top: 80%;
+  bottom: 5%;
 `
 const Square = styled.TouchableOpacity`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  width: 30%;
-  height: 60%;
+  width: 40%;
+  height: 50%;
 `;
 
 const Text = styled.Text`
-  font-size: 40px;
+  font-size: 30px;
   color: white;
   font-family: 'Breathe Fire IV';
   letter-spacing: 4px;
@@ -80,7 +80,7 @@ const IconText = styled.Text`
   text-align: center;
 `
 const IconImage = styled.Image`
-  border:  1px solid white;
+  border: 1px solid white;
   border-radius: 500px;
   width: 100%;
   height: 100%;

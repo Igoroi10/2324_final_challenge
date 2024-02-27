@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { FlatList, Image, View } from 'react-native';
+import { FlatList, Image, View, Text } from 'react-native';
 import styled from 'styled-components/native';
 import { Context } from '../../helpers/Context';
 import socket from '../../../helpers/socket';
@@ -59,6 +59,7 @@ const showVillanoEnemyList = ({ setOpenEnemyList, illnessToSend }) => {
   return (
       <ModalContainer transparent={true} visible={true}>
           <ContentContainer>
+            <TitleText> Choose the acolyte to attack: </TitleText>
               <EnemiesList
                   data={posibleTargets}
                   renderItem={({ item, index }) => (
@@ -107,25 +108,26 @@ const ContentContainer = styled.View`
 
 const TitleText = styled.Text`
 font-family: 'Breathe Fire IV';
-font-size: 30px;
+font-size: 20px;
 color: black;
 letter-spacing: 4px;
 `
 
 const EnemiesList = styled(FlatList)`
   margin-top: 20px;
-`;
+`
 
 const StatsRow = styled.View`
   display: flex;
   flex-direction: row;
 `
+
 const StatTexts = styled.Text`
   margin-top: 5px;
   font-family: 'Breathe Fire IV';
   letter-spacing: 4px;
   color: white;
-  font-size: 25px;
+  font-size: 20px;
 `
 
 const EnemyItem = styled.TouchableOpacity`
@@ -151,8 +153,8 @@ const EnemyName = styled.Text`
 
 const styles = {
   image: {
-    width: 300,
-    height: '60%',
+    width: 280,
+    height: '45%',
     borderRadius: 30,
     objectFit: 'cover',
     marginBottom: 15
