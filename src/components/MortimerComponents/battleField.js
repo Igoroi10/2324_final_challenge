@@ -5,7 +5,6 @@ import { Image, StyleSheet, Text, View} from 'react-native';
 import * as Progress from 'react-native-progress';
 
 
-
 const BattleField = ({ }) => {
 
   const { globalState, globalStateHandler } = useContext(Context);
@@ -116,21 +115,28 @@ const BattleField = ({ }) => {
       <Interface>
         <TurnContainer>
           <Text style={{color: 'white'}}>TURNO DE: </Text>
-          <TurnImageContainer>
-            <TurnImage source={{uri: currentTurnPlayer.imgURL }} alt='currentTurn'/>
-          </TurnImageContainer>
+          {currentTurnPlayer.isAlive ? 
+            <TurnImageContainer>
+              <TurnImage source={{uri: currentTurnPlayer.imgURL }} alt='currentTurn'/>
+            </TurnImageContainer>
+          :
+            null
+          }
+         
         </TurnContainer>
         <MessagesContainer>
           {globalState.currentMessage !== "" &&
             <>
+            <BattleActionPicture source={require('../../../assets/BattleAction.png')} /> 
+            <BlackFilter></BlackFilter>
             <InterfaceMessage>
-              <TurnImage source={{ uri: globalState.attacker.imgURL }} alt='attackerImg'/>
-              <TurnImage source={{ uri: globalState.icon.imgURL }} alt='pruebar'/>
-              <TurnImage source={{uri: globalState.defender.imgURL }} alt='defenderImg'/>
+              <TurnMessageImage source={{ uri: globalState.attacker.imgURL }} alt='attackerImg'/>
+              <TurnMessageImage source={{ uri: globalState.icon.imgURL }} alt='pruebar'/>
+              <TurnMessageImage source={{uri: globalState.defender.imgURL }} alt='defenderImg'/>
             </InterfaceMessage>
             <InterfaceMessage>
               
-              <Text style={{color: 'white'}}t> {globalState.currentMessage} </Text>
+              <MessageText > {globalState.currentMessage} </MessageText>
             </InterfaceMessage>
             </>
           }
@@ -223,9 +229,9 @@ const InterfaceMessage = styled.View`
   flex-direction: row;
   width: 100%;
   height: 50%;
-  background-color: blue;
   align-items:center;
-  justify-content: center;
+  justify-content: space-around;
+  padding-top: 3%;
 `
 
 const TurnImageContainer = styled.View`
@@ -238,6 +244,12 @@ const TurnImage = styled.Image`
   height: 50px;
   width: 50px;
   border-radius: 50px;
+`
+
+const TurnMessageImage = styled.Image`
+  height: 100%;
+  width: 30%;
+  object-fit: contain;
 `
 
 // ============================================
@@ -256,6 +268,7 @@ const EnemyContainer = styled.View`
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 20%;
 `
 
 const EnemyImageContainer = styled.View`
@@ -315,9 +328,29 @@ const MessagesContainer = styled.View`
   justify-content: center;
   width: 100%;
   height: 100%;
-  background-color: rgba(100,100,100, 0.4);
   z-index: 4;
   position: absolute;
+`
+
+const BattleActionPicture = styled.Image`
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+`
+const BlackFilter = styled.View`
+  background-color: rgba(0,0,0,0.6);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: -1;
+`
+
+const MessageText = styled.Text`
+  font-family: 'Breathe Fire IV';
+  color: white;
+  letter-spacing: 3px;
+  font-size: 25px;
 `
 
 export default BattleField

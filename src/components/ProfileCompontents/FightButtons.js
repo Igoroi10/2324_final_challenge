@@ -21,7 +21,7 @@ const FightButtons = ({setOpenEnemyList, setOpenSpecialEnemyList} ) => {
   };
 
   return (
-   
+    globalState.user._id === globalState.currentTurn ? (
       <ButtonsContainer>
         {/* este boton */}
         <Square onPress={openEnemyList}>
@@ -32,7 +32,13 @@ const FightButtons = ({setOpenEnemyList, setOpenSpecialEnemyList} ) => {
         </Square>
 
       </ButtonsContainer>
+    ):(
+     <NotTurnContainer>
+      <NotTurnImage  source={require("../../../assets/NotTurn.png")} />
+       <Text> Wait, it is not your time to attack </Text>
+     </NotTurnContainer>
     )
+  )
 }
 
 const styles = StyleSheet.create({
@@ -40,7 +46,7 @@ const styles = StyleSheet.create({
     width: '110%',
     height: '100%',
     resizeMode: 'cover',
-    borderRadius: 100
+    borderRadius: 10
   },
 });
 
@@ -49,6 +55,9 @@ const ButtonsContainer = styled.View`
   justify-content: space-between;
   height: 12%;
   width: 80%;
+  position: absolute;
+  bottom: 10%; 
+
 `
 
 const Square = styled.TouchableOpacity`
@@ -67,11 +76,32 @@ const Square = styled.TouchableOpacity`
   height: 100px;
 `;
 
+
+const NotTurnContainer = styled.View`
+  width: 100%;
+  height: 38%;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1%;
+`
+
 const Text = styled.Text`
   font-size: 40px;
   color: white;
+  font-family: 'Breathe Fire IV';
+  letter-spacing: 4px;
 `
 
+const NotTurnImage = styled.Image`
+  object-fit: cover;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0.4
+`
 
 
 export default FightButtons

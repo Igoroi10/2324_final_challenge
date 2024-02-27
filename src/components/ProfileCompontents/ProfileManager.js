@@ -77,31 +77,63 @@ const ProfileManager = () => {
       console.log("TURNO DE ")
       console.log(globalState.userList[turnNumber].name);
 
-      if (globalState.userList[turnNumber].rol === "knight") {
+      if(!globalState.userList[turnNumber].isAlive){
+
+        let index;
+				for (let i = 0; i < globalState.initiative.length; i++) {
+
+					if (globalState.initiative[i] === globalState.currentTurn) {
+
+						index = i;
+					}
+				}
+
+				const initiativeUsers = [];
+
+				globalState.initiative.forEach((id) => {
+					globalState.userList.forEach((user) => {
+
+						if (id === user._id) {
+							initiativeUsers.push(user);
+						}
+					})
+				})
+
+
+				const dataToSend = {
+					index: index,
+					length: globalState.initiative.length,
+					initiativeUsers: initiativeUsers
+				}
+				socket.emit("change_turn", dataToSend);
+      }
+
+      if (globalState.userList[turnNumber].rol === "knight" && globalState.userList[turnNumber].isAlive) {
         let acolyteArray = [];
         for (let i = 0; i < globalState.userList.length; i++) {
 
           for (let j = 0; j < globalState.initiative.length; j++) {
 
-            if (globalState.initiative[j] === globalState.userList[i]._id && globalState.userList[i].rol === "acolyte") {
+            if (globalState.initiative[j] === globalState.userList[i]._id && globalState.userList[i].rol === "acolyte" && globalState.userList[i].isAlive) {
               acolyteArray.push(globalState.userList[i]);
             }
           }
         }
 
-        setTimeout(() => {
-          const randomAcolyte = Math.floor(Math.random() * acolyteArray.length);
-          const dataToSend = {
-            id: globalState.userList[turnNumber]._id,
-            targId: acolyteArray[randomAcolyte]._id,
-            stat: "strength"
-          }
-          socket.emit('attack_try', dataToSend);
-        }, 4000);
+        if(acolyteArray.length !== 0){
+
+          setTimeout(() => {
+            const randomAcolyte = Math.floor(Math.random() * acolyteArray.length);
+            const dataToSend = {
+              id: globalState.userList[turnNumber]._id,
+              targId: acolyteArray[randomAcolyte]._id,
+              stat: "strength"
+            }
+            socket.emit('attack_try', dataToSend);
+          }, 4000);
+        }
       }
-
     }
-
   }, [globalState.currentMessage, globalState.currentTurn])
 
   useEffect(() => {
@@ -117,9 +149,6 @@ const ProfileManager = () => {
 
   return (
     <MainContainer>
-      {globalState.user.rol === "mortimer" && (
-        <MortimerProfile />
-      )}
       {globalState.user.rol === "villain" ? (
         <>
           <ProfileVillano />
@@ -130,12 +159,17 @@ const ProfileManager = () => {
         </>
       ) : (
         <>
-          {!globalState.user.isReady && (
+
+          {globalState.user.rol === "mortimer" && ( <MortimerProfile /> )}
+        
+          {globalState.user.rol !== "mortimer" && (
             <>
-              <Profile />
-              <ReadyButton />
+              {!globalState.user.isReady && (
+            <>
+            <Profile />
+            <ReadyButton />
             </>
-          )}
+            )}
           {globalState.battleStart && (
             <>
               <Profile />
@@ -150,6 +184,8 @@ const ProfileManager = () => {
           )}
           {globalState.user.isReady && !globalState.battleStart && (
             <ReadyModal />
+            )}
+            </>
           )}
         </>
       )}
@@ -161,12 +197,10 @@ const ProfileManager = () => {
       }  
 
 const MainContainer = styled.View`
-  width: 100%;
-  height: 100%; 
-  flex-direction: column;
+  flex: 1;
+  display: flex;
   align-items: center;
   justify-content: center;
-  border: rgba(255, 255, 255, 0.6);
-  background-color: black;
+  background-color: #171717;
 `
 export default ProfileManager;

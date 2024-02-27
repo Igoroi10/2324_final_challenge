@@ -27,23 +27,24 @@ const ReadyButton = ({ }) => {
   )
 }
 
-
-
 const Readybtn = styled.TouchableOpacity`
   background-color: rgba(0, 0, 232, 0.6);
   align-items: center;
   justify-content: center;
   height: 7%;
+  margin-bottom: 6%;
   width: 80%;
   border: rgba(255, 255, 255, 0.6);
   border-radius: 60px;
-  margin-top: 10%;
 `
 
 const ButtonText = styled.Text`
   color: rgba(255, 255, 255, 1);
   font-size: 20px;
   text-align: center;
+  font-family: 'Breathe Fire IV';
+  font-size: 25px;
+  letter-spacing: 4px;
 `
 
 export default ReadyButton
