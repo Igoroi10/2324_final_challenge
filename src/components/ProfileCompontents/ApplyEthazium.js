@@ -4,9 +4,7 @@ import { Context } from '../../helpers/Context';
 import { Image, StyleSheet } from 'react-native';
 
 // Assets
-import iconAtack from '../../../assets/Icon_attack_v1.png'
-import iconShield from '../../../assets/Icon_shield_v1.png'
-import socket from '../../../helpers/socket';
+import iconEthazium from '../../../assets/magicIcon.png';
 
 const ApplyEthazium = ({setOpenEnemyList} ) => {
 
@@ -17,21 +15,13 @@ const ApplyEthazium = ({setOpenEnemyList} ) => {
   }
 
   return (
-    (globalState.user._id === globalState.currentTurn && globalState.currentMessage === "") ? (
+    
       <ButtonsContainer>
         <Square onPress={openEnemyList}>
-          <Image source={iconAtack} style={styles.image}  />
+          <Image source={iconEthazium} style={styles.image}  />
         </Square>
-      
-
       </ButtonsContainer>
-    ):(
-     <>
-        <Text> No es tu turno </Text>
-      </>
-
-
-  ))
+    )
 }
 
 const styles = StyleSheet.create({
@@ -48,6 +38,8 @@ const ButtonsContainer = styled.View`
   justify-content: space-between;
   height: 12%;
   width: 80%;
+  bottom: 20%;
+  left:15%;
 `
 
 const Square = styled.TouchableOpacity`
@@ -71,6 +63,4 @@ const Text = styled.Text`
   color: white;
 `
 
-
-
-export default ApplyEthazium
+export default ApplyEthazium;
