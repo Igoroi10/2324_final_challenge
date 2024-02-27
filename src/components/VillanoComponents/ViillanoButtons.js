@@ -39,26 +39,23 @@ const VillanoButtons = ({} ) => {
         {openEnemyList && <VillanoUserListModal setOpenEnemyList={setOpenEnemyList} illnessToSend={illnessToSend} />}
       </ButtonsContainer>
     ) : (
-      <Text>NO ES TU TURNO</Text>
+      <NotTurnContainer>
+      <NotTurnImage  source={require("../../../assets/NotTurn.png")} />
+       <Text> Wait, it is not your time to attack </Text>
+     </NotTurnContainer>
     )
   );
 };
 
-const styles = StyleSheet.create({
-  image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-    borderRadius: 10
-  },
-});
+
 
 const ButtonsContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   height: 20%;
   width: 85%;
-  top: 15%;
+  position: absolute;
+  bottom: 10%;
 `
 const Square = styled.TouchableOpacity`
   display: flex;

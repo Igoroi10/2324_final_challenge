@@ -31,6 +31,9 @@ const Text = styled.Text`
  top: 20%;
  width: 50%;
  left: 25%;
+ font-family: 'Breathe Fire IV';
+ font-size: 40px;
+ letter-spacing: 4px;
 `
 const MainContainer = styled.View`
   width: 110%;

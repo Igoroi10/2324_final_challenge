@@ -32,7 +32,7 @@ const Readybtn = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   height: 7%;
-  margin-bottom: 3%;
+  margin-bottom: 6%;
   width: 80%;
   border: rgba(255, 255, 255, 0.6);
   border-radius: 60px;
@@ -42,6 +42,9 @@ const ButtonText = styled.Text`
   color: rgba(255, 255, 255, 1);
   font-size: 20px;
   text-align: center;
+  font-family: 'Breathe Fire IV';
+  font-size: 25px;
+  letter-spacing: 4px;
 `
 
 export default ReadyButton
