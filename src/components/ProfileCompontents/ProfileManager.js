@@ -183,7 +183,7 @@ const ProfileManager = () => {
               )}
             </>
           )}
-          {globalState.user.isReady && !globalState.battleStart && (
+          {globalState.user.isReady && !globalState.battleStart && globalState.user.rol !== "villain" && globalState.user.rol !== "guest" (
             <ReadyModal />
             )}
             </>
