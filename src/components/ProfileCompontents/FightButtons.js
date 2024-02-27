@@ -21,7 +21,7 @@ const FightButtons = ({setOpenEnemyList, setOpenSpecialEnemyList} ) => {
   };
 
   return (
-    globalState.user._id === globalState.currentTurn ? (
+    (globalState.user._id === globalState.currentTurn  && globalState.currentMessage === "") ? (
       <ButtonsContainer>
         {/* este boton */}
         <Square onPress={openEnemyList}>
