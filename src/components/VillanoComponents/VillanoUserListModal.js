@@ -12,33 +12,31 @@ const showVillanoEnemyList = ({ setOpenEnemyList, illnessToSend }) => {
     const user = globalState.user;
     let isGood;
 
-    if(user.rol === "villain" || user.rol === "mortimer" || user.rol === "acolyte")
-        isGood = true
-    else    
-        isGood = false 
+    if (user.rol === "acolyte")
+        isGood = true;
+    else
+        isGood = false;
 
-    useEffect(() => { 
-        
-      const posibleTargetsList = globalState.userList.filter((el) => {
-        
-        if(isGood){
-          if(el.rol !== "villain" )
-            return el;
-        }
-        else{
-          if(el.rol !== "villain")
-            return el;
-        }
-      })    
-      setPosibleTargets(posibleTargetsList)
-    }, [globalState.userList]);
+    useEffect(() => {
+
+        const posibleTargetsList = globalState.userList.filter((el) => {
+
+            if (isGood) {
+                return el.rol === "acolyte" ;
+            } else {
+                return el.rol === "acolyte" ;
+            }
+        })
+        setPosibleTargets(posibleTargetsList);
+    }, [globalState.userList, isGood]);
+
    
     // Función para manejar la enfermedad correspondiente según el contexto
     const handleDisease = (item) => {
       console.log
         
         const data = {
-            illness: illnessToSend, // Se usa la enfermedad proporcionada
+            illness: illnessToSend, 
             id: item._id,
             active: true,
             name: globalState.user.name
@@ -52,7 +50,7 @@ const showVillanoEnemyList = ({ setOpenEnemyList, illnessToSend }) => {
     const selectedTarget = (item) => {
       setTarget(item);
       console.log("selected user", item.name);
-      handleDisease(item); // Llama a la función de enfermedad correspondiente pasando el objetivo seleccionado
+      handleDisease(item);
       setOpenEnemyList(false);
   };
 

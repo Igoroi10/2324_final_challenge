@@ -45,7 +45,14 @@ function SocketListener(props) {
 				battleStart: data.battleStart,
 				initiative: data.initiative,
 				currentTurn: data.initiative[0],
+				userList: data.usersToUpdate
 			});
+
+			data.usersToUpdate.forEach((user)=>{
+				if(user._id === globalState.user._id){
+					globalStateHandler({user:user});
+				}
+			})
 		}
 
 		const handleChangeTurn = (data) => {
@@ -76,9 +83,15 @@ function SocketListener(props) {
 
 		const handleAttack = (data) => {
 			globalState.userList.forEach(el => el._id === data.id && globalStateHandler({
-				icon: { imgURL: calculateIcon(el) }, attacker: el, currentMessage: data.message
+				icon: { imgURL: calculateIcon(el, data.stat) }, attacker: el, currentMessage: data.message
 			}
 			));
+
+			globalState.userList.forEach((element) => {
+				if (element._id === data.targId) {
+					globalStateHandler({ defender: element })
+				}
+			})
 
 			globalStateHandler({ userList: data.userList });
 
@@ -100,24 +113,11 @@ function SocketListener(props) {
 					}
 				}
 
-				const initiativeUsers = [];
-
-				globalState.initiative.forEach((id) => {
-					globalState.userList.forEach((user) => {
-
-						if (id === user._id) {
-							initiativeUsers.push(user);
-						}
-					})
-				})
-
-
 				const dataToSend = {
 					index: index,
 					length: globalState.initiative.length,
-					initiativeUsers: initiativeUsers
+					initiative: globalState.initiative
 				}
-
 				socket.emit("change_turn", dataToSend);
 				globalStateHandler({ turnCounter: globalState.turnCounter + 1 })
 			}
@@ -191,6 +191,8 @@ function SocketListener(props) {
 			switch_turn: handleChangeTurn,
 			attack: handleAttack,
 			attack_try: handleTry,
+			specialAttack_Try: handleTry,
+			specialAttack_response: handleAttack,
 			disease_try: handleTry,
 			disease: handleDisease,
 

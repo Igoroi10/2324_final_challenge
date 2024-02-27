@@ -104,6 +104,8 @@ const MortimerProfile = () => {
   const [isStartFight, setIsStartFight] = useState(false);
   const [isBattleField, setIsBattleField] = useState(false);
 
+  const [acolyteList, setAcolyteList] = useState([]);
+
 
   // const [isTESTBattleField, setIsTESTBattleField] = useState(false);
   const [isTESTStartFight, setIsTESTStartFight] = useState(true);
@@ -112,6 +114,10 @@ const MortimerProfile = () => {
     const connectedUsers = globalState.userList.filter(user => (user.rol === "acolyte" || user.rol === "guest" || user.rol === "villain") && user.isConnected);
 
     setUsersList(connectedUsers);
+
+    //filtramos la lista para guardar solo los acolitos que se mostrarán en la roseta
+    const onlyAcolyteList = connectedUsers.filter(user => user.rol === "acolyte")
+    setAcolyteList(onlyAcolyteList);
 
     checkLife();
     checkAllUsersHP();
@@ -131,6 +137,9 @@ const MortimerProfile = () => {
         }else{
             setIsStartFight(false)
         }
+
+
+
     }
   }, [usersList]);
 
@@ -192,6 +201,10 @@ const MortimerProfile = () => {
     socket.emit("start_battle", dataToSend);
   }
 
+
+
+
+
   const checkAllUsersHP = () => {
     const userList = globalState.userList;
     const acolyteUsers = userList.filter(user => user.rol === 'acolyte');
@@ -224,7 +237,7 @@ const MortimerProfile = () => {
               >
 
               <RowContainer>
-                <ProfilePicture source={{ uri: globalState.user.imgURL }} />
+                <ProfilePicture source={require('../../../assets/mortimer.jpg' )} style={styles.image} />
                 <ProfileVariblesTitle> MORTIMER </ProfileVariblesTitle>
               </RowContainer>
 
@@ -239,7 +252,8 @@ const MortimerProfile = () => {
           </LeftContainer>
           <RightContainer>
               <RosetePicture source={require('../../../assets/Rosete.png')} />
-              {usersList && usersList.map((el, index) => {
+              {acolyteList && acolyteList.map((el, index) => {
+                  
                   const position = calculateAcolytesPosition(index);
                   const styles = {
                   width: 100,

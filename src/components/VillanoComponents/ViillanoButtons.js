@@ -22,7 +22,7 @@ const VillanoButtons = ({} ) => {
   };
 
   return (
-    globalState.user._id ? (
+    globalState.user._id === globalState.currentTurn ? (
       <ButtonsContainer>
         <Square onPress={() => handleButtonPress('epic_weakness')}>
           <IconImage source={iconEpic} style={{ width: 100, height: 100 }} />
@@ -72,11 +72,11 @@ const Text = styled.Text`
   letter-spacing: 4px;
 `
 const IconText = styled.Text`
-  font-size: 15px;
+  font-size: 12px;
   color: white;
   font-family: 'Breathe Fire IV';
   letter-spacing: 2px;
-  margin-top: 5%;
+  margin-top: 25%;
   text-align: center;
 `
 const IconImage = styled.Image`

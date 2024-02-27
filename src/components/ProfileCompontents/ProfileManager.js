@@ -15,11 +15,13 @@ import ProfileVillano from './ProfileVillano';
 import VillanoButtons from '../VillanoComponents/ViillanoButtons';
 import ApplyEthazium from './ApplyEthazium'
 import socket from '../../../helpers/socket';
+import SpecialAttackListModal from '../SpecialAttackListModal'
 
 const ProfileManager = () => {
   const { globalState, globalStateHandler } = useContext(Context);
   const [openEnemyList, setOpenEnemyList] = useState(false);
   const [showAllUsersReadyModal, setShowAllUsersReadyModal] = useState(false);
+  const [openSpecialEnemyList, setOpenSpecialEnemyList] = useState(false);
 
   useEffect(() => {
     // console.log("ENEMY LIST:") 
@@ -28,10 +30,10 @@ const ProfileManager = () => {
 
   useEffect(() => {
     if (globalState.userList && globalState.user.rol === "acolyte") {
-      const readyUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isReady);
+      const readyUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isReady && user.isConnected);
       const connectedUsers = globalState.userList.filter(user => user.rol === "acolyte" && user.isConnected);
-      // console.log('conected', connectedUsers.length);
-      // console.log('ready', readyUsers.length);
+      // console.log('conected', connectedUsers);
+      // console.log('ready', readyUsers);
       if (readyUsers.length === connectedUsers.length && readyUsers.length !== 0) {
         setShowAllUsersReadyModal(true);
       } else {
@@ -39,6 +41,7 @@ const ProfileManager = () => {
       }
     }
   }, [globalState.userList, globalState.user.rol]);
+
 
   useEffect(() => {
     console.log("_____________________________")
@@ -145,7 +148,6 @@ const ProfileManager = () => {
     
   }, [globalState.currentMessage])
 
-
   return (
     <MainContainer>
       {globalState.user.rol === "villain" ? (
@@ -171,14 +173,17 @@ const ProfileManager = () => {
             )}
           {globalState.battleStart && (
             <>
-            <Profile />
-            <FightButtons setOpenEnemyList={setOpenEnemyList} />
-            {(openEnemyList && globalState.userList.length > 0) && (
+              <Profile />
+              <FightButtons setOpenEnemyList={setOpenEnemyList} setOpenSpecialEnemyList={setOpenSpecialEnemyList} />
+              {openEnemyList && (
               <UserListModal setOpenEnemyList={setOpenEnemyList} />
               )}
-              </>
+              {openSpecialEnemyList && (
+              <SpecialAttackListModal setOpenSpecialEnemyList={setOpenSpecialEnemyList} />
               )}
-          {globalState.user.isReady && !globalState.battleStart && (
+            </>
+          )}
+          {(globalState.user.isReady && !globalState.battleStart && globalState.user.rol === "acolyteInterface") && (
             <ReadyModal />
             )}
             </>

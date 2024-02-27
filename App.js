@@ -64,7 +64,7 @@ const App = () => {
     const socketConnection = (user)=>{
       
 
-      socket.emit("store_socket_id", user.email);
+      socket.emit("store_socket_id", user);
       
       socket.onAny((eventName, ...data) => {
         setSocketEvent({event: eventName, value: data[0]})
@@ -98,8 +98,8 @@ const App = () => {
       <MainContainer>
 
         {!isLogged && <Login setIsLogged={setIsLogged} />}
-        {(isLogged && globalState.user.name !== "" )&& <ProfileManager/>}
-        {/* {(globalState.battleEnd === "villainsWin" || globalState.battleEnd === "acolyteWin" ) && <FinalResults/>} */}
+        {(isLogged && globalState.user.name !== "" && globalState.battleEnd === "")&& <ProfileManager/>}
+        {(globalState.battleEnd === "villainsWin" || globalState.battleEnd === "acolyteWin" ) && <FinalResults/>}
       </MainContainer>
     </Context.Provider>
   );

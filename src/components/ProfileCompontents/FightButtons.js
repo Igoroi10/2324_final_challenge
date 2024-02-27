@@ -5,44 +5,20 @@ import { Image, StyleSheet } from 'react-native';
 
 // Assets
 import iconAtack from '../../../assets/Icon_attack_v1.png'
-import iconShield from '../../../assets/Icon_shield_v1.png'
+import iconFire from '../../../assets/fireIcon.png'
 import socket from '../../../helpers/socket';
 
-const FightButtons = ({setOpenEnemyList} ) => {
+const FightButtons = ({setOpenEnemyList, setOpenSpecialEnemyList} ) => {
 
   const { globalState, globalStateHandler } = useContext(Context);
 
-  const attackTest = () =>{
-    const user = globalState.user;
-    let isGood;
-  
-    if(user.rol === "acolyte" || user.rol === "mortimer")
-        isGood = true
-    else    
-        isGood = false
-  
-    const posibleTargets = globalState.userList.map((el) => {
-
-        if(isGood){
-          if(el.rol !== "acolyte" && el.rol !== "mortimer")
-            return el;
-        }
-        else{
-          if(el.rol === "acolyte" || el.rol === "mortimer")
-            return el;
-        }
-    })
-    const dataToSend = {
-      id: user._id,
-      targId: globalState.userList[1]._id,
-      stat: "strength",
-    }
-    socket.emit('attack_try', dataToSend);
-  }
-
   const openEnemyList = () =>{
-   setOpenEnemyList(true);
+    setOpenEnemyList(true);
   }
+
+  const openSpecialEnemyList = () => {
+    setOpenSpecialEnemyList(true);
+  };
 
   return (
     globalState.user._id === globalState.currentTurn ? (
@@ -51,8 +27,8 @@ const FightButtons = ({setOpenEnemyList} ) => {
         <Square onPress={openEnemyList}>
           <Image source={iconAtack} style={styles.image}  />
         </Square>
-        <Square onPress={attackTest}>
-          <Image source={iconShield} style={styles.image} />
+        <Square onPress={openSpecialEnemyList}>
+          <Image source={iconFire} style={styles.image} />
         </Square>
 
       </ButtonsContainer>
@@ -67,10 +43,10 @@ const FightButtons = ({setOpenEnemyList} ) => {
 
 const styles = StyleSheet.create({
   image: {
-    width: '100%',
+    width: '110%',
     height: '100%',
     resizeMode: 'cover',
-    borderRadius: 50
+    borderRadius: 10
   },
 });
 
