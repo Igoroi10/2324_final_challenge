@@ -7,7 +7,7 @@ const DeadModal = () => {
    
     const { globalState, globalStateHandler } = useContext(Context);
 
-      
+      if(globalState.user.isALive === false){
         return (
           <MainContainer >
             <ImageBackground source={require("../../assets/cruz.jpg")} style={styles.imageBackground}>
@@ -15,8 +15,9 @@ const DeadModal = () => {
             </ImageBackground>
           </MainContainer>
         );
-      
+        }
     }
+    
 const styles = StyleSheet.create({
   imageBackground: {
     width: '100%',
