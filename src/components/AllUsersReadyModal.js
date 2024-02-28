@@ -8,7 +8,7 @@ const AllUsersReadyModal = () => {
 
   return (
     <MainContainer>
-      <ImageBackground source={require("../../assets/wallpaper_login.jpeg")} style={styles.imageBackground}>
+      <ImageBackground source={require("../../assets/Splash.png")} style={styles.imageBackground}>
       
             <Text >ALL USERS ARE READY FOR BATTLE</Text>
         
@@ -25,15 +25,18 @@ const styles = StyleSheet.create({
 });
 
 const Text = styled.Text`
- color: white;
- font-size: 30px;
+ color: black;
  text-align: center;
- top: 20%;
- width: 50%;
- left: 25%;
+ top: 10%;
+ width: 60%;
+ left: 20%;
  font-family: 'Breathe Fire IV';
- font-size: 40px;
+ font-size: 37px;
+ fontWeight: bold;
  letter-spacing: 4px;
+ text-shadow-color: white;
+ text-shadow-offset: 3px 0px;
+ text-shadow-radius: 10px; 
 `
 const MainContainer = styled.View`
   width: 110%;

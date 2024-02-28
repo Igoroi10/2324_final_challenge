@@ -67,6 +67,9 @@ const Square = styled.TouchableOpacity`
 const Text = styled.Text`
   font-size: 40px;
   color: white;
+  text-shadow-color: grey;
+  text-shadow-offset: 1px 0px; 
+  text-shadow-radius: 3px;
 `
 const NotTurnContainer = styled.View`
   width: 100%;

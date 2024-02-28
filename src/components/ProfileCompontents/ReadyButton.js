@@ -55,6 +55,9 @@ const ButtonText = styled.Text`
   font-family: 'Breathe Fire IV';
   font-size: 20px;
   letter-spacing: 4px;
+  text-shadow-color: black;
+  text-shadow-offset: 1px 0px; 
+  text-shadow-radius: 5px;
 `
 
 export default ReadyButton

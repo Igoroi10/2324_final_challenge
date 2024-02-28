@@ -91,6 +91,9 @@ const ProfileText = styled.Text`
  text-align: center;
  font-family: 'Breathe Fire IV';
  letter-spacing: 4px;
+ text-shadow-color: grey;
+ text-shadow-offset: 1px 0px; 
+ text-shadow-radius: 2px;
 `
 
 

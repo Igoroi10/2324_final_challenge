@@ -44,7 +44,11 @@ const ProfileText = styled.Text`
  font-size: 25px;
  text-align: center;
  font-family: 'Breathe Fire IV';
+ fontWeight: bold;
  letter-spacing: 4px;
+ text-shadow-color: grey;
+ text-shadow-offset: 1px 0px; 
+ text-shadow-radius: 3px;
 `
 
 const ProfileContainer = styled.View`

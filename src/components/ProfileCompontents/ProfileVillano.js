@@ -90,10 +90,13 @@ const styles = StyleSheet.create({
 
 const ProfileText = styled.Text`
  color: white;
- font-size: 20px;
+ font-size: 21px;
  text-align: center;
  font-family: 'Breathe Fire IV';
  letter-spacing: 4px;
+ text-shadow-color: grey;
+ text-shadow-offset: 1px 0px; 
+ text-shadow-radius: 3px;
 `
 
 const ProfileContainer = styled.View`

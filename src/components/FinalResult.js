@@ -78,8 +78,10 @@ const TextResult = styled.Text`
   font-family: 'Breathe Fire IV';
   color: white;
   text-align: center;
-
   margin-bottom: 3%;
+  text-shadow-color: grey;
+  text-shadow-offset: 1px 0px; 
+  text-shadow-radius: 3px;
 `
 
 export default FinalResults
