@@ -134,9 +134,12 @@ const BattleField = ({ }) => {
         </TurnContainer>
 
         {isMortimerTurn && 
-          <View style={{ backgroundColor: 'red', width: '20%' }}>
-            <MortimerHeal style={{ backgroundColor: 'pink' }} onPress={() => setOpenEnemyList(false)}/>
-            <MortimerHealDisease style={{ backgroundColor: 'yellow' }}onPress={ () => setOpenEnemyList(true)}  />
+          <View style={{width: '20%' }}>
+            {/* <MortimerHeal  onPress={() => setOpenEnemyList(false)}/> */}
+            <MortimerDiseaseContainer>
+              <MortimerHealDiseaseImage source={require('../../../assets/curation.jpg')}/>
+              <MortimerHealDisease  onPress={ () => setOpenEnemyList(true)}  />
+            </MortimerDiseaseContainer>
           </View>
         }
        
@@ -205,7 +208,7 @@ const BattleField = ({ }) => {
 
 const styles = StyleSheet.create({
   AcolyteProgressBar: {
-    width: 50,
+    width: 100,
     height: 5,
     marginTop: 5,
 
@@ -384,9 +387,25 @@ const MortimerHeal = styled.TouchableOpacity`
   border-radius: 60px;
 `
 
+const MortimerHealDiseaseImage = styled.Image`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 40px;
+  position: absolute;
+
+  z-index: -1;
+`
+
 const MortimerHealDisease = styled.TouchableOpacity`
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 60px;
+  position: absolute;
+  z-index: 3;
+`
+
+const MortimerDiseaseContainer = styled.View`
   height: 7%;
   margin-bottom: 3%;
   width: 40%;
