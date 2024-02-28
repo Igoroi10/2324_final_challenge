@@ -99,7 +99,7 @@ const ProfileContainer = styled.View`
 `  
 
 const StatsContainer = styled.View`
-  top: 10%;
+  top: 3%;
   justify-content: center;
   align-items: center;
   width: 100%;
