@@ -18,6 +18,7 @@ import socket from '../../../helpers/socket';
 import SpecialAttackListModal from '../SpecialAttackListModal'
 import ProfileAngelo from './ProfileAngelo';
 import SickModal from '../SickModal';
+import DeadModal from '../DeadModal';
 
 const ProfileManager = () => {
   const { globalState, globalStateHandler } = useContext(Context);
@@ -184,55 +185,76 @@ const ProfileManager = () => {
 
   return (
     <MainContainer>
-      {globalState.user.rol === "villain" ? (
-        <>
-          <ProfileVillano />
-          <VillanoButtons />
-          {(openEnemyList && globalState.userList.length > 0) && (
-            <VillanoUserListModal setOpenEnemyList={setOpenEnemyList} />
-          )}
-        </>
-      ) : globalState.user.rol === "mortimer" ? (
-        <MortimerProfile />
-      ) : globalState.user.rol === "acolyte" || globalState.user.rol === "acolyteInterface" ? (
-        <>
-          {!globalState.user.isReady && (
-            <>
-
-              <Profile />
-              <ReadyButton />
-            </>
-          )}
+    {globalState.user.rol === "villain" ? (
+      <>
+        {globalState.user.isAlive && (
+          <>
+            <ProfileVillano />
+            <VillanoButtons />
+            {(openEnemyList && globalState.userList.length > 0) && (
+              <VillanoUserListModal setOpenEnemyList={setOpenEnemyList} />
+            )}
+          </>
+        )}
+        {!globalState.user.isAlive && (
+          <DeadModal />
+        )}
+      </>
+    ) : globalState.user.rol === "mortimer" ? (
+      <MortimerProfile />
+    ) : globalState.user.rol === "acolyte" || globalState.user.rol === "acolyteInterface" ? (
+      <>
+        {globalState.user.isAlive && (
+          <>
+            {!globalState.user.isReady && (
+              <>
+                <Profile />
+                <ReadyButton />
+              </>
+            )}
           {globalState.battleStart && (
-            <>
-              <SickModal />
-              <Profile />
-              <FightButtons setOpenEnemyList={setOpenEnemyList} setOpenSpecialEnemyList={setOpenSpecialEnemyList} />
-              {openEnemyList && (
-                <UserListModal setOpenEnemyList={setOpenEnemyList} />
-              )}
-              {openSpecialEnemyList && (
-                <SpecialAttackListModal setOpenSpecialEnemyList={setOpenSpecialEnemyList} />
-              )}
-            </>
-          )}
-          {(globalState.user.isReady && !showAllUsersReadyModal && !globalState.battleStart && globalState.user.rol === "acolyte") && (
-            <ReadyModal />
-          )}
-        </>
-      ) : globalState.user.rol === "guest" ? (
-        <>
-          <ProfileAngelo />
-          <ApplyEthazium setOpenEnemyList={setOpenEnemyList}/>
-          {openEnemyList && (
-            <UserListModal setOpenEnemyList={setOpenEnemyList} />
-          )}
-        </>
-      ) : null}
-      {showAllUsersReadyModal && !globalState.battleStart && (
-        <AllUsersReadyModal />
-      )}
-    </MainContainer>
+              <>
+                <SickModal />
+                <Profile />
+                <FightButtons setOpenEnemyList={setOpenEnemyList} setOpenSpecialEnemyList={setOpenSpecialEnemyList} />
+                {openEnemyList && (
+                  <UserListModal setOpenEnemyList={setOpenEnemyList} />
+                )}
+                {openSpecialEnemyList && (
+                  <SpecialAttackListModal setOpenSpecialEnemyList={setOpenSpecialEnemyList} />
+                )}
+              </>
+            )}
+            {(globalState.user.isReady && !showAllUsersReadyModal && !globalState.battleStart && globalState.user.rol === "acolyte") && (
+              <ReadyModal />
+            )}
+          </>
+        )}
+        {!globalState.user.isAlive && (
+          <DeadModal />
+        )}
+      </>
+    ) : globalState.user.rol === "guest" ? (
+      <>
+        {globalState.user.isAlive && (
+          <>
+            <ProfileAngelo />
+            <ApplyEthazium setOpenEnemyList={setOpenEnemyList}/>
+            {openEnemyList && (
+              <UserListModal setOpenEnemyList={setOpenEnemyList} />
+            )}
+          </>
+        )}
+        {!globalState.user.isAlive && (
+          <DeadModal />
+        )}
+      </>
+    ) : null}
+    {showAllUsersReadyModal && !globalState.battleStart && (
+      <AllUsersReadyModal />
+    )}
+  </MainContainer>
+  
   );
       
 }  

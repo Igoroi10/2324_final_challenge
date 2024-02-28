@@ -79,7 +79,7 @@ const Square = styled.TouchableOpacity`
 
 const NotTurnContainer = styled.View`
   width: 100%;
-  height: 38%;
+  height: 35%;
   position: absolute;
   bottom: 0;
   display: flex;

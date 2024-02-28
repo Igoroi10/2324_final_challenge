@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext , useEffect} from 'react';
 import styled from 'styled-components/native';
 import { Context } from '../../helpers/Context';
 import { Image, StyleSheet } from 'react-native';
@@ -7,6 +7,10 @@ import Stats from './Stats';
 const Profile = ({ }) => {
 
   const { globalState, globalStateHandler } = useContext(Context);
+  
+  useEffect(() => {
+    //console.log(globalState.user.isAlive);
+  }, [globalState]);
   
   return (
     <> 
@@ -22,7 +26,7 @@ const Profile = ({ }) => {
 
 const styles = StyleSheet.create({
   image: {
-    width: '60%',
+    width: '65%',
     height: '45%',
     objectFit: 'contain',
   },
